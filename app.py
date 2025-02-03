@@ -18,23 +18,18 @@ if 'writer_model_selection' not in st.session_state:
 
 
 def get_ollama_models():
-    """Fetches the list of available models from the Ollama server with enhanced debugging."""
+    """Fetches the list of available models from the Ollama server."""
     try:
-        st.write("DEBUG: Running 'ollama list' command...") # Debug print before command
         result = subprocess.run(['ollama', 'list'], capture_output=True, text=True, check=True)
-        st.write("DEBUG: 'ollama list' command completed successfully.") # Debug print after success
         output_lines = result.stdout.strip().split('\n')
         models = []
         for line in output_lines[1:]: # Skip header line
             parts = line.split()
             if parts:
                 models.append(parts[0]) # Model name is the first part
-        st.write("DEBUG: Fetched models:", models) # Debug print of fetched models
-        if "deepseek-r1:1.5b" not in models: # Changed check to deepseek-r1:1.5b
-            st.warning("WARNING: 'deepseek-r1:1.5b' is not in the fetched model list.") # Warning if model is missing
         return models
     except FileNotFoundError as e:
-        st.error(f"Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH. Details: {e}")
+        st.error(f"Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH.")
         return []
     except subprocess.CalledProcessError as e:
         st.error(f"Error listing Ollama models. Is Ollama server running? Details: {e}")
@@ -108,7 +103,7 @@ with tab3:
 
         st.write(f"Planning story arc for genre: {genre_selection}, chapters: {num_chapters}") # Moved feedback to Tab 3
 
-        # --- Load Configuration (for base_url, model, prompts_dir) ---
+        # --- Load Configuration (for base_url, prompts_dir) ---
         with open("config.yaml", "r") as config_file:
             config_yaml = yaml.safe_load(config_file)
         prompts_dir_path = config_yaml.get("prompts_dir", "config/prompts")
@@ -158,6 +153,9 @@ with tab3:
             st.success(f"Story arc planning complete! Saved to: {output_file_path}") # Success message with file path
         except Exception as e:
             st.error(f"Error writing Story Arc to file: {e}") # Error message if saving fails
+
+
+        st.session_state['plan_story_arc_triggered'] = False # Reset trigger
 
 
 with tab4:
