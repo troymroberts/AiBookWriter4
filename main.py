@@ -52,7 +52,7 @@ if __name__ == "__main__":
         model="deepseek-r1:1.5b",  # Using deepseek-r1:32b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=3500,
+        max_tokens=9000,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection
