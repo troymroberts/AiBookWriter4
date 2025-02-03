@@ -7,6 +7,7 @@ from agents.outline_creator import OutlineCreator  # Import OutlineCreator Agent
 from agents.writer import Writer  # Import Writer Agent
 import io  # To capture stdout
 import subprocess  # For running ollama command
+import json
 
 # Initialize session state
 if 'story_arc_output' not in st.session_state:
@@ -18,7 +19,21 @@ if 'outline_creator_output' not in st.session_state:
 
 
 def get_ollama_models():
-    pass # ... (get_ollama_models function - same as before) ...
+    """Fetches the list of available Ollama models using the 'ollama list' command."""
+    try:
+        process = subprocess.run(['ollama', 'list', '--format', 'json'], capture_output=True, text=True, check=True)
+        output = process.stdout
+        models_json = json.loads(output)
+        return models_json
+    except subprocess.CalledProcessError as e:
+        st.error(f"Error fetching Ollama models: {e}")
+        return None
+    except FileNotFoundError:
+        st.error("Ollama is not installed or not in your PATH.")
+        return None
+    except json.JSONDecodeError:
+        st.error("Could not decode Ollama model list as JSON.")
+        return None
 
 
 def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Corrected order
@@ -40,13 +55,13 @@ def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Correct
     story_planner = StoryPlanner(  # Initialize StoryPlanner
         base_url=base_url_config, model=story_planner_model, prompts_dir=prompts_dir_path, genre=genre_selection, num_chapters=num_chapters, streaming=True)  # ADDED streaming=True
 
-    setting_builder_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b")  # Using StoryPlanner model for SettingBuilder for now
+    setting_builder_model = st.session_state.get("setting_builder_model_selection", "deepseek-r1:1.5b")  # Separate model selection for SettingBuilder
     setting_builder = SettingBuilder(  # Initialize SettingBuilder
-        base_url=base_url_config, model=setting_builder_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
+        base_url=base_url_config, model=setting_builder_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("setting_builder_temperature", 0.7), max_tokens=st.session_state.get("setting_builder_max_tokens", 2000), top_p=st.session_state.get("setting_builder_top_p", 0.95), context_window=st.session_state.get("setting_builder_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
 
-    outline_creator_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b")  # Using StoryPlanner model for OutlineCreator for now
+    outline_creator_model = st.session_state.get("outline_creator_model_selection", "deepseek-r1:1.5b")  # Separate model selection for OutlineCreator
     outline_creator = OutlineCreator(  # Initialize OutlineCreator
-        base_url=base_url_config, model=outline_creator_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
+        base_url=base_url_config, model=outline_creator_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("outline_creator_temperature", 0.7), max_tokens=st.session_state.get("outline_creator_max_tokens", 2000), top_p=st.session_state.get("outline_creator_top_p", 0.95), context_window=st.session_state.get("outline_creator_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
 
 
     # --- Run Story Planner Task ---
@@ -141,98 +156,38 @@ with tab2:
 
     st.subheader("Ollama Models")
     ollama_models = get_ollama_models()  # Fetch available Ollama models
-    if ollama_models:
+    if ollama_models and 'models' in ollama_models and isinstance(ollama_models['models'], list):
         model_list = [model['name'] for model in ollama_models['models']]
     else:
         model_list = ["No models found"]  # Default if no models fetched
+
 
     st.subheader("Story Planner Agent")
     st.session_state["story_planner_model_selection"] = st.selectbox(
         "Model for Story Planner",
         model_list,
         index=model_list.index("deepseek-r1:1.5b")
-        if "deepseek-r1:1.5b" in model_list
-        else 0,
-        key="story_planner_model_selectbox",
-    )
-    st.session_state["story_planner_temperature"] = st.slider(
-        "Temperature (Story Planner)",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.7,
-        step=0.01,
-        key="story_planner_temp_slider",
-    )
-    st.session_state["story_planner_max_tokens"] = st.slider(
-        "Max Tokens (Story Planner)",
-        min_value=100,
-        max_value=4000,
-        value=2000,
-        step=100,
-        key="story_planner_tokens_slider",
-    )
-    st.session_state["story_planner_top_p"] = st.slider(
-        "Top P (Story Planner)",
-        min_value=0.0,
-        max_value=1.0,
-        value=0.95,
-        step=0.01,
-        key="story_planner_top_p_slider",
-    )
-    st.session_state["story_planner_context"] = st.slider(
-        "Context Window (Story Planner)",
-        min_value=2048,
-        max_value=32768,
-        value=8192,
-        step=1024,
-        key="story_planner_context_slider",
-    )
++```diff
+--- a/troymroberts-aibookwriter4 (2).txt
++++ b/troymroberts-aibookwriter4 (2).txt
+@@ -8,6 +8,11 @@
+ import io  # To capture stdout
+ import subprocess  # For running ollama command
 
-    # ... (Agent configurations for other agents would follow a similar pattern) ...
++# Initialize session state
++if 'story_arc_output' not in st.session_state:
++    st.session_state['story_arc_output'] = ""
++if 'setting_builder_output' not in st.session_state:
++    st.session_state['setting_builder_output'] = ""
+ # Initialize session state - MOVED TO TOP (same as before) ...
+
+ def get_ollama_models():
+@@ -116,7 +121,7 @@
 
 
-with tab3:
-    st.header("Process Monitor")
-    # --- Story Arc Output Display (Moved to Workflow Function) ---
-    # --- Setting Builder Output Display (Moved to Workflow Function) ---
-    # --- Outline Creator Output Display (NEW) ---
-    st.subheader("Outline Creator Output:")  # Section for Outline Creator Output
-    output_placeholder_outline = st.empty()  # Placeholder for Outline Creator output
-    if st.session_state.get("outline_creator_output"):
-        output_placeholder_outline.text(st.session_state["outline_creator_output"])
+ def get_ollama_models():
+-    # ... (get_ollama_models function - same as before) ...
++    pass # ... (get_ollama_models function - same as before) ...
+ 
 
-    st.subheader("Setting Builder Output:")  # Section for Setting Builder Output
-    output_placeholder_settings = st.empty()
-    if st.session_state.get("setting_builder_output"):
-        output_placeholder_settings.text(st.session_state["setting_builder_output"])
-
-    st.subheader("Story Arc Output:")  # Section for Story Arc Output
-    output_placeholder_arc = st.empty()
-    if st.session_state.get("story_arc_output"):
-        output_placeholder_arc.text(st.session_state["story_arc_output"])
-
-
-with tab4:
-    st.header("Output Inspection")
-    st.subheader("Story Arc:")
-    st.text_area(
-        "Final Story Arc Output",
-        value=st.session_state["story_arc_output"],
-        height=400,
-    )  # Display stored Story Arc
-    st.subheader("World Settings:")  # NEW: World Settings output in Tab 4
-    st.text_area(
-        "Final World Settings Output",
-        value=st.session_state["setting_builder_output"],
-        height=400,
-    )  # Display World Settings
-    st.subheader("Chapter Outlines:")  # NEW: Chapter Outlines output in Tab 4
-    st.text_area(
-        "Final Chapter Outlines Output",
-        value=st.session_state["outline_creator_output"],
-        height=400,
-    )  # Display Chapter Outlines
-
-
-if __name__ == "__main__":
-    pass
+ st.title("AI Book Writer Control Panel")
