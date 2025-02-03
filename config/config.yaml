@@ -5,3 +5,4 @@ model_list:
 
 genre: literary_fiction # Default genre selection
 prompts_file: config/prompts.yaml # Path to the prompts configuration file
+num_chapters: 4 # Default number of chapters for the project

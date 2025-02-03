@@ -1,65 +1,49 @@
-from crewai import Agent
-from pydantic import BaseModel, Field
-from typing import Optional
+# --- agents/writer.py ---
+from langchain_ollama import OllamaLLM
+from langchain.prompts import ChatPromptTemplate
+import yaml
+import os # Import os for path manipulation
 
-class WriterConfig(BaseModel):
-    llm_endpoint: str = Field(default="http://10.1.1.47:11434", description="Endpoint for the language model server.")
-    llm_model: str = Field(default="ollama/llama3.2:1b", description="Model identifier for the writer.")
-    temperature: float = Field(default=0.7, description="Temperature setting for the language model.")
-    max_tokens: int = Field(default=3000, description="Maximum number of tokens for the language model.")
-    top_p: float = Field(default=0.95, description="Top-p sampling parameter for the language model.")
-    system_template: Optional[str] = Field(
-        default=None,
-        description="System template for the writer agent."
-    )
-    prompt_template: Optional[str] = Field(
-        default=None,
-        description="Prompt template for the writer agent."
-    )
-    response_template: Optional[str] = Field(
-        default=None,
-        description="Response template for the writer agent."
-    )
+class Writer:
+    """Agent responsible for writing chapters based on outlines."""
 
-    class Config:
-        arbitrary_types_allowed = True
-
-class Writer(Agent):
-    def __init__(self, config: WriterConfig):
-        super().__init__(
-            role='Writer',
-            goal=f"""
-                Write individual chapters based on the provided chapter outline, expanding on the key events, character developments, and setting descriptions with vivid prose and engaging dialogue.
-                Pay close attention to the character profiles, including their stats and speech patterns, to create realistic and consistent dialogue and interactions.
-                Adhere to the specified tone and style for each chapter, and follow the genre-specific instructions.
-                Each chapter MUST be at least {{{{genre_config.get('MIN_WORDS_PER_CHAPTER', 1600)}}}} words in length. Consider this a HARD REQUIREMENT. If your output is shorter, continue writing until you reach this minimum length.
-                ONLY WRITE ONE CHAPTER AT A TIME.
-                Refer to the provided chapter outline for the content and structure of each chapter, including the list of items relevant to the chapter.
-                """,
-            backstory=f"""
-                You are an expert creative writer who brings scenes to life with vivid prose, compelling characters, and engaging plots.
-                You write according to the detailed chapter outline, incorporating all Key Events, Character Developments, Setting, Tone, and Items, while maintaining consistent character voices and personalities.
-                You use the character stats and speech patterns defined by the Character Agent to guide your writing.
-                You are working on a {{num_chapters}}-chapter story in the {{genre_config.get('GENRE')}} genre, ONE CHAPTER AT A TIME, with each chapter being at least {{{{genre_config.get('MIN_WORDS_PER_CHAPTER', 1600)}}}} words long.
-                You are committed to meeting the word count for each chapter and will not stop writing until this requirement is met.
-                You will be provided with the specific outline for each chapter and you must adhere to it, paying special attention to the items listed for each chapter.
-                """,
-            verbose=True,
-            allow_delegation=False,
-            llm=self.create_llm(config),
-            # TODO: Add tools here
-            tools=[],
+    def __init__(self, base_url, model, prompts_dir, genre, num_chapters, temperature=0.7, max_tokens=3000, top_p=0.95, context_window=8192): # ADDED num_chapters parameter
+        """
+        Initializes the Writer agent with LLM configuration and prompts loaded from files.
+        """
+        self.llm = OllamaLLM(
+            base_url=base_url,
+            model=model,
+            context_window=context_window,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p,
+            streaming=True # Enable streaming for Writer
         )
+        # Load prompts from genre-specific config file
+        prompt_file_path = os.path.join(prompts_dir, "writer.yaml") # Construct prompt file path
+        with open(prompt_file_path, "r") as f:
+            agent_prompts = yaml.safe_load(f) # Load prompts for this agent
 
-    def create_llm(self, config: WriterConfig):
-        from crewai.llm import LLM
-        return LLM(
-            base_url=config.llm_endpoint,
-            model=config.llm_model,
-            temperature=config.temperature,
-            max_tokens=config.max_tokens,
-            top_p=config.top_p,
-            system_template=config.system_template,
-            prompt_template=config.prompt_template,
-            response_template=config.response_template,
-        )
+        self.system_message = agent_prompts['system_message'] # Load system message
+        self.user_prompt_template = agent_prompts['user_prompt'] # Load user prompt template
+
+        self.prompt = ChatPromptTemplate.from_messages([
+            ("system", self.system_message),
+            ("user", self.user_prompt_template)
+        ])
+        self.genre = genre
+        self.num_chapters = num_chapters # Store num_chapters as instance variable
+
+
+    def write_chapter(self, chapter_outline, genre_config):
+        """Writes a chapter based on the provided outline and genre configuration."""
+        chain = self.prompt | self.llm
+        task_input = {
+            "outline_context": chapter_outline, # Pass the chapter outline as context
+            "num_chapters": self.num_chapters, # Use self.num_chapters here
+            "genre_config": genre_config,
+        }
+        # For streaming, use chain.stream instead of chain.invoke
+        for chunk in chain.stream(task_input):
+            yield chunk # Yield each chunk for streaming

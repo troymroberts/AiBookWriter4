@@ -2,6 +2,7 @@
 import os
 import json  # For tool arguments
 from agents.story_planner import StoryPlanner
+from agents.writer import Writer # Import Writer Agent
 from agents.test_agent import TestAgent # Keep for comparison
 from tools.ywriter_tools import WriteProjectNoteTool
 from ywriter7.yw.yw7_file import Yw7File
@@ -45,6 +46,8 @@ if __name__ == "__main__":
         config = yaml.safe_load(config_file)
     genre_selection = config.get("genre", "literary_fiction")
     prompts_dir_path = config.get("prompts_dir", "config/prompts")
+    num_chapters_config = config.get("num_chapters", 12) # Get num_chapters from config, default to 12
+
 
     # --- Story Planner Agent ---
     story_planner = StoryPlanner(
@@ -52,11 +55,26 @@ if __name__ == "__main__":
         model="deepseek-r1:1.5b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=10000,
+        max_tokens=3500,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
-        genre=genre_selection
+        genre=genre_selection,
+        num_chapters=num_chapters_config # Pass num_chapters_config
     )
+
+    # --- Writer Agent ---
+    writer = Writer( # Initialize Writer Agent
+        base_url="http://localhost:11434",
+        model="llama3:8b-instruct", # Using llama3:8b-instruct for Writer - adjust as needed
+        temperature=0.8,
+        context_window=8192,
+        max_tokens=3500,
+        top_p=0.95,
+        prompts_dir=prompts_dir_path,
+        genre=genre_selection,
+        num_chapters=num_chapters_config # Pass num_chapters_config
+    )
+
 
     # --- Task for Story Planner Agent ---
     story_planning_task_description = "Plan a story arc for a literary fiction novel."
@@ -65,7 +83,7 @@ if __name__ == "__main__":
     )
     story_arc_stream = story_planner.plan_story_arc(  # Get story arc stream
         genre="literary_fiction",
-        num_chapters=12,
+        num_chapters=num_chapters_config, # Use num_chapters_config here as well
         additional_instructions="Focus on character development and themes of isolation and redemption.",
     )
     for chunk in story_arc_stream: # Iterate through the stream and print chunks
@@ -80,7 +98,9 @@ if __name__ == "__main__":
         with open(output_file_path, "w", encoding="utf-8") as outfile:
             outfile.write(f"Genre: {genre_selection}\n\n")
             story_arc_stream = story_planner.plan_story_arc(  # Re-run to get full text for file
-                genre="literary_fiction", num_chapters=12, additional_instructions="Focus on character development and themes of isolation and redemption."
+                genre="literary_fiction",
+                num_chapters=num_chapters_config, # And here
+                additional_instructions="Focus on character development and themes of isolation and redemption."
             )
             for chunk in story_arc_stream: # Re-iterate through stream and write to file
                 outfile.write(chunk)
