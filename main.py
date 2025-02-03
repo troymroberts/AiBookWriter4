@@ -49,7 +49,7 @@ if __name__ == "__main__":
     # --- Story Planner Agent ---
     story_planner = StoryPlanner(
         base_url="http://localhost:11434",
-        model="deepseek-r1:14b",  # Using deepseek-r1:1.5b for StoryPlanner
+        model="deepseek-r1:1.5b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
         max_tokens=10000,
