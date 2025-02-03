@@ -1,24 +1,38 @@
 # --- main.py ---
-from agents.test_agent import TestAgent
+from agents.test_agent import TestAgent # We can keep the TestAgent for comparison if you want
+from agents.story_planner import StoryPlanner
 
 if __name__ == "__main__":
-    # --- Instantiate Test Agent with direct parameters ---
+    # --- Test Agent (optional, for comparison) ---
     test_agent = TestAgent(
-        base_url="http://localhost:11434",  # Or "http://10.1.1.47:11434" if that's your server
+        base_url="http://localhost:11434",
         model="qwen2.5:1.5b",
         temperature=0.8,
-        context_window=8192 # Set context window directly here
+        context_window=65536
     )
 
-    # --- Define Test Task ---
-    test_task_prompt = "Hello, Ollama! What is the capital of Spain?"
+    # --- Story Planner Agent ---
+    story_planner = StoryPlanner(
+        base_url="http://localhost:11434",
+        model="deepseek-r1:1.5b", # Let's try a different model for the planner, if you have it
+        temperature=0.7,
+        context_window=65536
+        max_tokens=3500, # Increased max_tokens for story arc generation
+        top_p=0.95
+    )
 
-    # --- Run the Test Task ---
+    # --- Test Task for Test Agent ---
+    test_task_prompt = "Hello, Test Agent! What is your purpose?"
     print(f"--- Sending prompt to Test Agent: ---\n'{test_task_prompt}'\n--- Response from Test Agent: ---")
-    response = test_agent.run_test_task(test_task_prompt)
-    print(response)
+    response_test_agent = test_agent.run_test_task(test_task_prompt)
+    print(response_test_agent)
 
-    test_task_prompt_2 = "Could you tell me a short joke?"
-    print(f"\n--- Sending prompt to Test Agent: ---\n'{test_task_prompt_2}'\n--- Response from Test Agent: ---")
-    response_2 = test_agent.run_test_task(test_task_prompt_2)
-    print(response_2)
+    # --- Task for Story Planner Agent ---
+    story_planning_task_description = "Plan a story arc for a literary fiction novel."
+    print(f"\n--- Sending task to Story Planner: ---\n'{story_planning_task_description}'\n--- Story Arc from Story Planner: ---")
+    story_arc = story_planner.plan_story_arc(
+        genre="literary fiction",
+        num_chapters=12,
+        additional_instructions="Focus on character development and themes of isolation and redemption."
+    )
+    print(story_arc)

@@ -1,60 +1,54 @@
-from crewai import Agent
-from pydantic import BaseModel, Field
-from typing import Optional
+# --- agents/story_planner.py ---
+from langchain_ollama import OllamaLLM
+from langchain.prompts import ChatPromptTemplate
 
-class StoryPlannerConfig(BaseModel):
-    """Configuration model for the StoryPlanner agent."""
-    llm_endpoint: str = Field(default="http://10.1.1.47:11434", description="Endpoint for the language model server.")
-    llm_model: str = Field(default="ollama/llama3.2:1b", description="Model identifier for the story planner.")
-    temperature: float = Field(default=0.7, description="Temperature setting for the language model.")
-    max_tokens: int = Field(default=3000, description="Maximum number of tokens for the language model.")
-    top_p: float = Field(default=0.95, description="Top-p sampling parameter for the language model.")
-    system_template: Optional[str] = Field(
-        default="""You are an AI Story Planner specializing in creating high-level story arcs.
-        Your task is to develop an overarching story arc that includes major plot points,
-        character arcs, and turning points. Ensure the narrative has a captivating beginning,
-        rising action, climax, and satisfying resolution.
-        Your decisions are final, do not delegate or ask further questions.
-        Respond with the final answer in the specified format.
-        """,
-        description="System template for the story planner agent."
-    )
-    prompt_template: Optional[str] = Field(
-        default=None,
-        description="Prompt template for the story planner agent."
-    )
-    response_template: Optional[str] = Field(
-        default=None,
-        description="Response template for the story planner agent."
-    )
-    
-    class Config:
-        arbitrary_types_allowed = True
+class StoryPlanner:
+    """Agent responsible for developing the overarching story arc."""
 
-class StoryPlanner(Agent):
-    """
-    Agent responsible for developing the overarching story arc, themes, and major plot points.
-    """
+    def __init__(self, base_url, model, temperature=0.7, max_tokens=3000, top_p=0.95):
+        """
+        Initializes the StoryPlanner agent with LLM configuration.
 
-    def __init__(self, config: StoryPlannerConfig):
-        super().__init__(
-            role='Chief Story Architect',
-            goal='Develop a compelling and cohesive story arc with major plot points for the entire book.',
-            backstory='Visionary storyteller with a knack for crafting engaging narratives.',
-            verbose=True,
-            allow_delegation=False,
-            llm=self.create_llm(config),
+        Args:
+            base_url (str): Base URL of the Ollama server.
+            model (str): Model identifier.
+            temperature (float, optional): Temperature for generation. Defaults to 0.7.
+            max_tokens (int, optional): Maximum tokens in response. Defaults to 3000.
+            top_p (float, optional): Top-p sampling parameter. Defaults to 0.95.
+        """
+        self.llm = OllamaLLM(
+            base_url=base_url,
+            model=model,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=top_p
         )
+        self.prompt = ChatPromptTemplate.from_messages([
+            ("system", """You are an AI Story Planner specializing in creating high-level story arcs.
+            Your task is to develop an overarching story arc that includes major plot points,
+            character arcs, and turning points. Ensure the narrative has a captivating beginning,
+            rising action, climax, and satisfying resolution.
+            Your decisions are final, do not delegate or ask further questions.
+            Respond with the final answer in the specified format."""),
+            ("user", "{genre} story of {num_chapters} chapters. {additional_instructions}")
+        ])
 
-    def create_llm(self, config: StoryPlannerConfig):
-        from crewai.llm import LLM
-        return LLM(
-            base_url=config.llm_endpoint,
-            model=config.llm_model,
-            temperature=config.temperature,
-            max_tokens=config.max_tokens,
-            top_p=config.top_p,
-            system_template=config.system_template,
-            prompt_template=config.prompt_template,
-            response_template=config.response_template,
-        )
+    def plan_story_arc(self, genre="mystery", num_chapters=10, additional_instructions=""):
+        """
+        Plans the story arc for a novel.
+
+        Args:
+            genre (str, optional): Genre of the story. Defaults to "mystery".
+            num_chapters (int, optional): Number of chapters. Defaults to 10.
+            additional_instructions (str, optional): Any specific instructions. Defaults to "".
+
+        Returns:
+            str: The generated story arc.
+        """
+        chain = self.prompt | self.llm
+        result = chain.invoke({
+            "genre": genre,
+            "num_chapters": num_chapters,
+            "additional_instructions": additional_instructions
+        })
+        return result
