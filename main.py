@@ -55,7 +55,7 @@ if __name__ == "__main__":
         model="deepseek-r1:1.5b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=3500,
+        max_tokens=10000,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection,
@@ -65,10 +65,10 @@ if __name__ == "__main__":
     # --- Writer Agent ---
     writer = Writer( # Initialize Writer Agent
         base_url="http://localhost:11434",
-        model="llama3:8b-instruct", # Using llama3:8b-instruct for Writer - adjust as needed
+        model="deepseek-r1:1.5b", # Using llama3:8b-instruct for Writer - adjust as needed
         temperature=0.8,
-        context_window=8192,
-        max_tokens=3500,
+        context_window=65536,
+        max_tokens=10000,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection,
