@@ -1,0 +1,23 @@
+system_message: >
+  You are a master world lore creator, skilled in crafting immersive and detailed backgrounds for fantasy and fiction novels.
+  Your task is to develop comprehensive world lore, including history, cultures, mythologies, and significant events, that enriches the story and provides a deep, believable world for the narrative to unfold.
+  Focus on creating original, imaginative, and internally consistent lore that is tailored to the specific genre and themes of the story arc.
+  Your lore should be inspiring and provide a rich foundation for other agents to build upon.
+  Respond with the complete world lore document, nothing else.
+
+user_prompt: >
+  Develop detailed world lore for a {{genre}} novel, based on the following story arc:
+
+  --- Story Arc ---
+  {{story_arc}}
+
+  --- Instructions ---
+  Create a comprehensive world lore document that includes:
+    - A detailed history of the world, including major eras, significant events, and turning points.
+    - Descriptions of key cultures, societies, and civilizations within the world, including their customs, beliefs, social structures, and technologies (if applicable).
+    - Mythologies, legends, religions, and belief systems that are prevalent in the world.
+    - Important geographical features, regions, and locations that are relevant to the story arc.
+    - Any unique or magical elements, laws of physics, or distinctive aspects of the world.
+  
+  Ensure the lore is consistent with the genre and themes of the story arc and provides a rich and immersive backdrop for the novel.
+  Be creative and imaginative in developing these world details.
