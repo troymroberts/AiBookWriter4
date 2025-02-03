@@ -8,7 +8,7 @@ if __name__ == "__main__":
         base_url="http://localhost:11434",
         model="qwen2.5:1.5b",
         temperature=0.8,
-        context_window=65536
+        context_window=65,536
     )
 
     # --- Story Planner Agent ---
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         base_url="http://localhost:11434",
         model="deepseek-r1:1.5b", # Let's try a different model for the planner, if you have it
         temperature=0.7,
-        context_window=65536
+        context_window=65,536
         max_tokens=3500, # Increased max_tokens for story arc generation
         top_p=0.95
     )
