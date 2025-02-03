@@ -34,10 +34,13 @@ class StoryPlanner:
         ])
         self.genre = genre
         self.num_chapters = num_chapters # Store num_chapters as instance variable
+        print(f"DEBUG agents/story_planner.py: StoryPlanner __init__ received num_chapters: {num_chapters}") # DEBUG PRINT
+
 
     def plan_story_arc(self, genre, num_chapters, additional_instructions=""): # UPDATED: Removed default num_chapters=10 and using parameter
         """Plans the story arc for a novel, incorporating the configured genre."""
         chain = self.prompt | self.llm
+        print(f"DEBUG agents/story_planner.py: plan_story_arc received num_chapters: {num_chapters}") # DEBUG PRINT
         for chunk in chain.stream({ # Use chain.stream() for streaming
             "genre": genre, # Use the passed-in genre parameter
             "num_chapters": num_chapters, # UPDATED: Now using the num_chapters parameter passed to this method

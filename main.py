@@ -48,6 +48,7 @@ if __name__ == "__main__":
     prompts_dir_path = config.get("prompts_dir", "config/prompts")
     num_chapters_config = config.get("num_chapters", 12) # Get num_chapters from config, default to 12
 
+    print(f"DEBUG main.py: num_chapters_config from config.yaml: {num_chapters_config}") # DEBUG PRINT
 
     # --- Story Planner Agent ---
     story_planner = StoryPlanner(
@@ -55,20 +56,23 @@ if __name__ == "__main__":
         model="deepseek-r1:1.5b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=10000,
+        max_tokens=3500,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection,
         num_chapters=num_chapters_config # Pass num_chapters_config
     )
 
+    print(f"DEBUG main.py: num_chapters_config just before StoryPlanner init: {num_chapters_config}") # DEBUG PRINT
+
+
     # --- Writer Agent ---
     writer = Writer( # Initialize Writer Agent
         base_url="http://localhost:11434",
-        model="deepseek-r1:1.5b", # Using llama3:8b-instruct for Writer - adjust as needed
+        model="llama3:8b-instruct", # Using llama3:8b-instruct for Writer - adjust as needed
         temperature=0.8,
-        context_window=65536,
-        max_tokens=10000,
+        context_window=8192,
+        max_tokens=3500,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection,
