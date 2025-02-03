@@ -5,7 +5,7 @@ from langchain.prompts import ChatPromptTemplate
 class StoryPlanner:
     """Agent responsible for developing the overarching story arc."""
 
-    def __init__(self, base_url, model, temperature=0.7, max_tokens=3000, top_p=0.95):
+    def __init__(self, base_url, model, temperature=0.7, max_tokens=3000, top_p=0.95, context_window=8192): # ADDED context_window parameter
         """
         Initializes the StoryPlanner agent with LLM configuration.
 
