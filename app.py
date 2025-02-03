@@ -1,3 +1,4 @@
+--- START OF FILE app.py ---
 import streamlit as st
 import yaml
 import os
@@ -13,6 +14,9 @@ if 'story_arc_output' not in st.session_state:
     st.session_state['story_arc_output'] = ""
 if 'setting_builder_output' not in st.session_state:
     st.session_state['setting_builder_output'] = ""
+if 'outline_creator_output' not in st.session_state:
+    st.session_state['outline_creator_output'] = ""
+
 
 def get_ollama_models():
     pass # ... (get_ollama_models function - same as before) ...
