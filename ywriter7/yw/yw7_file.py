@@ -1,1703 +1,1228 @@
+# --- ywriter7/yw/yw7_file.py ---
 """Provide a class for yWriter 7 project import and export.
-
-yWriter version-specific file representations inherit from this class.
 
 Copyright (c) 2023 Peter Triesberger
 For further information see https://github.com/peter88213/PyWriter
 Published under the MIT License (https://opensource.org/licenses/mit-license.php)
 """
 import os
-import re
-from html import unescape
-from datetime import datetime
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
+import datetime
+from urllib.parse import unquote, quote
 from ..pywriter_globals import *
 from ..file.file import File
-from ..file.file_export import FileExport
 from ..model.novel import Novel
 from ..model.chapter import Chapter
 from ..model.scene import Scene
 from ..model.character import Character
-from ..model.world_element import WorldElement
+from ..model.location import Location
+from ..model.item import Item
 from ..model.project_note import ProjectNote
-
+from ..model.cross_references import CrossReferences
+from ..model.splitter import Splitter
+from . import xml_indent  # <--- Changed to relative import of the module
+# from .xml_indent import indent  # <---  Alternative, but less recommended import style
+from ..config.configuration import Configuration
+from ..config import configuration
+from .. import pywriter_globals
 
 class Yw7File(File):
     """yWriter 7 project file representation.
 
     Public methods:
-        adjust_scene_types() -- Make sure that scenes in non-"Normal" chapters inherit the chapter's type.
-        is_locked() -- check whether the yw7 file is locked by yWriter.
-        read() -- parse the yWriter xml file and get the instance variables.
-        write() -- write instance variables to the yWriter xml file.
+        get_chapter_count() -- Return number of chapters.
+        get_scene_count() -- Return number of scenes.
+        get_word_count() -- Return total word count.
+        get_character_count() -- Return number of characters.
+        get_location_count() -- Return number of locations.
+        get_item_count() -- Return number of items.
+        get_project_note_count() -- Return number of project notes.
+        get_date_time() -- Return tuple of date and time strings from time stamp.
+        get_timedelta() -- Return time difference in seconds from time stamp.
+        get_element_id(xmlElement) -- get element ID from XML tag.
+        get_element_title(xmlElement) -- get element title from XML tag.
+        get_element_desc(xmlElement) -- get element description from XML tag.
+        get_element_notes(xmlElement) -- get element notes from XML tag.
+        get_element_tags(xmlElement) -- get element tags from XML tag.
+        get_element_aka(xmlElement) -- get element "aka" from XML tag.
+        get_element_image(xmlElement) -- get element image path from XML tag.
+        get_element_field(xmlElement, fieldId) -- get element custom field from XML tag.
+        get_element_status(xmlElement) -- get scene status from XML tag.
+        get_element_type(xmlElement) -- get chapter type from XML tag.
+        get_element_level(xmlElement) -- get chapter level from XML tag.
+        get_element_is_reaction(xmlElement) -- get scene type from XML tag.
+        get_element_is_subplot(xmlElement) -- get scene subplot status from XML tag.
+        get_element_is_trash(xmlElement) -- get chapter "trash bin" status from XML tag.
+        get_element_do_not_export(xmlElement) -- get scene "do not export" status from XML tag.
+        get_element_suppress_chapter_title(xmlElement) -- get chapter suppress title setting from XML tag.
+        get_element_suppress_chapter_break(xmlElement) -- get chapter suppress break setting from XML tag.
+        get_element_append_to_previous(xmlElement) -- get scene append setting from XML tag.
 
-    Public instance variables:
-        tree -- xml element tree of the yWriter project
-        
-    Public class constants:
-        PRJ_KWVAR -- List of the names of the project keyword variables.
-        SCN_KWVAR -- List of the names of the scene keyword variables.
+    Instance variables:
+        tree -- ElementTree instance (xml tree).
+        _config -- Configuration instance.
+        xrefs -- CrossReferences instance.
+        splitter -- Splitter instance.
     """
-    DESCRIPTION = _('yWriter 7 project')
     EXTENSION = '.yw7'
-    _CDATA_TAGS = [
-        'Title',
-        'AuthorName',
-        'Bio',
-        'Desc',
-        'FieldTitle1',
-        'FieldTitle2',
-        'FieldTitle3',
-        'FieldTitle4',
-        'LaTeXHeaderFile',
-        'Tags',
-        'AKA',
-        'ImageFile',
-        'FullName',
-        'Goals',
-        'Notes',
-        'RTFFile',
-        'SceneContent',
-        'Outcome',
-        'Goal',
-        'Conflict'
-        'Field_ChapterHeadingPrefix',
-        'Field_ChapterHeadingSuffix',
-        'Field_PartHeadingPrefix',
-        'Field_PartHeadingSuffix',
-        'Field_CustomGoal',
-        'Field_CustomConflict',
-        'Field_CustomOutcome',
-        'Field_CustomChrBio',
-        'Field_CustomChrGoals',
-        'Field_ArcDefinition',
-        'Field_SceneArcs',
-        'Field_CustomAR',
-        ]
-    # Names of xml elements containing CDATA.
-    # ElementTree.write omits CDATA tags, so they have to be inserted afterwards.
+    DESCRIPTION = _('yWriter 7 project file')
+    VERSION = '0.9.11'
+    # Constants for XML tag names
+    XML_PROJECT_TAG = 'PROJECT'
+    XML_TITLE_TAG = 'Title'
+    XML_DESC_TAG = 'Desc'
+    XML_AUTHOR_NAME_TAG = 'AuthorName'
+    XML_BIO_TAG = 'Bio'
+    XML_FIELD_TITLE_TAG = 'FieldTitle'
+    XML_WORD_TARGET_TAG = 'WordTarget'
+    XML_WORD_COUNT_START_TAG = 'WordCountStart'
+    XML_CHAPTERS_TAG = 'CHAPTERS'
+    XML_CHAPTER_TAG = 'CHAPTER'
+    XML_SCENES_TAG = 'SCENES'
+    XML_SCENE_TAG = 'SCENE'
+    XML_CHARACTERS_TAG = 'CHARACTERS'
+    XML_CHARACTER_TAG = 'CHARACTER'
+    XML_LOCATIONS_TAG = 'LOCATIONS'
+    XML_LOCATION_TAG = 'LOCATION'
+    XML_ITEMS_TAG = 'ITEMS'
+    XML_ITEM_TAG = 'ITEM'
+    XML_PROJECT_NOTES_TAG = 'PROJECTNOTES'
+    XML_PROJECT_NOTE_TAG = 'PROJECTNOTE'
+    XML_TAGS_TAG = 'TAGS'
+    XML_TAG_TAG = 'TAG'
+    XML_USED_TAGS_TAG = 'UsedTags'
+    XML_UNUSED_TAG_TAG = 'Unused'
+    XML_TYPE_TAG = 'Type'
+    XML_CHAPTER_TYPE_TAG = 'ChapterType'
+    XML_SECTION_START_TAG = 'SectionStart'
+    XML_STATUS_TAG = 'Status'
+    XML_NOTES_TAG = 'Notes'
+    XML_GOAL_TAG = 'Goal'
+    XML_CONFLICT_TAG = 'Conflict'
+    XML_OUTCOME_TAG = 'Outcome'
+    XML_REACTION_SCENE_TAG = 'ReactionScene'
+    XML_SUBPLOT_TAG = 'SubPlot'
+    XML_DAY_TAG = 'Day'
+    XML_TIME_TAG = 'Time'
+    XML_LASTS_DAYS_TAG = 'LastsDays'
+    XML_LASTS_HOURS_TAG = 'LastsHours'
+    XML_LASTS_MINUTES_TAG = 'LastsMinutes'
+    XML_WORD_COUNT_TAG = 'WordCount'
+    XML_LETTER_COUNT_TAG = 'LetterCount'
+    XML_SCENE_CONTENT_TAG = 'SceneContent'
+    XML_IMAGE_FILE_TAG = 'ImageFile'
+    XML_AKA_TAG = 'AKA'
+    XML_FULL_NAME_TAG = 'FullName'
+    XML_BIO_TAG_CHAR = 'Bio'  # Note: different tag for character bio
+    XML_GOALS_TAG = 'Goals'  # Note: different tag for character goals
+    XML_MAJOR_TAG = 'Major'
+    XML_PRJ_NOTE_CHAPTER_TAG = 'PrjChapter'
+    XML_PRJ_NOTE_SCENE_TAG = 'PrjScene'
+    XML_FIELD1_TAG = 'Field1'
+    XML_FIELD2_TAG = 'Field2'
+    XML_FIELD3_TAG = 'Field3'
+    XML_FIELD4_TAG = 'Field4'
+    XML_SPECIFIC_DATE_MODE_TAG = 'SpecificDateMode'
+    XML_SPECIFIC_DATE_TIME_TAG = 'SpecificDateTime'
+    XML_APPEND_TO_PREV_TAG = 'AppendToPrev'
+    XML_EXPORT_COND_SPECIFIC_TAG = 'ExportCondSpecific'
+    XML_EXPORT_WHEN_RTF_TAG = 'ExportWhenRTF'
+    XML_FIELDS_TAG = 'Fields'
+    XML_FIELD_SCENE_TYPE_TAG = 'Field_SceneType'
+    XML_FIELD_SCENE_ARCS_TAG = 'Field_SceneArcs'
+    XML_FIELD_SCENE_MODE_TAG = 'Field_SceneMode'
+    XML_FIELD_IS_TRASH_TAG = 'Field_IsTrash'
+    XML_FIELD_SUPPRESS_CHAPTER_TITLE_TAG = 'Field_SuppressChapterTitle'
+    XML_FIELD_SUPPRESS_CHAPTER_BREAK_TAG = 'Field_SuppressChapterBreak'
+    XML_FIELD_CHAPTER_PREFIX_TAG = 'Field_ChapterPrefix'
+    XML_FIELD_CHAPTER_POSTFIX_TAG = 'Field_ChapterPostfix'
+    XML_FIELD_SCENE_PREFIX_TAG = 'Field_ScenePrefix'
+    XML_FIELD_SCENE_POSTFIX_TAG = 'Field_ScenePostfix'
+    XML_FIELD_CHARACTER_PREFIX_TAG = 'Field_CharacterPrefix'
+    XML_FIELD_CHARACTER_POSTFIX_TAG = 'Field_CharacterPostfix'
+    XML_FIELD_LOCATION_PREFIX_TAG = 'Field_LocationPrefix'
+    XML_FIELD_LOCATION_POSTFIX_TAG = 'Field_LocationPostfix'
+    XML_FIELD_ITEM_PREFIX_TAG = 'Field_ItemPrefix'
+    XML_FIELD_ITEM_POSTFIX_TAG = 'Field_ItemPostfix'
+    XML_FIELD_NOTE_PREFIX_TAG = 'Field_NotePrefix'
+    XML_FIELD_NOTE_POSTFIX_TAG = 'Field_NotePostfix'
+    XML_FIELD_OUTLINE_PREFIX_TAG = 'Field_OutlinePrefix'
+    XML_FIELD_OUTLINE_POSTFIX_TAG = 'Field_OutlinePostfix'
+    XML_FIELD_PROMPT_PREFIX_TAG = 'Field_PromptPrefix'
+    XML_FIELD_PROMPT_POSTFIX_TAG = 'Field_PromptPostfix'
+    XML_FIELD_RESPONSE_PREFIX_TAG = 'Field_ResponsePrefix'
+    XML_FIELD_RESPONSE_POSTFIX_TAG = 'Field_ResponsePostfix'
+    XML_FIELD_SETTING_PREFIX_TAG = 'Field_SettingPrefix'
+    XML_FIELD_SETTING_POSTFIX_TAG = 'Field_SettingPostfix'
+    XML_FIELD_RESEARCH_PREFIX_TAG = 'Field_ResearchPrefix'
+    XML_FIELD_RESEARCH_POSTFIX_TAG = 'Field_ResearchPostfix'
 
-    PRJ_KWVAR = [
-        'Field_LanguageCode',
-        'Field_CountryCode',
-        ]
-    SCN_KWVAR = [
-        'Field_SceneArcs',
-        'Field_SceneMode',
-        ]
-    CRT_KWVAR = [
-        'Field_Link',
-        'Field_BirthDate',
-        'Field_DeathDate',
-        ]
-    LOC_KWVAR = [
-        'Field_Link',
-        ]
-    ITM_KWVAR = [
-        'Field_Link',
-        ]
+    # Keyword variable names for custom fields in the .yw7 XML file.
+    PRJ_KWVAR = [XML_FIELD_CHAPTER_PREFIX_TAG,
+                 XML_FIELD_CHAPTER_POSTFIX_TAG,
+                 XML_FIELD_SCENE_PREFIX_TAG,
+                 XML_FIELD_SCENE_POSTFIX_TAG,
+                 XML_FIELD_CHARACTER_PREFIX_TAG,
+                 XML_FIELD_CHARACTER_POSTFIX_TAG,
+                 XML_FIELD_LOCATION_PREFIX_TAG,
+                 XML_FIELD_LOCATION_POSTFIX_TAG,
+                 XML_FIELD_ITEM_PREFIX_TAG,
+                 XML_FIELD_ITEM_POSTFIX_TAG,
+                 XML_FIELD_NOTE_PREFIX_TAG,
+                 XML_FIELD_NOTE_POSTFIX_TAG,
+                 XML_FIELD_OUTLINE_PREFIX_TAG,
+                 XML_FIELD_OUTLINE_POSTFIX_TAG,
+                 XML_FIELD_PROMPT_PREFIX_TAG,
+                 XML_FIELD_PROMPT_POSTFIX_TAG,
+                 XML_FIELD_RESPONSE_PREFIX_TAG,
+                 XML_FIELD_RESPONSE_POSTFIX_TAG,
+                 XML_FIELD_SETTING_PREFIX_TAG,
+                 XML_FIELD_SETTING_POSTFIX_TAG,
+                 XML_FIELD_RESEARCH_PREFIX_TAG,
+                 XML_FIELD_RESEARCH_POSTFIX_TAG,
+                 ]
+    CHP_KWVAR = [XML_FIELD_CHAPTER_PREFIX_TAG,
+                 XML_FIELD_CHAPTER_POSTFIX_TAG,
+                 ]
+    SCN_KWVAR = [XML_FIELD_SCENE_PREFIX_TAG,
+                 XML_FIELD_SCENE_POSTFIX_TAG,
+                 XML_FIELD_SCENE_TYPE_TAG,
+                 XML_FIELD_SCENE_ARCS_TAG,
+                 XML_FIELD_SCENE_MODE_TAG,
+                 ]
+    CRT_KWVAR = [XML_FIELD_CHARACTER_PREFIX_TAG,
+                 XML_FIELD_CHARACTER_POSTFIX_TAG,
+                 ]
+    LOC_KWVAR = [XML_FIELD_LOCATION_PREFIX_TAG,
+                 XML_FIELD_LOCATION_POSTFIX_TAG,
+                 ]
+    ITM_KWVAR = [XML_FIELD_ITEM_PREFIX_TAG,
+                 XML_FIELD_ITEM_POSTFIX_TAG,
+                 ]
+    PNT_KWVAR = [XML_FIELD_NOTE_PREFIX_TAG,
+                 XML_FIELD_NOTE_POSTFIX_TAG,
+                 XML_FIELD_OUTLINE_PREFIX_TAG,
+                 XML_FIELD_OUTLINE_POSTFIX_TAG,
+                 XML_FIELD_PROMPT_PREFIX_TAG,
+                 XML_FIELD_PROMPT_POSTFIX_TAG,
+                 XML_FIELD_RESPONSE_PREFIX_TAG,
+                 XML_FIELD_RESPONSE_POSTFIX_TAG,
+                 XML_FIELD_SETTING_PREFIX_TAG,
+                 XML_FIELD_SETTING_POSTFIX_TAG,
+                 XML_FIELD_RESEARCH_PREFIX_TAG,
+                 XML_FIELD_RESEARCH_POSTFIX_TAG,
+                 ]
+
 
     def __init__(self, filePath, **kwargs):
         """Initialize instance variables.
-        
+
         Positional arguments:
-            filePath: str -- path to the yw7 file.
-            
-        Optional arguments:
-            kwargs -- keyword arguments (not used here).            
-        
-        Extends the superclass constructor.
+            filePath: str -- path to the .yw7 file.
         """
-        super().__init__(filePath)
+        super().__init__(filePath, **kwargs)
         self.tree = None
+        # ElementTree instance
 
-    def adjust_scene_types(self):
-        """Make sure that scenes in non-"Normal" chapters inherit the chapter's type."""
-        for chId in self.novel.srtChapters:
-            if self.novel.chapters[chId].chType != 0:
-                for scId in self.novel.chapters[chId].srtScenes:
-                    self.novel.scenes[scId].scType = self.novel.chapters[chId].chType
+        self._config = Configuration()
+        # Configuration instance
 
-    def is_locked(self):
-        """Check whether the yw7 file is locked by yWriter.
-        
-        Return True if a .lock file placed by yWriter exists.
-        Otherwise, return False. 
+        self.xrefs = CrossReferences()
+        # CrossReferences instance
+
+        self.splitter = Splitter()
+        # Splitter instance
+
+
+    def get_chapter_count(self):
+        """Return number of chapters."""
+        return len(self.novel.chapters)
+
+
+    def get_scene_count(self):
+        """Return number of scenes."""
+        return len(self.novel.scenes)
+
+
+    def get_word_count(self):
+        """Return total word count."""
+        result = 0
+        for scId in self.novel.scenes:
+            result += self.novel.scenes[scId].wordCount
+        return result
+
+
+    def get_character_count(self):
+        """Return number of characters."""
+        return len(self.novel.characters)
+
+
+    def get_location_count(self):
+        """Return number of locations."""
+        return len(self.novel.locations)
+
+
+    def get_item_count(self):
+        """Return number of items."""
+        return len(self.novel.items)
+
+
+    def get_project_note_count(self):
+        """Return number of project notes."""
+        return len(self.novel.projectNotes)
+
+
+    def get_date_time(self):
+        """Return tuple of date and time strings from time stamp.
+
+        Return current date and time as strings in yWriter format 
+        ('yyyy-mm-dd', 'hh:mm:ss').
         """
-        return os.path.isfile(f'{self.filePath}.lock')
+        now = datetime.datetime.now()
+        dateString = now.strftime('%Y-%m-%d')
+        timeString = now.strftime('%H:%M:%S')
+        return dateString, timeString
+
+
+    def get_timedelta(self):
+        """Return time difference in seconds from time stamp.
+
+        Return time difference in seconds between the current time and the 
+        yWriter time stamp stored in the project file. If no time stamp is 
+        found, return None.
+        """
+        root = self.tree.getroot()
+        timeStamp = root.find('TimeStamp')
+        if timeStamp is None:
+            return None
+        ywDateTime = datetime.datetime.strptime(timeStamp.text, '%Y-%m-%d %H:%M:%S')
+        now = datetime.datetime.now()
+        timeDelta = now - ywDateTime
+        return timeDelta.total_seconds()
+
 
     def read(self):
-        """Parse the yWriter xml file and get the instance variables.
-        
-        Raise the "Error" exception in case of error. 
-        Overrides the superclass method.
+        """Parse the .yw7 file and get the instance variables.
+
+        Parse the XML tree and create a Novel instance with all its parts.
+        Raise the "Error" exception in case of error.
         """
-
-        for field in self.PRJ_KWVAR:
-            self.novel.kwVar[field] = None
-
-        if self.is_locked():
-            raise Error(f'{_("yWriter seems to be open. Please close first")}.')
         try:
-            try:
-                with open(self.filePath, 'r', encoding='utf-8') as f:
-                    xmlText = f.read()
-            except:
-                # yw7 file may be UTF-16 encoded, with a wrong XML header (yWriter for iOS)
-                with open(self.filePath, 'r', encoding='utf-16') as f:
-                    xmlText = f.read()
-        except:
-            try:
-                self.tree = ET.parse(self.filePath)
-            except Exception as ex:
-                raise Error(f'{_("Can not process file")} - {str(ex)}')
+            self.tree = ET.parse(self.filePath)
+        except ET.ParseError as e:
+            raise Error(f'{_("Invalid yWriter 7 project file")}: "{norm_path(self.filePath)}".') from e
+        self.novel = Novel()
+        root = self.tree.getroot()
 
-        xmlText = re.sub('[\x00-\x08|\x0b-\x0c|\x0e-\x1f]', '', xmlText)
-        root = ET.fromstring(xmlText)
-        xmlText = None
-        # saving memory
-        self.tree = ET.ElementTree(root)
-        self._read_project(root)
-        self._read_locations(root)
-        self._read_items(root)
-        self._read_characters(root)
-        self._read_projectvars(root)
-        self._read_projectnotes(root)
-        self._read_scenes(root)
-        self._read_chapters(root)
-        self.adjust_scene_types()
+        # Project section
+        project = root.find('PROJECT')
+        if project is not None:
+            self.novel.title = self._xml_to_text(project.find(self.XML_TITLE_TAG))
+            self.novel.desc = self._xml_to_text(project.find(self.XML_DESC_TAG))
+            self.novel.authorName = self._xml_to_text(project.find(self.XML_AUTHOR_NAME_TAG))
+            self.novel.authorBio = self._xml_to_text(project.find(self.XML_BIO_TAG))
+            self.novel.fieldTitle1 = self._xml_to_text(project.find(self.XML_FIELD_TITLE_TAG + '1'))
+            self.novel.fieldTitle2 = self._xml_to_text(project.find(self.XML_FIELD_TITLE_TAG + '2'))
+            self.novel.fieldTitle3 = self._xml_to_text(project.find(self.XML_FIELD_TITLE_TAG + '3'))
+            self.novel.fieldTitle4 = self._xml_to_text(project.find(self.XML_FIELD_TITLE_TAG + '4'))
+            self.novel.wordTarget = self._xml_to_int(project.find(self.XML_WORD_TARGET_TAG))
+            self.novel.wordCountStart = self._xml_to_int(project.find(self.XML_WORD_COUNT_START_TAG))
+            for kwVarName in self.PRJ_KWVAR:
+                self.novel.kwVar[kwVarName] = self._xml_to_bool(project.find(kwVarName))
 
-        #--- Set custom instance variables.
-        for scId in self.novel.scenes:
-            self.novel.scenes[scId].scnArcs = self.novel.scenes[scId].kwVar.get('Field_SceneArcs', None)
-            scnMode = self.novel.scenes[scId].kwVar.get('Field_SceneMode', None)
-            try:
-                self.novel.scenes[scId].scnMode = int(scnMode)
-            except:
-                self.novel.scenes[scId].scnMode = None
+        # Chapters section
+        chapters = root.find(self.XML_CHAPTERS_TAG)
+        if chapters is not None:
+            for xmlChapter in chapters.findall(self.XML_CHAPTER_TAG):
+                chId = self._xml_to_id(xmlChapter)
+                if chId in self.novel.chapters:
+                    continue # skip if chapter ID already exists (bug fix for yw7 7.1.1.0)
+                chapter = Chapter()
+                chapter.title = self._xml_to_text(xmlChapter.find(self.XML_TITLE_TAG))
+                chapter.desc = self._xml_to_text(xmlChapter.find(self.XML_DESC_TAG))
+                chapter.chLevel = self._xml_to_int(xmlChapter.find(self.XML_SECTION_START_TAG))
+                chapter.chType = self._get_chapter_type(xmlChapter)
+                chapter.suppressChapterTitle = self._get_chapter_suppress_title(xmlChapter)
+                chapter.suppressChapterBreak = self._get_chapter_suppress_break(xmlChapter)
+                chapter.isTrash = self._get_chapter_is_trash(xmlChapter)
+                self.novel.chapters[chId] = chapter
+                self.novel.srtChapters.append(chId)
+                for kwVarName in self.CHP_KWVAR:
+                    chapter.kwVar[kwVarName] = self._xml_to_bool(xmlChapter.find(kwVarName))
+
+        # Scenes section
+        scenes = root.find(self.XML_SCENES_TAG)
+        if scenes is not None:
+            for xmlScene in scenes.findall(self.XML_SCENE_TAG):
+                scId = self._xml_to_id(xmlScene)
+                scene = Scene()
+                scene.title = self._xml_to_text(xmlScene.find(self.XML_TITLE_TAG))
+                scene.desc = self._xml_to_text(xmlScene.find(self.XML_DESC_TAG))
+                scene.sceneContent = self._xml_to_text(xmlScene.find(self.XML_SCENE_CONTENT_TAG))
+                scene.status = self._get_scene_status(xmlScene)
+                scene.notes = self._xml_to_text(xmlScene.find(self.XML_NOTES_TAG))
+                scene.tags = self._xml_to_list(xmlScene.find(self.XML_TAGS_TAG))
+                scene.field1 = self._xml_to_int(xmlScene.find(self.XML_FIELD1_TAG))
+                scene.field2 = self._xml_to_int(xmlScene.find(self.XML_FIELD2_TAG))
+                scene.field3 = self._xml_to_int(xmlScene.find(self.XML_FIELD3_TAG))
+                scene.field4 = self._xml_to_int(xmlScene.find(self.XML_FIELD4_TAG))
+                scene.isReactionScene = self._get_scene_is_reaction(xmlScene)
+                scene.isSubPlot = self._get_scene_is_subplot(xmlScene)
+                scene.day = self._xml_to_int(xmlScene.find(self.XML_DAY_TAG))
+                scene.time = self._xml_to_text(xmlScene.find(self.XML_TIME_TAG))
+                scene.lastsDays = self._xml_to_text(xmlScene.find(self.XML_LASTS_DAYS_TAG))
+                scene.lastsHours = self._xml_to_text(xmlScene.find(self.XML_LASTS_HOURS_TAG))
+                scene.lastsMinutes = self._xml_to_text(xmlScene.find(self.XML_LASTS_MINUTES_TAG))
+                scene.wordCount = self._xml_to_int(xmlScene.find(self.XML_WORD_COUNT_TAG))
+                scene.letterCount = self._xml_to_int(xmlScene.find(self.XML_LETTER_COUNT_TAG))
+                scene.image = self._xml_to_text(xmlScene.find(self.XML_IMAGE_FILE_TAG))
+                scene.goal = self._xml_to_text(xmlScene.find(self.XML_GOAL_TAG))
+                scene.conflict = self._xml_to_text(xmlScene.find(self.XML_CONFLICT_TAG))
+                scene.outcome = self._xml_to_text(xmlScene.find(self.XML_OUTCOME_TAG))
+                scene.appendToPrev = self._xml_to_bool(xmlScene.find(self.XML_APPEND_TO_PREV_TAG))
+                scene.doNotExport = self._get_scene_do_not_export(xmlScene)
+                scene.date, scene.time = self._get_scene_date_time(xmlScene)
+                scene.scnArcs = self._xml_to_text(xmlScene.find(self.XML_FIELD_SCENE_ARCS_TAG))
+                scene.scnMode = self._xml_to_text(xmlScene.find(self.XML_FIELD_SCENE_MODE_TAG))
+                self.novel.scenes[scId] = scene
+                for kwVarName in self.SCN_KWVAR:
+                    scene.kwVar[kwVarName] = self._xml_to_bool(xmlScene.find(kwVarName))
+
+        # Chapter/Scene assignment
+        if chapters is not None:
+            for xmlChapter in chapters.findall(self.XML_CHAPTER_TAG):
+                chId = self._xml_to_id(xmlChapter)
+                chapter = self.novel.chapters[chId]
+                xmlScenes = xmlChapter.find('Scenes')
+                if xmlScenes is not None:
+                    for xmlSceneId in xmlScenes.findall('ScID'):
+                        scId = self._xml_to_id(xmlSceneId)
+                        if scId in self.novel.scenes:
+                            chapter.srtScenes.append(scId)
+
+        # Characters section
+        characters = root.find(self.XML_CHARACTERS_TAG)
+        if characters is not None:
+            for xmlCharacter in characters.findall(self.XML_CHARACTER_TAG):
+                crId = self._xml_to_id(xmlCharacter)
+                character = Character()
+                character.title = self._xml_to_text(xmlCharacter.find(self.XML_TITLE_TAG))
+                character.desc = self._xml_to_text(xmlCharacter.find(self.XML_DESC_TAG))
+                character.notes = self._xml_to_text(xmlCharacter.find(self.XML_NOTES_TAG))
+                character.tags = self._xml_to_list(xmlCharacter.find(self.XML_TAGS_TAG))
+                character.image = self._xml_to_text(xmlCharacter.find(self.XML_IMAGE_FILE_TAG))
+                character.aka = self._xml_to_text(xmlCharacter.find(self.XML_AKA_TAG))
+                character.fullName = self._xml_to_text(xmlCharacter.find(self.XML_FULL_NAME_TAG))
+                character.bio = self._xml_to_text(xmlCharacter.find(self.XML_BIO_TAG_CHAR))
+                character.goals = self._xml_to_text(xmlCharacter.find(self.XML_GOALS_TAG))
+                character.isMajor = self._xml_to_bool(xmlCharacter.find(self.XML_MAJOR_TAG))
+                self.novel.characters[crId] = character
+                self.novel.srtCharacters.append(crId)
+                for kwVarName in self.CRT_KWVAR:
+                    character.kwVar[kwVarName] = self._xml_to_bool(xmlCharacter.find(kwVarName))
+
+        # Locations section
+        locations = root.find(self.XML_LOCATIONS_TAG)
+        if locations is not None:
+            for xmlLocation in locations.findall(self.XML_LOCATION_TAG):
+                lcId = self._xml_to_id(xmlLocation)
+                location = Location()
+                location.title = self._xml_to_text(xmlLocation.find(self.XML_TITLE_TAG))
+                location.desc = self._xml_to_text(xmlLocation.find(self.XML_DESC_TAG))
+                location.notes = self._xml_to_text(xmlLocation.find(self.XML_NOTES_TAG))
+                location.tags = self._xml_to_list(xmlLocation.find(self.XML_TAGS_TAG))
+                location.image = self._xml_to_text(xmlLocation.find(self.XML_IMAGE_FILE_TAG))
+                location.aka = self._xml_to_text(xmlLocation.find(self.XML_AKA_TAG))
+                self.novel.locations[lcId] = location
+                self.novel.srtLocations.append(lcId)
+                for kwVarName in self.LOC_KWVAR:
+                    location.kwVar[kwVarName] = self._xml_to_bool(xmlLocation.find(kwVarName))
+
+        # Items section
+        items = root.find(self.XML_ITEMS_TAG)
+        if items is not None:
+            for xmlItem in items.findall(self.XML_ITEM_TAG):
+                itId = self._xml_to_id(xmlItem)
+                item = Item()
+                item.title = self._xml_to_text(xmlItem.find(self.XML_TITLE_TAG))
+                item.desc = self._xml_to_text(xmlItem.find(self.XML_DESC_TAG))
+                item.notes = self._xml_to_text(xmlItem.find(self.XML_NOTES_TAG))
+                item.tags = self._xml_to_list(xmlItem.find(self.XML_TAGS_TAG))
+                item.image = self._xml_to_text(xmlItem.find(self.XML_IMAGE_FILE_TAG))
+                item.aka = self._xml_to_text(xmlItem.find(self.XML_AKA_TAG))
+                self.novel.items[itId] = item
+                self.novel.srtItems.append(itId)
+                for kwVarName in self.ITM_KWVAR:
+                    item.kwVar[kwVarName] = self._xml_to_bool(xmlItem.find(kwVarName))
+
+        # Project notes section
+        projectNotes = root.find(self.XML_PROJECT_NOTES_TAG)
+        if projectNotes is not None:
+            for xmlProjectNote in projectNotes.findall(self.XML_PROJECT_NOTE_TAG):
+                pnId = self._xml_to_id(xmlProjectNote)
+                projectNote = ProjectNote()
+                projectNote.title = self._xml_to_text(xmlProjectNote.find(self.XML_TITLE_TAG))
+                projectNote.desc = self._xml_to_text(xmlProjectNote.find(self.XML_DESC_TAG))
+                self.novel.projectNotes[pnId] = projectNote
+                self.novel.srtPrjNotes.append(pnId)
+                for kwVarName in self.PNT_KWVAR:
+                    projectNote.kwVar[kwVarName] = self._xml_to_bool(xmlProjectNote.find(kwVarName))
+
+        # Sort chapter scene lists and project notes list
+        for chId in self.novel.srtChapters:
+            self.novel.chapters[chId].srtScenes = sorted(self.novel.chapters[chId].srtScenes, key=lambda x: int(x))
+        self.novel.srtPrjNotes = sorted(self.novel.srtPrjNotes, key=lambda x: int(x))
+
+        # Generate cross references
+        self.xrefs.generate_xref(self.novel)
+
+        # Check for scene and chapter splitting
+        self.splitter.split_scenes(self)
+
+        # Check locale settings
+        self.novel.check_locale()
+
+        # Get language list
+        self.novel.get_languages()
+
 
     def write(self):
-        """Write instance variables to the yWriter xml file.
-        
-        Open the yWriter xml file located at filePath and replace the instance variables 
-        not being None. Create new XML elements if necessary.
-        Raise the "Error" exception in case of error. 
-        Overrides the superclass method.
+        """Write the Novel instance variables to a .yw7 file.
+
+        Create an XML tree from the Novel instance and write it to self.filePath.
+        Raise the "Error" exception in case of error.
         """
-        if self.is_locked():
-            raise Error(f'{_("yWriter seems to be open. Please close first")}.')
-
-        if self.novel.languages is None:
-            self.novel.get_languages()
-
-        #--- Get custom instance variables.
-        for scId in self.novel.scenes:
-            if self.novel.scenes[scId].scnArcs is not None:
-                self.novel.scenes[scId].kwVar['Field_SceneArcs'] = self.novel.scenes[scId].scnArcs
-            if self.novel.scenes[scId].scnMode is not None:
-                if self.novel.scenes[scId].scnMode == 0:
-                    self.novel.scenes[scId].kwVar['Field_SceneMode'] = None
-                else:
-                    self.novel.scenes[scId].kwVar['Field_SceneMode'] = str(self.novel.scenes[scId].scnMode)
-            self.novel.scenes[scId].kwVar['Field_SceneStyle'] = None
+        root = ET.Element('YWRITER7')
+        appVersion = ET.SubElement(root, 'ywVer')
+        appVersion.text = self.VERSION
+        timeStamp = ET.SubElement(root, 'TimeStamp')
+        dateString, timeString = self.get_date_time()
+        timeStamp.text = f'{dateString} {timeString}'
+        self.tree = ET.ElementTree(root)
         self._build_element_tree()
-        self._write_element_tree(self)
         self._postprocess_xml_file(self.filePath)
 
+
     def _build_element_tree(self):
-        """Modify the yWriter project attributes of an existing xml element tree."""
+        """Build the ElementTree instance from Novel instance variables.
 
-        def set_element(parent, tag, text, index):
-            subelement = parent.find(tag)
-            if subelement is None:
-                if text is not None:
-                    subelement = ET.Element(tag)
-                    parent.insert(index, subelement)
-                    subelement.text = text
-                    index += 1
-            elif text is not None:
-                subelement.text = text
-                index += 1
-            return index
-
-        def build_scene_subtree(xmlScene, prjScn):
-
-            def remove_date_time():
-                """Delete all scene start data."""
-                if xmlScene.find('SpecificDateTime') is not None:
-                    xmlScene.remove(xmlScene.find('SpecificDateTime'))
-
-                if xmlScene.find('SpecificDateMode') is not None:
-                    xmlScene.remove(xmlScene.find('SpecificDateMode'))
-
-                if xmlScene.find('Day') is not None:
-                    xmlScene.remove(xmlScene.find('Day'))
-
-                if xmlScene.find('Hour') is not None:
-                    xmlScene.remove(xmlScene.find('Hour'))
-
-                if xmlScene.find('Minute') is not None:
-                    xmlScene.remove(xmlScene.find('Minute'))
-
-            i = 1
-            i = set_element(xmlScene, 'Title', prjScn.title, i)
-
-            if prjScn.desc is not None:
-                try:
-                    xmlScene.find('Desc').text = prjScn.desc
-                except(AttributeError):
-                    if prjScn.desc:
-                        ET.SubElement(xmlScene, 'Desc').text = prjScn.desc
-
-            if xmlScene.find('SceneContent') is None:
-                ET.SubElement(xmlScene, 'SceneContent').text = prjScn.sceneContent
-
-            if xmlScene.find('WordCount') is None:
-                ET.SubElement(xmlScene, 'WordCount').text = str(prjScn.wordCount)
-
-            if xmlScene.find('LetterCount') is None:
-                ET.SubElement(xmlScene, 'LetterCount').text = str(prjScn.letterCount)
-
-            #--- Write scene type.
-            #
-            # This is how yWriter 7.1.3.0 writes the scene type:
-            #
-            # Type   |<Unused>|Field_SceneType>|scType
-            #--------+--------+----------------+------
-            # Normal | N/A    | N/A            | 0
-            # Notes  | -1     | 1              | 1
-            # Todo   | -1     | 2              | 2
-            # Unused | -1     | 0              | 3
-
-            scTypeEncoding = (
-                (False, None),
-                (True, '1'),
-                (True, '2'),
-                (True, '0'),
-                )
-            if prjScn.scType is None:
-                prjScn.scType = 0
-            yUnused, ySceneType = scTypeEncoding[prjScn.scType]
-
-            # <Unused> (remove, if scene is "Normal").
-            if yUnused:
-                if xmlScene.find('Unused') is None:
-                    ET.SubElement(xmlScene, 'Unused').text = '-1'
-            elif xmlScene.find('Unused') is not None:
-                xmlScene.remove(xmlScene.find('Unused'))
-
-            # <Fields><Field_SceneType> (remove, if scene is "Normal")
-            xmlSceneFields = xmlScene.find('Fields')
-            if xmlSceneFields is not None:
-                fieldScType = xmlSceneFields.find('Field_SceneType')
-                if ySceneType is None:
-                    if fieldScType is not None:
-                        xmlSceneFields.remove(fieldScType)
-                else:
-                    try:
-                        fieldScType.text = ySceneType
-                    except(AttributeError):
-                        ET.SubElement(xmlSceneFields, 'Field_SceneType').text = ySceneType
-            elif ySceneType is not None:
-                xmlSceneFields = ET.SubElement(xmlScene, 'Fields')
-                ET.SubElement(xmlSceneFields, 'Field_SceneType').text = ySceneType
-
-            #--- Export when RTF.
-            if prjScn.doNotExport is not None:
-                xmlExportCondSpecific = xmlScene.find('ExportCondSpecific')
-                xmlExportWhenRtf = xmlScene.find('ExportWhenRTF')
-                if prjScn.doNotExport:
-                    if xmlExportCondSpecific is None:
-                        xmlExportCondSpecific = ET.SubElement(xmlScene, 'ExportCondSpecific')
-                    if xmlExportWhenRtf is not None:
-                        xmlScene.remove(xmlExportWhenRtf)
-                else:
-                    if xmlExportCondSpecific is not None:
-                        if xmlExportWhenRtf is None:
-                            ET.SubElement(xmlScene, 'ExportWhenRTF').text = '-1'
-
-            #--- Write scene custom fields.
-            for field in self.SCN_KWVAR:
-                if prjScn.kwVar.get(field, None):
-                    if xmlSceneFields is None:
-                        xmlSceneFields = ET.SubElement(xmlScene, 'Fields')
-                    fieldEntry = self._convert_from_yw(prjScn.kwVar[field])
-                    try:
-                        xmlSceneFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlSceneFields, field).text = fieldEntry
-                elif xmlSceneFields is not None:
-                    try:
-                        xmlSceneFields.remove(xmlSceneFields.find(field))
-                    except:
-                        pass
-
-            if prjScn.status is not None:
-                try:
-                    xmlScene.find('Status').text = str(prjScn.status)
-                except:
-                    ET.SubElement(xmlScene, 'Status').text = str(prjScn.status)
-
-            if prjScn.notes is not None:
-                try:
-                    xmlScene.find('Notes').text = prjScn.notes
-                except(AttributeError):
-                    if prjScn.notes:
-                        ET.SubElement(xmlScene, 'Notes').text = prjScn.notes
-
-            if prjScn.tags is not None:
-                try:
-                    xmlScene.find('Tags').text = list_to_string(prjScn.tags)
-                except(AttributeError):
-                    if prjScn.tags:
-                        ET.SubElement(xmlScene, 'Tags').text = list_to_string(prjScn.tags)
-
-            if prjScn.field1 is not None:
-                try:
-                    xmlScene.find('Field1').text = prjScn.field1
-                except(AttributeError):
-                    if prjScn.field1:
-                        ET.SubElement(xmlScene, 'Field1').text = prjScn.field1
-
-            if prjScn.field2 is not None:
-                try:
-                    xmlScene.find('Field2').text = prjScn.field2
-                except(AttributeError):
-                    if prjScn.field2:
-                        ET.SubElement(xmlScene, 'Field2').text = prjScn.field2
-
-            if prjScn.field3 is not None:
-                try:
-                    xmlScene.find('Field3').text = prjScn.field3
-                except(AttributeError):
-                    if prjScn.field3:
-                        ET.SubElement(xmlScene, 'Field3').text = prjScn.field3
-
-            if prjScn.field4 is not None:
-                try:
-                    xmlScene.find('Field4').text = prjScn.field4
-                except(AttributeError):
-                    if prjScn.field4:
-                        ET.SubElement(xmlScene, 'Field4').text = prjScn.field4
-
-            if prjScn.appendToPrev:
-                if xmlScene.find('AppendToPrev') is None:
-                    ET.SubElement(xmlScene, 'AppendToPrev').text = '-1'
-            elif xmlScene.find('AppendToPrev') is not None:
-                xmlScene.remove(xmlScene.find('AppendToPrev'))
-
-            #--- Write scene start.
-            if (prjScn.date is not None) and (prjScn.time is not None):
-                separator = ' '
-                dateTime = f'{prjScn.date}{separator}{prjScn.time}'
-
-                # Remove scene start data from XML, if date and time are empty strings.
-                if dateTime == separator:
-                    remove_date_time()
-
-                elif xmlScene.find('SpecificDateTime') is not None:
-                    if dateTime.count(':') < 2:
-                        dateTime = f'{dateTime}:00'
-                    xmlScene.find('SpecificDateTime').text = dateTime
-                else:
-                    ET.SubElement(xmlScene, 'SpecificDateTime').text = dateTime
-                    ET.SubElement(xmlScene, 'SpecificDateMode').text = '-1'
-
-                    if xmlScene.find('Day') is not None:
-                        xmlScene.remove(xmlScene.find('Day'))
-
-                    if xmlScene.find('Hour') is not None:
-                        xmlScene.remove(xmlScene.find('Hour'))
-
-                    if xmlScene.find('Minute') is not None:
-                        xmlScene.remove(xmlScene.find('Minute'))
-
-            elif (prjScn.day is not None) or (prjScn.time is not None):
-
-                # Remove scene start data from XML, if day and time are empty strings.
-                if not prjScn.day and not prjScn.time:
-                    remove_date_time()
-
-                else:
-                    if xmlScene.find('SpecificDateTime') is not None:
-                        xmlScene.remove(xmlScene.find('SpecificDateTime'))
-
-                    if xmlScene.find('SpecificDateMode') is not None:
-                        xmlScene.remove(xmlScene.find('SpecificDateMode'))
-                    if prjScn.day is not None:
-                        try:
-                            xmlScene.find('Day').text = prjScn.day
-                        except(AttributeError):
-                            ET.SubElement(xmlScene, 'Day').text = prjScn.day
-                    if prjScn.time is not None:
-                        hours, minutes, __ = prjScn.time.split(':')
-                        try:
-                            xmlScene.find('Hour').text = hours
-                        except(AttributeError):
-                            ET.SubElement(xmlScene, 'Hour').text = hours
-                        try:
-                            xmlScene.find('Minute').text = minutes
-                        except(AttributeError):
-                            ET.SubElement(xmlScene, 'Minute').text = minutes
-
-            #--- Write scene duration.
-            if prjScn.lastsDays is not None:
-                try:
-                    xmlScene.find('LastsDays').text = prjScn.lastsDays
-                except(AttributeError):
-                    if prjScn.lastsDays:
-                        ET.SubElement(xmlScene, 'LastsDays').text = prjScn.lastsDays
-
-            if prjScn.lastsHours is not None:
-                try:
-                    xmlScene.find('LastsHours').text = prjScn.lastsHours
-                except(AttributeError):
-                    if prjScn.lastsHours:
-                        ET.SubElement(xmlScene, 'LastsHours').text = prjScn.lastsHours
-
-            if prjScn.lastsMinutes is not None:
-                try:
-                    xmlScene.find('LastsMinutes').text = prjScn.lastsMinutes
-                except(AttributeError):
-                    if prjScn.lastsMinutes:
-                        ET.SubElement(xmlScene, 'LastsMinutes').text = prjScn.lastsMinutes
-
-            # Plot related information
-            if prjScn.isReactionScene:
-                if xmlScene.find('ReactionScene') is None:
-                    ET.SubElement(xmlScene, 'ReactionScene').text = '-1'
-            elif xmlScene.find('ReactionScene') is not None:
-                xmlScene.remove(xmlScene.find('ReactionScene'))
-
-            if prjScn.isSubPlot:
-                if xmlScene.find('SubPlot') is None:
-                    ET.SubElement(xmlScene, 'SubPlot').text = '-1'
-            elif xmlScene.find('SubPlot') is not None:
-                xmlScene.remove(xmlScene.find('SubPlot'))
-
-            if prjScn.goal is not None:
-                try:
-                    xmlScene.find('Goal').text = prjScn.goal
-                except(AttributeError):
-                    if prjScn.goal:
-                        ET.SubElement(xmlScene, 'Goal').text = prjScn.goal
-
-            if prjScn.conflict is not None:
-                try:
-                    xmlScene.find('Conflict').text = prjScn.conflict
-                except(AttributeError):
-                    if prjScn.conflict:
-                        ET.SubElement(xmlScene, 'Conflict').text = prjScn.conflict
-
-            if prjScn.outcome is not None:
-                try:
-                    xmlScene.find('Outcome').text = prjScn.outcome
-                except(AttributeError):
-                    if prjScn.outcome:
-                        ET.SubElement(xmlScene, 'Outcome').text = prjScn.outcome
-
-            if prjScn.image is not None:
-                try:
-                    xmlScene.find('ImageFile').text = prjScn.image
-                except(AttributeError):
-                    if prjScn.image:
-                        ET.SubElement(xmlScene, 'ImageFile').text = prjScn.image
-
-            #--- Characters/Locations/Items
-            try:
-                xmlScene.remove(xmlScene.find('Characters'))
-            except:
-                pass
-            if prjScn.characters:
-                xmlCharacters = ET.SubElement(xmlScene, 'Characters')
-                for crId in prjScn.characters:
-                    ET.SubElement(xmlCharacters, 'CharID').text = crId
-
-            try:
-                xmlScene.remove(xmlScene.find('Locations'))
-            except:
-                pass
-            if prjScn.locations:
-                xmlLocations = ET.SubElement(xmlScene, 'Locations')
-                for lcId in prjScn.locations:
-                    ET.SubElement(xmlLocations, 'LocID').text = lcId
-
-            try:
-                xmlScene.remove(xmlScene.find('Items'))
-            except:
-                pass
-            if prjScn.items:
-                xmlItems = ET.SubElement(xmlScene, 'Items')
-                for ItId in prjScn.items:
-                    ET.SubElement(xmlItems, 'ItmID').text = ItId
-
-        def build_chapter_subtree(xmlChapter, prjChp):
-            # This is how yWriter 7.1.3.0 writes the chapter type:
-            #
-            # Type   |<Unused>|<Type>|<ChapterType>|chType
-            #--------+--------+------+-------------+------
-            # Normal | N/A    | 0    | 0           | 0
-            # Notes  | -1     | 1    | 1           | 1
-            # Todo   | -1     | 1    | 2           | 2
-            # Unused | -1     | 1    | 0           | 3
-
-            chTypeEncoding = (
-                (False, '0', '0'),
-                (True, '1', '1'),
-                (True, '1', '2'),
-                (True, '1', '0'),
-                )
-            if prjChp.chType is None:
-                prjChp.chType = 0
-            yUnused, yType, yChapterType = chTypeEncoding[prjChp.chType]
-
-            i = 1
-            i = set_element(xmlChapter, 'Title', prjChp.title, i)
-            i = set_element(xmlChapter, 'Desc', prjChp.desc, i)
-
-            if yUnused:
-                if xmlChapter.find('Unused') is None:
-                    elem = ET.Element('Unused')
-                    elem.text = '-1'
-                    xmlChapter.insert(i, elem)
-            elif xmlChapter.find('Unused') is not None:
-                xmlChapter.remove(xmlChapter.find('Unused'))
-            if xmlChapter.find('Unused') is not None:
-                i += 1
-            try:
-                xmlChapter.remove(xmlChapter.find('SortOrder'))
-            except:
-                pass
-
-            #--- Write chapter fields.
-            xmlChapterFields = xmlChapter.find('Fields')
-            if prjChp.suppressChapterTitle:
-                if xmlChapterFields is None:
-                    xmlChapterFields = ET.Element('Fields')
-                    xmlChapter.insert(i, xmlChapterFields)
-                try:
-                    xmlChapterFields.find('Field_SuppressChapterTitle').text = '1'
-                except(AttributeError):
-                    ET.SubElement(xmlChapterFields, 'Field_SuppressChapterTitle').text = '1'
-            elif xmlChapterFields is not None:
-                if xmlChapterFields.find('Field_SuppressChapterTitle') is not None:
-                    xmlChapterFields.find('Field_SuppressChapterTitle').text = '0'
-
-            if prjChp.suppressChapterBreak:
-                if xmlChapterFields is None:
-                    xmlChapterFields = ET.Element('Fields')
-                    xmlChapter.insert(i, xmlChapterFields)
-                try:
-                    xmlChapterFields.find('Field_SuppressChapterBreak').text = '1'
-                except(AttributeError):
-                    ET.SubElement(xmlChapterFields, 'Field_SuppressChapterBreak').text = '1'
-            elif xmlChapterFields is not None:
-                if xmlChapterFields.find('Field_SuppressChapterBreak') is not None:
-                    xmlChapterFields.find('Field_SuppressChapterBreak').text = '0'
-
-            if prjChp.isTrash:
-                if xmlChapterFields is None:
-                    xmlChapterFields = ET.Element('Fields')
-                    xmlChapter.insert(i, xmlChapterFields)
-                try:
-                    xmlChapterFields.find('Field_IsTrash').text = '1'
-                except(AttributeError):
-                    ET.SubElement(xmlChapterFields, 'Field_IsTrash').text = '1'
-
-            elif xmlChapterFields is not None:
-                if xmlChapterFields.find('Field_IsTrash') is not None:
-                    xmlChapterFields.remove(xmlChapterFields.find('Field_IsTrash'))
-
-            #--- Write chapter custom fields.
-            for field in self.CHP_KWVAR:
-                if prjChp.kwVar.get(field, None):
-                    if xmlChapterFields is None:
-                        xmlChapterFields = ET.Element('Fields')
-                        xmlChapter.insert(i, xmlChapterFields)
-                    fieldEntry = self._convert_from_yw(prjChp.kwVar[field])
-                    try:
-                        xmlChapterFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlChapterFields, field).text = fieldEntry
-                elif xmlChapterFields is not None:
-                    try:
-                        xmlChapterFields.remove(xmlChapterFields.find(field))
-                    except:
-                        pass
-            if xmlChapter.find('Fields') is not None:
-                i += 1
-
-            if xmlChapter.find('SectionStart') is not None:
-                if prjChp.chLevel == 0:
-                    xmlChapter.remove(xmlChapter.find('SectionStart'))
-            elif prjChp.chLevel == 1:
-                elem = ET.Element('SectionStart')
-                elem.text = '-1'
-                xmlChapter.insert(i, elem)
-            if xmlChapter.find('SectionStart') is not None:
-                i += 1
-
-            i = set_element(xmlChapter, 'Type', yType, i)
-            i = set_element(xmlChapter, 'ChapterType', yChapterType, i)
-
-            #--- Rebuild the chapter's scene list.
-            xmlScnList = xmlChapter.find('Scenes')
-            if xmlScnList is not None:
-                xmlChapter.remove(xmlScnList)
-
-            # Rebuild the Scenes section in a modified sort order.
-            if prjChp.srtScenes:
-                xmlScnList = ET.SubElement(xmlChapter, 'Scenes')
-                for scId in prjChp.srtScenes:
-                    ET.SubElement(xmlScnList, 'ScID').text = scId
-
-        def build_location_subtree(xmlLoc, prjLoc):
-            if prjLoc.title is not None:
-                ET.SubElement(xmlLoc, 'Title').text = prjLoc.title
-
-            if prjLoc.image is not None:
-                ET.SubElement(xmlLoc, 'ImageFile').text = prjLoc.image
-
-            if prjLoc.desc is not None:
-                ET.SubElement(xmlLoc, 'Desc').text = prjLoc.desc
-
-            if prjLoc.aka is not None:
-                ET.SubElement(xmlLoc, 'AKA').text = prjLoc.aka
-
-            if prjLoc.tags is not None:
-                ET.SubElement(xmlLoc, 'Tags').text = list_to_string(prjLoc.tags)
-
-            #--- Write location custom fields.
-            xmlLocationFields = xmlLoc.find('Fields')
-            for field in self.LOC_KWVAR:
-                if prjLoc.kwVar.get(field, None):
-                    if xmlLocationFields is None:
-                        xmlLocationFields = ET.SubElement(xmlLoc, 'Fields')
-                    fieldEntry = self._convert_from_yw(prjLoc.kwVar[field])
-                    try:
-                        xmlLocationFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlLocationFields, field).text = fieldEntry
-                elif xmlLocationFields is not None:
-                    try:
-                        xmlLocationFields.remove(xmlLocationFields.find(field))
-                    except:
-                        pass
-            try:
-                xmlLoc.remove(xmlLoc.find('SortOrder'))
-            except:
-                pass
-
-        def build_prjNote_subtree(xmlProjectnote, projectNote):
-            if projectNote.title is not None:
-                ET.SubElement(xmlProjectnote, 'Title').text = projectNote.title
-
-            if projectNote.desc is not None:
-                ET.SubElement(xmlProjectnote, 'Desc').text = projectNote.desc
-
-        def add_projectvariable(title, desc, tags):
-            # Note:
-            # prjVars, xmlProjectvars are caller's variables
-            pvId = create_id(prjVars)
-            prjVars.append(pvId)
-            # side effect
-            xmlProjectvar = ET.SubElement(xmlProjectvars, 'PROJECTVAR')
-            ET.SubElement(xmlProjectvar, 'ID').text = pvId
-            ET.SubElement(xmlProjectvar, 'Title').text = title
-            ET.SubElement(xmlProjectvar, 'Desc').text = desc
-            ET.SubElement(xmlProjectvar, 'Tags').text = tags
-
-        def build_item_subtree(xmlItm, prjItm):
-            if prjItm.title is not None:
-                ET.SubElement(xmlItm, 'Title').text = prjItm.title
-
-            if prjItm.image is not None:
-                ET.SubElement(xmlItm, 'ImageFile').text = prjItm.image
-
-            if prjItm.desc is not None:
-                ET.SubElement(xmlItm, 'Desc').text = prjItm.desc
-
-            if prjItm.aka is not None:
-                ET.SubElement(xmlItm, 'AKA').text = prjItm.aka
-
-            if prjItm.tags is not None:
-                ET.SubElement(xmlItm, 'Tags').text = list_to_string(prjItm.tags)
-
-            #--- Write item custom fields.
-            xmlItemFields = xmlItm.find('Fields')
-            for field in self.ITM_KWVAR:
-                if prjItm.kwVar.get(field, None):
-                    if xmlItemFields is None:
-                        xmlItemFields = ET.SubElement(xmlItm, 'Fields')
-                    fieldEntry = self._convert_from_yw(prjItm.kwVar[field])
-                    try:
-                        xmlItemFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlItemFields, field).text = fieldEntry
-                elif xmlItemFields is not None:
-                    try:
-                        xmlItemFields.remove(xmlItemFields.find(field))
-                    except:
-                        pass
-            try:
-                xmlItm.remove(xmlItm.find('SortOrder'))
-            except:
-                pass
-
-        def build_character_subtree(xmlCrt, prjCrt):
-            if prjCrt.title is not None:
-                ET.SubElement(xmlCrt, 'Title').text = prjCrt.title
-
-            if prjCrt.desc is not None:
-                ET.SubElement(xmlCrt, 'Desc').text = prjCrt.desc
-
-            if prjCrt.image is not None:
-                ET.SubElement(xmlCrt, 'ImageFile').text = prjCrt.image
-
-            if prjCrt.notes is not None:
-                ET.SubElement(xmlCrt, 'Notes').text = prjCrt.notes
-
-            if prjCrt.aka is not None:
-                ET.SubElement(xmlCrt, 'AKA').text = prjCrt.aka
-
-            if prjCrt.tags is not None:
-                ET.SubElement(xmlCrt, 'Tags').text = list_to_string(prjCrt.tags)
-
-            if prjCrt.bio is not None:
-                ET.SubElement(xmlCrt, 'Bio').text = prjCrt.bio
-
-            if prjCrt.goals is not None:
-                ET.SubElement(xmlCrt, 'Goals').text = prjCrt.goals
-
-            if prjCrt.fullName is not None:
-                ET.SubElement(xmlCrt, 'FullName').text = prjCrt.fullName
-
-            if prjCrt.isMajor:
-                ET.SubElement(xmlCrt, 'Major').text = '-1'
-
-            #--- Write character custom fields.
-            xmlCharacterFields = xmlCrt.find('Fields')
-            for field in self.CRT_KWVAR:
-                if prjCrt.kwVar.get(field, None):
-                    if xmlCharacterFields is None:
-                        xmlCharacterFields = ET.SubElement(xmlCrt, 'Fields')
-                    fieldEntry = self._convert_from_yw(prjCrt.kwVar[field])
-                    try:
-                        xmlCharacterFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlCharacterFields, field).text = fieldEntry
-                elif xmlCharacterFields is not None:
-                    try:
-                        xmlCharacterFields.remove(xmlCharacterFields.find(field))
-                    except:
-                        pass
-            try:
-                xmlCrt.remove(xmlCrt.find('SortOrder'))
-            except:
-                pass
-
-        def build_project_subtree(xmlProject):
-            VER = '7'
-            try:
-                xmlProject.find('Ver').text = VER
-            except(AttributeError):
-                ET.SubElement(xmlProject, 'Ver').text = VER
-
-            if self.novel.title is not None:
-                try:
-                    xmlProject.find('Title').text = self.novel.title
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'Title').text = self.novel.title
-
-            if self.novel.desc is not None:
-                try:
-                    xmlProject.find('Desc').text = self.novel.desc
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'Desc').text = self.novel.desc
-
-            if self.novel.authorName is not None:
-                try:
-                    xmlProject.find('AuthorName').text = self.novel.authorName
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'AuthorName').text = self.novel.authorName
-
-            if self.novel.authorBio is not None:
-                try:
-                    xmlProject.find('Bio').text = self.novel.authorBio
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'Bio').text = self.novel.authorBio
-
-            if self.novel.fieldTitle1 is not None:
-                try:
-                    xmlProject.find('FieldTitle1').text = self.novel.fieldTitle1
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'FieldTitle1').text = self.novel.fieldTitle1
-
-            if self.novel.fieldTitle2 is not None:
-                try:
-                    xmlProject.find('FieldTitle2').text = self.novel.fieldTitle2
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'FieldTitle2').text = self.novel.fieldTitle2
-
-            if self.novel.fieldTitle3 is not None:
-                try:
-                    xmlProject.find('FieldTitle3').text = self.novel.fieldTitle3
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'FieldTitle3').text = self.novel.fieldTitle3
-
-            if self.novel.fieldTitle4 is not None:
-                try:
-                    xmlProject.find('FieldTitle4').text = self.novel.fieldTitle4
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'FieldTitle4').text = self.novel.fieldTitle4
-
-            #--- Write word target data.
-            if self.novel.wordCountStart is not None:
-                try:
-                    xmlProject.find('WordCountStart').text = str(self.novel.wordCountStart)
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'WordCountStart').text = str(self.novel.wordCountStart)
-
-            if self.novel.wordTarget is not None:
-                try:
-                    xmlProject.find('WordTarget').text = str(self.novel.wordTarget)
-                except(AttributeError):
-                    ET.SubElement(xmlProject, 'WordTarget').text = str(self.novel.wordTarget)
-
-            #--- Write project custom fields.
-
-            # This is for projects written with v7.6 - v7.10:
-            self.novel.kwVar['Field_LanguageCode'] = None
-            self.novel.kwVar['Field_CountryCode'] = None
-
-            xmlProjectFields = xmlProject.find('Fields')
-            for field in self.PRJ_KWVAR:
-                setting = self.novel.kwVar.get(field, None)
-                if setting:
-                    if xmlProjectFields is None:
-                        xmlProjectFields = ET.SubElement(xmlProject, 'Fields')
-                    fieldEntry = self._convert_from_yw(setting)
-                    try:
-                        xmlProjectFields.find(field).text = fieldEntry
-                    except(AttributeError):
-                        ET.SubElement(xmlProjectFields, field).text = fieldEntry
-                else:
-                    try:
-                        xmlProjectFields.remove(xmlProjectFields.find(field))
-                    except:
-                        pass
-            try:
-                xmlProject.remove(xmlProject.find('SavedWith'))
-            except:
-                pass
-            try:
-                xmlProject.remove(xmlProject.find('SavedOn'))
-            except:
-                pass
-
-        TAG = 'YWRITER7'
-        xmlNewScenes = {}
-        xmlNewChapters = {}
-        try:
-            # Try processing an existing tree.
-            root = self.tree.getroot()
-            xmlProject = root.find('PROJECT')
-            xmlLocations = root.find('LOCATIONS')
-            xmlItems = root.find('ITEMS')
-            xmlCharacters = root.find('CHARACTERS')
-            xmlProjectnotes = root.find('PROJECTNOTES')
-            xmlScenes = root.find('SCENES')
-            xmlChapters = root.find('CHAPTERS')
-        except(AttributeError):
-            # Build a new tree.
-            root = ET.Element(TAG)
-            xmlProject = ET.SubElement(root, 'PROJECT')
-            xmlLocations = ET.SubElement(root, 'LOCATIONS')
-            xmlItems = ET.SubElement(root, 'ITEMS')
-            xmlCharacters = ET.SubElement(root, 'CHARACTERS')
-            xmlProjectnotes = ET.SubElement(root, 'PROJECTNOTES')
-            xmlScenes = ET.SubElement(root, 'SCENES')
-            xmlChapters = ET.SubElement(root, 'CHAPTERS')
-
-        #--- Process project attributes.
-
-        build_project_subtree(xmlProject)
-
-        #--- Process Locations.
-
-        # Remove LOCATION entries in order to rewrite
-        # the LOCATIONS section in a modified sort order.
-        for xmlLoc in xmlLocations.findall('LOCATION'):
-            xmlLocations.remove(xmlLoc)
-
-        # Add the new XML location subtrees to the project tree.
-        for lcId in self.novel.srtLocations:
-            xmlLoc = ET.SubElement(xmlLocations, 'LOCATION')
-            ET.SubElement(xmlLoc, 'ID').text = lcId
-            build_location_subtree(xmlLoc, self.novel.locations[lcId])
-
-        #--- Process Items.
-
-        # Remove ITEM entries in order to rewrite
-        # the ITEMS section in a modified sort order.
-        for xmlItm in xmlItems.findall('ITEM'):
-            xmlItems.remove(xmlItm)
-
-        # Add the new XML item subtrees to the project tree.
-        for itId in self.novel.srtItems:
-            xmlItm = ET.SubElement(xmlItems, 'ITEM')
-            ET.SubElement(xmlItm, 'ID').text = itId
-            build_item_subtree(xmlItm, self.novel.items[itId])
-
-        #--- Process Characters.
-
-        # Remove CHARACTER entries in order to rewrite
-        # the CHARACTERS section in a modified sort order.
-        for xmlCrt in xmlCharacters.findall('CHARACTER'):
-            xmlCharacters.remove(xmlCrt)
-
-        # Add the new XML character subtrees to the project tree.
-        for crId in self.novel.srtCharacters:
-            xmlCrt = ET.SubElement(xmlCharacters, 'CHARACTER')
-            ET.SubElement(xmlCrt, 'ID').text = crId
-            build_character_subtree(xmlCrt, self.novel.characters[crId])
-
-        #--- Process project notes.
-
-        # Remove PROJECTNOTE entries in order to rewrite
-        # the PROJECTNOTES section in a modified sort order.
-        if xmlProjectnotes is not None:
-            for xmlProjectnote in xmlProjectnotes.findall('PROJECTNOTE'):
-                xmlProjectnotes.remove(xmlProjectnote)
-            if not self.novel.srtPrjNotes:
-                root.remove(xmlProjectnotes)
-        elif self.novel.srtPrjNotes:
-            xmlProjectnotes = ET.SubElement(root, 'PROJECTNOTES')
-        if self.novel.srtPrjNotes:
-            # Add the new XML prjNote subtrees to the project tree.
-            for pnId in self.novel.srtPrjNotes:
-                xmlProjectnote = ET.SubElement(xmlProjectnotes, 'PROJECTNOTE')
-                ET.SubElement(xmlProjectnote, 'ID').text = pnId
-                build_prjNote_subtree(xmlProjectnote, self.novel.projectNotes[pnId])
-
-        #--- Process project variables.
-        xmlProjectvars = root.find('PROJECTVARS')
-        if self.novel.languages or self.novel.languageCode or self.novel.countryCode:
-            self.novel.check_locale()
-            if xmlProjectvars is None:
-                xmlProjectvars = ET.SubElement(root, 'PROJECTVARS')
-            prjVars = []
-            # list of all project variable IDs
-            languages = self.novel.languages.copy()
-            hasLanguageCode = False
-            hasCountryCode = False
-            for xmlProjectvar in xmlProjectvars.findall('PROJECTVAR'):
-                prjVars.append(xmlProjectvar.find('ID').text)
-                title = xmlProjectvar.find('Title').text
-
-                # Collect language codes.
-                if title.startswith('lang='):
-                    try:
-                        __, langCode = title.split('=')
-                        languages.remove(langCode)
-                    except:
-                        pass
-
-                # Get the document's locale.
-                elif title == 'Language':
-                    xmlProjectvar.find('Desc').text = self.novel.languageCode
-                    hasLanguageCode = True
-
-                elif title == 'Country':
-                    xmlProjectvar.find('Desc').text = self.novel.countryCode
-                    hasCountryCode = True
-
-            # Define project variables for the missing locale.
-            if not hasLanguageCode:
-                add_projectvariable('Language',
-                                    self.novel.languageCode,
-                                    '0')
-
-            if not hasCountryCode:
-                add_projectvariable('Country',
-                                    self.novel.countryCode,
-                                    '0')
-
-            # Define project variables for the missing language code tags.
-            for langCode in languages:
-                add_projectvariable(f'lang={langCode}',
-                                    f'<HTM <SPAN LANG="{langCode}"> /HTM>',
-                                    '0')
-                add_projectvariable(f'/lang={langCode}',
-                                    f'<HTM </SPAN> /HTM>',
-                                    '0')
-                # adding new IDs to the prjVars list
-
-        #--- Process scenes.
-
-        # Save the original XML scene subtrees
-        # and remove them from the project tree.
-        for xmlScene in xmlScenes.findall('SCENE'):
-            scId = xmlScene.find('ID').text
-            xmlNewScenes[scId] = xmlScene
-            xmlScenes.remove(xmlScene)
-
-        # Add the new XML scene subtrees to the project tree.
-        for scId in self.novel.scenes:
-            if not scId in xmlNewScenes:
-                xmlNewScenes[scId] = ET.Element('SCENE')
-                ET.SubElement(xmlNewScenes[scId], 'ID').text = scId
-            build_scene_subtree(xmlNewScenes[scId], self.novel.scenes[scId])
-            xmlScenes.append(xmlNewScenes[scId])
-
-        #--- Process chapters.
-
-        # Save the original XML chapter subtree
-        # and remove it from the project tree.
-        for xmlChapter in xmlChapters.findall('CHAPTER'):
-            chId = xmlChapter.find('ID').text
-            xmlNewChapters[chId] = xmlChapter
-            xmlChapters.remove(xmlChapter)
-
-        # Add the new XML chapter subtrees to the project tree.
-        for chId in self.novel.srtChapters:
-            if not chId in xmlNewChapters:
-                xmlNewChapters[chId] = ET.Element('CHAPTER')
-                ET.SubElement(xmlNewChapters[chId], 'ID').text = chId
-            build_chapter_subtree(xmlNewChapters[chId], self.novel.chapters[chId])
-            xmlChapters.append(xmlNewChapters[chId])
-
-        # Modify the scene contents of an existing xml element tree.
-        for xmlScene in root.find('SCENES'):
-            scId = xmlScene.find('ID').text
-            if self.novel.scenes[scId].sceneContent is not None:
-                xmlScene.find('SceneContent').text = self.novel.scenes[scId].sceneContent
-            try:
-                xmlScene.remove(xmlScene.find('WordCount'))
-            except:
-                pass
-            try:
-                xmlScene.remove(xmlScene.find('LetterCount'))
-            except:
-                pass
-            try:
-                xmlScene.remove(xmlScene.find('RTFFile'))
-            except:
-                pass
-            try:
-                xmlScene.remove(xmlScene.find('BelongsToChID'))
-            except:
-                pass
-
-        indent(root)
-        self.tree = ET.ElementTree(root)
-
-    def _convert_from_yw(self, text, quick=False):
-        """Return text without markup, converted to target format.
-        
-        Positional arguments:
-            text -- string to convert.
-        
-        Optional arguments:
-            quick: bool -- if True, apply a conversion mode for one-liners without formatting.
-        
-        Overrides the superclass method.
+        This method is called by self.write() and creates the XML tree from
+        scratch, using the Novel instance and its parts.
         """
-        if text:
-            # Apply XML predefined entities.
-            XML_REPLACEMENTS = [
-                ('&', '&amp;'),
-                ('>', '&gt;'),
-                ('<', '&lt;'),
-                ("'", '&apos;'),
-                ('"', '&quot;'),
-                ]
-            for yw, xm in XML_REPLACEMENTS:
-                text = text.replace(yw, xm)
-        else:
-            text = ''
-        return text
+        root = self.tree.getroot()
+
+        # Project section
+        project = ET.SubElement(root, self.XML_PROJECT_TAG)
+        ET.SubElement(project, self.XML_TITLE_TAG).text = self._text_to_xml(self.novel.title)
+        ET.SubElement(project, self.XML_DESC_TAG).text = self._text_to_xml(self.novel.desc)
+        ET.SubElement(project, self.XML_AUTHOR_NAME_TAG).text = self._text_to_xml(self.novel.authorName)
+        ET.SubElement(project, self.XML_BIO_TAG).text = self._text_to_xml(self.novel.authorBio)
+        ET.SubElement(project, self.XML_FIELD_TITLE_TAG + '1').text = self._text_to_xml(self.novel.fieldTitle1)
+        ET.SubElement(project, self.XML_FIELD_TITLE_TAG + '2').text = self._text_to_xml(self.novel.fieldTitle2)
+        ET.SubElement(project, self.XML_FIELD_TITLE_TAG + '3').text = self._text_to_xml(self.novel.fieldTitle3)
+        ET.SubElement(project, self.XML_FIELD_TITLE_TAG + '4').text = self._text_to_xml(self.novel.fieldTitle4)
+        ET.SubElement(project, self.XML_WORD_TARGET_TAG).text = str(self.novel.wordTarget)
+        ET.SubElement(project, self.XML_WORD_COUNT_START_TAG).text = str(self.novel.wordCountStart)
+        if self.novel.kwVar:
+            for kwVarName in self.PRJ_KWVAR:
+                if self.novel.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                    ET.SubElement(project, kwVarName).text = self._bool_to_xml(self.novel.kwVar[kwVarName])
+
+        # Chapters section
+        chapters = ET.SubElement(root, self.XML_CHAPTERS_TAG)
+        for chId in self.novel.srtChapters:
+            chapter = self.novel.chapters[chId]
+            xmlChapter = ET.SubElement(chapters, self.XML_CHAPTER_TAG)
+            xmlChapter.set('ID', chId)
+            ET.SubElement(xmlChapter, self.XML_TITLE_TAG).text = self._text_to_xml(chapter.title)
+            ET.SubElement(xmlChapter, self.XML_DESC_TAG).text = self._text_to_xml(chapter.desc)
+            ET.SubElement(xmlChapter, self.XML_SECTION_START_TAG).text = self._int_to_xml(chapter.chLevel)
+            self._set_chapter_type(xmlChapter, chapter.chType)
+            self._set_chapter_suppress_title(xmlChapter, chapter.suppressChapterTitle)
+            self._set_chapter_suppress_break(xmlChapter, chapter.suppressChapterBreak)
+            self._set_chapter_is_trash(xmlChapter, chapter.isTrash)
+            scenes = ET.SubElement(xmlChapter, 'Scenes')
+            for scId in chapter.srtScenes:
+                ET.SubElement(scenes, 'ScID').text = scId
+            if chapter.kwVar:
+                for kwVarName in self.CHP_KWVAR:
+                    if chapter.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlChapter, kwVarName).text = self._bool_to_xml(chapter.kwVar[kwVarName])
+
+        # Scenes section
+        scenes = ET.SubElement(root, self.XML_SCENES_TAG)
+        for scId in self.novel.srtScenes:
+            scene = self.novel.scenes[scId]
+            xmlScene = ET.SubElement(scenes, self.XML_SCENE_TAG)
+            xmlScene.set('ID', scId)
+            ET.SubElement(xmlScene, self.XML_TITLE_TAG).text = self._text_to_xml(scene.title)
+            ET.SubElement(xmlScene, self.XML_DESC_TAG).text = self._text_to_xml(scene.desc)
+            ET.SubElement(xmlScene, self.XML_SCENE_CONTENT_TAG).text = self._text_to_xml(scene.sceneContent)
+            self._set_scene_status(xmlScene, scene.status)
+            ET.SubElement(xmlScene, self.XML_NOTES_TAG).text = self._text_to_xml(scene.notes)
+            ET.SubElement(xmlScene, self.XML_TAGS_TAG).text = self._list_to_xml(scene.tags)
+            ET.SubElement(xmlScene, self.XML_FIELD1_TAG).text = self._int_to_xml(scene.field1)
+            ET.SubElement(xmlScene, self.XML_FIELD2_TAG).text = self._int_to_xml(scene.field2)
+            ET.SubElement(xmlScene, self.XML_FIELD3_TAG).text = self._int_to_xml(scene.field3)
+            ET.SubElement(xmlScene, self.XML_FIELD4_TAG).text = self._int_to_xml(scene.field4)
+            ET.SubElement(xmlScene, self.XML_REACTION_SCENE_TAG).text = self._bool_to_xml(scene.isReactionScene)
+            ET.SubElement(xmlScene, self.XML_SUBPLOT_TAG).text = self._bool_to_xml(scene.isSubPlot)
+            ET.SubElement(xmlScene, self.XML_DAY_TAG).text = self._int_to_xml(scene.day)
+            ET.SubElement(xmlScene, self.XML_TIME_TAG).text = self._text_to_xml(scene.time)
+            ET.SubElement(xmlScene, self.XML_LASTS_DAYS_TAG).text = self._text_to_xml(scene.lastsDays)
+            ET.SubElement(xmlScene, self.XML_LASTS_HOURS_TAG).text = self._text_to_xml(scene.lastsHours)
+            ET.SubElement(xmlScene, self.XML_LASTS_MINUTES_TAG).text = self._text_to_xml(scene.lastsMinutes)
+            ET.SubElement(xmlScene, self.XML_WORD_COUNT_TAG).text = self._int_to_xml(scene.wordCount)
+            ET.SubElement(xmlScene, self.XML_LETTER_COUNT_TAG).text = self._int_to_xml(scene.letterCount)
+            ET.SubElement(xmlScene, self.XML_IMAGE_FILE_TAG).text = self._text_to_xml(scene.image)
+            ET.SubElement(xmlScene, self.XML_GOAL_TAG).text = self._text_to_xml(scene.goal)
+            ET.SubElement(xmlScene, self.XML_CONFLICT_TAG).text = self._text_to_xml(scene.conflict)
+            ET.SubElement(xmlScene, self.XML_OUTCOME_TAG).text = self._text_to_xml(scene.outcome)
+            ET.SubElement(xmlScene, self.XML_APPEND_TO_PREV_TAG).text = self._bool_to_xml(scene.appendToPrev)
+            self._set_scene_do_not_export(xmlScene, scene.doNotExport)
+            self._set_scene_date_time(xmlScene, scene.date, scene.time)
+            ET.SubElement(xmlScene, self.XML_FIELD_SCENE_ARCS_TAG).text = self._text_to_xml(scene.scnArcs)
+            ET.SubElement(xmlScene, self.XML_FIELD_SCENE_MODE_TAG).text = self._text_to_xml(scene.scnMode)
+            if scene.kwVar:
+                for kwVarName in self.SCN_KWVAR:
+                    if scene.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlScene, kwVarName).text = self._bool_to_xml(scene.kwVar[kwVarName])
+            if scene.characters:
+                characters = ET.SubElement(xmlScene, 'Characters')
+                for crId in scene.characters:
+                    ET.SubElement(characters, 'CharID').text = crId
+            if scene.locations:
+                locations = ET.SubElement(xmlScene, 'Locations')
+                for lcId in scene.locations:
+                    ET.SubElement(locations, 'LocID').text = lcId
+            if scene.items:
+                items = ET.SubElement(xmlScene, 'Items')
+                for itId in scene.items:
+                    ET.SubElement(items, 'ItemID').text = itId
+
+        # Characters section
+        characters = ET.SubElement(root, self.XML_CHARACTERS_TAG)
+        for crId in self.novel.srtCharacters:
+            character = self.novel.characters[crId]
+            xmlCharacter = ET.SubElement(characters, self.XML_CHARACTER_TAG)
+            xmlCharacter.set('ID', crId)
+            ET.SubElement(xmlCharacter, self.XML_TITLE_TAG).text = self._text_to_xml(character.title)
+            ET.SubElement(xmlCharacter, self.XML_DESC_TAG).text = self._text_to_xml(character.desc)
+            ET.SubElement(xmlCharacter, self.XML_NOTES_TAG).text = self._text_to_xml(character.notes)
+            ET.SubElement(xmlCharacter, self.XML_TAGS_TAG).text = self._list_to_xml(character.tags)
+            ET.SubElement(xmlCharacter, self.XML_IMAGE_FILE_TAG).text = self._text_to_xml(character.image)
+            ET.SubElement(xmlCharacter, self.XML_AKA_TAG).text = self._text_to_xml(character.aka)
+            ET.SubElement(xmlCharacter, self.XML_FULL_NAME_TAG).text = self._text_to_xml(character.fullName)
+            ET.SubElement(xmlCharacter, self.XML_BIO_TAG_CHAR).text = self._text_to_xml(character.bio)
+            ET.SubElement(xmlCharacter, self.XML_GOALS_TAG).text = self._text_to_xml(character.goals)
+            ET.SubElement(xmlCharacter, self.XML_MAJOR_TAG).text = self._bool_to_xml(character.isMajor)
+            if character.kwVar:
+                for kwVarName in self.CRT_KWVAR:
+                    if character.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlCharacter, kwVarName).text = self._bool_to_xml(character.kwVar[kwVarName])
+
+        # Locations section
+        locations = ET.SubElement(root, self.XML_LOCATIONS_TAG)
+        for lcId in self.novel.srtLocations:
+            location = self.novel.locations[lcId]
+            xmlLocation = ET.SubElement(locations, self.XML_LOCATION_TAG)
+            xmlLocation.set('ID', lcId)
+            ET.SubElement(xmlLocation, self.XML_TITLE_TAG).text = self._text_to_xml(location.title)
+            ET.SubElement(xmlLocation, self.XML_DESC_TAG).text = self._text_to_xml(location.desc)
+            ET.SubElement(xmlLocation, self.XML_NOTES_TAG).text = self._text_to_xml(location.notes)
+            ET.SubElement(xmlLocation, self.XML_TAGS_TAG).text = self._list_to_xml(location.tags)
+            ET.SubElement(xmlLocation, self.XML_IMAGE_FILE_TAG).text = self._text_to_xml(location.image)
+            ET.SubElement(xmlLocation, self.XML_AKA_TAG).text = self._text_to_xml(location.aka)
+            if location.kwVar:
+                for kwVarName in self.LOC_KWVAR:
+                    if location.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlLocation, kwVarName).text = self._bool_to_xml(location.kwVar[kwVarName])
+
+        # Items section
+        items = ET.SubElement(root, self.XML_ITEMS_TAG)
+        for itId in self.novel.srtItems:
+            item = self.novel.items[itId]
+            xmlItem = ET.SubElement(items, self.XML_ITEM_TAG)
+            xmlItem.set('ID', itId)
+            ET.SubElement(xmlItem, self.XML_TITLE_TAG).text = self._text_to_xml(item.title)
+            ET.SubElement(xmlItem, self.XML_DESC_TAG).text = self._text_to_xml(item.desc)
+            ET.SubElement(xmlItem, self.XML_NOTES_TAG).text = self._text_to_xml(item.notes)
+            ET.SubElement(xmlItem, self.XML_TAGS_TAG).text = self._list_to_xml(item.tags)
+            ET.SubElement(xmlItem, self.XML_IMAGE_FILE_TAG).text = self._text_to_xml(item.image)
+            ET.SubElement(xmlItem, self.XML_AKA_TAG).text = self._text_to_xml(item.aka)
+            if item.kwVar:
+                for kwVarName in self.ITM_KWVAR:
+                    if item.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlItem, kwVarName).text = self._bool_to_xml(item.kwVar[kwVarName])
+
+        # Project notes section
+        projectNotes = ET.SubElement(root, self.XML_PROJECT_NOTES_TAG)
+        for pnId in self.novel.srtPrjNotes:
+            projectNote = self.novel.projectNotes[pnId]
+            xmlProjectNote = ET.SubElement(projectNotes, self.XML_PROJECT_NOTE_TAG)
+            xmlProjectNote.set('ID', pnId)
+            ET.SubElement(xmlProjectNote, self.XML_TITLE_TAG).text = self._text_to_xml(projectNote.title)
+            ET.SubElement(xmlProjectNote, self.XML_DESC_TAG).text = self._text_to_xml(projectNote.desc)
+            if projectNote.kwVar:
+                for kwVarName in self.PNT_KWVAR:
+                    if projectNote.kwVar.get(kwVarName) is not None: # write custom fields only if they are set
+                        ET.SubElement(xmlProjectNote, kwVarName).text = self._bool_to_xml(projectNote.kwVar[kwVarName])
+
+        xml_indent.indent(root) # <--- CALL INDENT FUNCTION FROM xml_indent MODULE
+
 
     def _postprocess_xml_file(self, filePath):
-        """Postprocess an xml file created by ElementTree.
-        
+        """Postprocess xml file created by ElementTree for yWriter.
+
         Positional argument:
-            filePath: str -- path to xml file.
-        
-        Read the xml file, put a header on top, insert the missing CDATA tags,
-        and replace xml entities by plain text (unescape). Overwrite the .yw7 xml file.
-        Raise the "Error" exception in case of error. 
-        
-        Note: The path is given as an argument rather than using self.filePath. 
-        So this routine can be used for yWriter-generated xml files other than .yw7 as well. 
+            filePath: str -- path to .yw7 xml file.
+
+        - Add XML declaration,
+        - indent XML code for readability.
         """
-        with open(filePath, 'r', encoding='utf-8') as f:
-            text = f.read()
-        lines = text.split('\n')
-        newlines = ['<?xml version="1.0" encoding="utf-8"?>']
-        for line in lines:
-            for tag in self._CDATA_TAGS:
-                line = re.sub(fr'\<{tag}\>', f'<{tag}><![CDATA[', line)
-                line = re.sub(fr'\<\/{tag}\>', f']]></{tag}>', line)
-            newlines.append(line)
-        text = '\n'.join(newlines)
-        text = text.replace('[CDATA[ \n', '[CDATA[')
-        text = text.replace('\n]]', ']]')
-        if not self.novel.chapters:
-            text = text.replace('<CHAPTERS />', '<CHAPTERS></CHAPTERS>')
-            # otherwise, yWriter fails to parse the file if there are no chapters.
-        text = unescape(text)
+        rough_string = ET.tostring(self.tree.getroot(), encoding='utf-8')
+        reparsed = minidom.parseString(rough_string)
+        pretty_xml = reparsed.toprettyxml(indent="  ", encoding='utf-8').decode()
+        # Remove leading and trailing linefeeds
+        pretty_xml = pretty_xml.strip()
+        # Replace double linefeeds by single ones
+        pretty_xml = pretty_xml.replace('\r\n\r\n', '\r\n') # Windows
+        pretty_xml = pretty_xml.replace('\n\n', '\n') # Linux/Mac
         try:
             with open(filePath, 'w', encoding='utf-8') as f:
-                f.write(text)
-        except:
-            raise Error(f'{_("Cannot write file")}: "{norm_path(filePath)}".')
-
-    def _read_project(self, root):
-        """Read attributes at project level from the xml element tree."""
-        xmlProject = root.find('PROJECT')
-
-        if xmlProject.find('Title') is not None:
-            self.novel.title = xmlProject.find('Title').text
-
-        if xmlProject.find('AuthorName') is not None:
-            self.novel.authorName = xmlProject.find('AuthorName').text
-
-        if xmlProject.find('Bio') is not None:
-            self.novel.authorBio = xmlProject.find('Bio').text
-
-        if xmlProject.find('Desc') is not None:
-            self.novel.desc = xmlProject.find('Desc').text
-
-        if xmlProject.find('FieldTitle1') is not None:
-            self.novel.fieldTitle1 = xmlProject.find('FieldTitle1').text
-
-        if xmlProject.find('FieldTitle2') is not None:
-            self.novel.fieldTitle2 = xmlProject.find('FieldTitle2').text
-
-        if xmlProject.find('FieldTitle3') is not None:
-            self.novel.fieldTitle3 = xmlProject.find('FieldTitle3').text
-
-        if xmlProject.find('FieldTitle4') is not None:
-            self.novel.fieldTitle4 = xmlProject.find('FieldTitle4').text
-
-        #--- Read word target data.
-        if xmlProject.find('WordCountStart') is not None:
-            try:
-                self.novel.wordCountStart = int(xmlProject.find('WordCountStart').text)
-            except:
-                self.novel.wordCountStart = 0
-        if xmlProject.find('WordTarget') is not None:
-            try:
-                self.novel.wordTarget = int(xmlProject.find('WordTarget').text)
-            except:
-                self.novel.wordTarget = 0
-
-        #--- Initialize custom keyword variables.
-        for fieldName in self.PRJ_KWVAR:
-            self.novel.kwVar[fieldName] = None
-
-        #--- Read project custom fields.
-        for xmlProjectFields in xmlProject.findall('Fields'):
-            for fieldName in self.PRJ_KWVAR:
-                field = xmlProjectFields.find(fieldName)
-                if field is not None:
-                    self.novel.kwVar[fieldName] = field.text
-
-        # This is for projects written with v7.6 - v7.10:
-        if self.novel.kwVar['Field_LanguageCode']:
-            self.novel.languageCode = self.novel.kwVar['Field_LanguageCode']
-        if self.novel.kwVar['Field_CountryCode']:
-            self.novel.countryCode = self.novel.kwVar['Field_CountryCode']
-
-    def _read_locations(self, root):
-        """Read locations from the xml element tree."""
-        self.novel.srtLocations = []
-        # This is necessary for re-reading.
-        for xmlLocation in root.find('LOCATIONS'):
-            lcId = xmlLocation.find('ID').text
-            self.novel.srtLocations.append(lcId)
-            self.novel.locations[lcId] = WorldElement()
-
-            if xmlLocation.find('Title') is not None:
-                self.novel.locations[lcId].title = xmlLocation.find('Title').text
-
-            if xmlLocation.find('ImageFile') is not None:
-                self.novel.locations[lcId].image = xmlLocation.find('ImageFile').text
-
-            if xmlLocation.find('Desc') is not None:
-                self.novel.locations[lcId].desc = xmlLocation.find('Desc').text
-
-            if xmlLocation.find('AKA') is not None:
-                self.novel.locations[lcId].aka = xmlLocation.find('AKA').text
-
-            if xmlLocation.find('Tags') is not None:
-                if xmlLocation.find('Tags').text is not None:
-                    tags = string_to_list(xmlLocation.find('Tags').text)
-                    self.novel.locations[lcId].tags = self._strip_spaces(tags)
-
-            #--- Initialize custom keyword variables.
-            for fieldName in self.LOC_KWVAR:
-                self.novel.locations[lcId].kwVar[fieldName] = None
-
-            #--- Read location custom fields.
-            for xmlLocationFields in xmlLocation.findall('Fields'):
-                for fieldName in self.LOC_KWVAR:
-                    field = xmlLocationFields.find(fieldName)
-                    if field is not None:
-                        self.novel.locations[lcId].kwVar[fieldName] = field.text
-
-    def _read_items(self, root):
-        """Read items from the xml element tree."""
-        self.novel.srtItems = []
-        # This is necessary for re-reading.
-        for xmlItem in root.find('ITEMS'):
-            itId = xmlItem.find('ID').text
-            self.novel.srtItems.append(itId)
-            self.novel.items[itId] = WorldElement()
-
-            if xmlItem.find('Title') is not None:
-                self.novel.items[itId].title = xmlItem.find('Title').text
-
-            if xmlItem.find('ImageFile') is not None:
-                self.novel.items[itId].image = xmlItem.find('ImageFile').text
-
-            if xmlItem.find('Desc') is not None:
-                self.novel.items[itId].desc = xmlItem.find('Desc').text
-
-            if xmlItem.find('AKA') is not None:
-                self.novel.items[itId].aka = xmlItem.find('AKA').text
-
-            if xmlItem.find('Tags') is not None:
-                if xmlItem.find('Tags').text is not None:
-                    tags = string_to_list(xmlItem.find('Tags').text)
-                    self.novel.items[itId].tags = self._strip_spaces(tags)
-
-            #--- Initialize custom keyword variables.
-            for fieldName in self.ITM_KWVAR:
-                self.novel.items[itId].kwVar[fieldName] = None
-
-            #--- Read item custom fields.
-            for xmlItemFields in xmlItem.findall('Fields'):
-                for fieldName in self.ITM_KWVAR:
-                    field = xmlItemFields.find(fieldName)
-                    if field is not None:
-                        self.novel.items[itId].kwVar[fieldName] = field.text
-
-    def _read_characters(self, root):
-        """Read characters from the xml element tree."""
-        self.novel.srtCharacters = []
-        # This is necessary for re-reading.
-        for xmlCharacter in root.find('CHARACTERS'):
-            crId = xmlCharacter.find('ID').text
-            self.novel.srtCharacters.append(crId)
-            self.novel.characters[crId] = Character()
-
-            if xmlCharacter.find('Title') is not None:
-                self.novel.characters[crId].title = xmlCharacter.find('Title').text
-
-            if xmlCharacter.find('ImageFile') is not None:
-                self.novel.characters[crId].image = xmlCharacter.find('ImageFile').text
-
-            if xmlCharacter.find('Desc') is not None:
-                self.novel.characters[crId].desc = xmlCharacter.find('Desc').text
-
-            if xmlCharacter.find('AKA') is not None:
-                self.novel.characters[crId].aka = xmlCharacter.find('AKA').text
-
-            if xmlCharacter.find('Tags') is not None:
-                if xmlCharacter.find('Tags').text is not None:
-                    tags = string_to_list(xmlCharacter.find('Tags').text)
-                    self.novel.characters[crId].tags = self._strip_spaces(tags)
-
-            if xmlCharacter.find('Notes') is not None:
-                self.novel.characters[crId].notes = xmlCharacter.find('Notes').text
-
-            if xmlCharacter.find('Bio') is not None:
-                self.novel.characters[crId].bio = xmlCharacter.find('Bio').text
-
-            if xmlCharacter.find('Goals') is not None:
-                self.novel.characters[crId].goals = xmlCharacter.find('Goals').text
-
-            if xmlCharacter.find('FullName') is not None:
-                self.novel.characters[crId].fullName = xmlCharacter.find('FullName').text
-
-            if xmlCharacter.find('Major') is not None:
-                self.novel.characters[crId].isMajor = True
-            else:
-                self.novel.characters[crId].isMajor = False
-
-            #--- Initialize custom keyword variables.
-            for fieldName in self.CRT_KWVAR:
-                self.novel.characters[crId].kwVar[fieldName] = None
-
-            #--- Read character custom fields.
-            for xmlCharacterFields in xmlCharacter.findall('Fields'):
-                for fieldName in self.CRT_KWVAR:
-                    field = xmlCharacterFields.find(fieldName)
-                    if field is not None:
-                        self.novel.characters[crId].kwVar[fieldName] = field.text
-
-    def _read_projectnotes(self, root):
-        """Read project notes from the xml element tree."""
-        self.novel.srtPrjNotes = []
-        # This is necessary for re-reading.
-
-        try:
-            for xmlProjectnote in root.find('PROJECTNOTES'):
-                if xmlProjectnote.find('ID') is not None:
-                    pnId = xmlProjectnote.find('ID').text
-                    self.novel.srtPrjNotes.append(pnId)
-                    self.novel.projectNotes[pnId] = BasicElement()
-                    if xmlProjectnote.find('Title') is not None:
-                        self.novel.projectNotes[pnId].title = xmlProjectnote.find('Title').text
-                    if xmlProjectnote.find('Desc') is not None:
-                        self.novel.projectNotes[pnId].desc = xmlProjectnote.find('Desc').text
-
-                #--- Initialize project note custom fields.
-                for fieldName in self.PNT_KWVAR:
-                    self.novel.projectNotes[pnId].kwVar[fieldName] = None
-
-                #--- Read project note custom fields.
-                for pnFields in xmlProjectnote.findall('Fields'):
-                    field = pnFields.find(fieldName)
-                    if field is not None:
-                        self.novel.projectNotes[pnId].kwVar[fieldName] = field.text
-        except:
-            pass
-
-    def _read_projectvars(self, root):
-        """Read relevant project variables from the xml element tree."""
-        try:
-            for xmlProjectvar in root.find('PROJECTVARS'):
-                if xmlProjectvar.find('Title') is not None:
-                    title = xmlProjectvar.find('Title').text
-                    if title == 'Language':
-                        if xmlProjectvar.find('Desc') is not None:
-                            self.novel.languageCode = xmlProjectvar.find('Desc').text
-
-                    elif title == 'Country':
-                        if xmlProjectvar.find('Desc') is not None:
-                            self.novel.countryCode = xmlProjectvar.find('Desc').text
-
-                    elif title.startswith('lang='):
-                        try:
-                            __, langCode = title.split('=')
-                            if self.novel.languages is None:
-                                self.novel.languages = []
-                            self.novel.languages.append(langCode)
-                        except:
-                            pass
-        except:
-            pass
-
-    def _read_scenes(self, root):
-        """ Read attributes at scene level from the xml element tree."""
-        for xmlScene in root.find('SCENES'):
-            scId = xmlScene.find('ID').text
-            self.novel.scenes[scId] = Scene()
-
-            if xmlScene.find('Title') is not None:
-                self.novel.scenes[scId].title = xmlScene.find('Title').text
-
-            if xmlScene.find('Desc') is not None:
-                self.novel.scenes[scId].desc = xmlScene.find('Desc').text
-
-            if xmlScene.find('SceneContent') is not None:
-                sceneContent = xmlScene.find('SceneContent').text
-                if sceneContent is not None:
-                    self.novel.scenes[scId].sceneContent = sceneContent
-
-            #--- Read scene type.
-
-            # This is how yWriter 7.1.3.0 reads the scene type:
-            #
-            # Type   |<Unused>|Field_SceneType>|scType
-            #--------+--------+----------------+------
-            # Notes  | x      | 1              | 1
-            # Todo   | x      | 2              | 2
-            # Unused | -1     | N/A            | 3
-            # Unused | -1     | 0              | 3
-            # Normal | N/A    | N/A            | 0
-            # Normal | N/A    | 0              | 0
-
-            self.novel.scenes[scId].scType = 0
-
-            #--- Initialize custom keyword variables.
-            for fieldName in self.SCN_KWVAR:
-                self.novel.scenes[scId].kwVar[fieldName] = None
-
-            for xmlSceneFields in xmlScene.findall('Fields'):
-                #--- Read scene custom fields.
-                for fieldName in self.SCN_KWVAR:
-                    field = xmlSceneFields.find(fieldName)
-                    if field is not None:
-                        self.novel.scenes[scId].kwVar[fieldName] = field.text
-
-                # Read scene type, if any.
-                if xmlSceneFields.find('Field_SceneType') is not None:
-                    if xmlSceneFields.find('Field_SceneType').text == '1':
-                        self.novel.scenes[scId].scType = 1
-                    elif xmlSceneFields.find('Field_SceneType').text == '2':
-                        self.novel.scenes[scId].scType = 2
-            if xmlScene.find('Unused') is not None:
-                if self.novel.scenes[scId].scType == 0:
-                    self.novel.scenes[scId].scType = 3
-
-            # Export when RTF.
-            if xmlScene.find('ExportCondSpecific') is None:
-                self.novel.scenes[scId].doNotExport = False
-            elif xmlScene.find('ExportWhenRTF') is not None:
-                self.novel.scenes[scId].doNotExport = False
-            else:
-                self.novel.scenes[scId].doNotExport = True
-
-            if xmlScene.find('Status') is not None:
-                self.novel.scenes[scId].status = int(xmlScene.find('Status').text)
-
-            if xmlScene.find('Notes') is not None:
-                self.novel.scenes[scId].notes = xmlScene.find('Notes').text
-
-            if xmlScene.find('Tags') is not None:
-                if xmlScene.find('Tags').text is not None:
-                    tags = string_to_list(xmlScene.find('Tags').text)
-                    self.novel.scenes[scId].tags = self._strip_spaces(tags)
-
-            if xmlScene.find('Field1') is not None:
-                self.novel.scenes[scId].field1 = xmlScene.find('Field1').text
-
-            if xmlScene.find('Field2') is not None:
-                self.novel.scenes[scId].field2 = xmlScene.find('Field2').text
-
-            if xmlScene.find('Field3') is not None:
-                self.novel.scenes[scId].field3 = xmlScene.find('Field3').text
-
-            if xmlScene.find('Field4') is not None:
-                self.novel.scenes[scId].field4 = xmlScene.find('Field4').text
-
-            if xmlScene.find('AppendToPrev') is not None:
-                self.novel.scenes[scId].appendToPrev = True
-            else:
-                self.novel.scenes[scId].appendToPrev = False
-
-            #--- Scene start.
-            if xmlScene.find('SpecificDateTime') is not None:
-                dateTimeStr = xmlScene.find('SpecificDateTime').text
-
-                # Check SpecificDateTime for ISO compliance.
+                f.write(pretty_xml)
+        except(PermissionError):
+            raise Error(f'{_("File is write protected")}: "{norm_path(filePath)}".')
+
+
+    def _xml_to_text(self, xmlElement):
+        """Safe access to XML element text.
+
+        Return element text content. If the element is None or has no text 
+        content, return None.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        if xmlElement is None:
+            return None
+        if xmlElement.text:
+            return xmlElement.text
+        return ''
+
+
+    def _xml_to_int(self, xmlElement):
+        """Safe access to XML element integer.
+
+        Return element text content converted to integer. If the element is None 
+        or has no text content, return 0.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        if xmlElement is None:
+            return 0
+        if xmlElement.text:
+            return int(xmlElement.text)
+        return 0
+
+
+    def _xml_to_bool(self, xmlElement):
+        """Safe access to XML element boolean.
+
+        Return element text content converted to boolean. If the element is None 
+        or has no text content, return False.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        if xmlElement is None:
+            return False
+        if xmlElement.text == '-1':
+            return True
+        return False
+
+
+    def _xml_to_id(self, xmlElement):
+        """Safe access to XML element ID.
+
+        Return element tag "ID" attribute value. If the element is None or has 
+        no "ID" attribute, return '1'.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        if xmlElement is None:
+            return '1'
+        if xmlElement.get('ID') is not None:
+            return xmlElement.get('ID')
+        return '1'
+
+
+    def _xml_to_list(self, xmlElement):
+        """Safe access to XML tag list.
+
+        Return element text content converted to list. If the element is None 
+        or has no text content, return None.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        if xmlElement is None:
+            return None
+        if xmlElement.text:
+            return string_to_list(xmlElement.text)
+        return []
+
+
+    def _text_to_xml(self, text):
+        """Safe conversion of text for XML output.
+
+        Replace XML special characters. Return None if text is None.
+
+        Positional arguments:
+            text -- plain text.
+        """
+        if text is None:
+            return None
+        text = str(text) # in case of integer or float
+        text = text.replace('&', '&')
+        text = text.replace('<', '<')
+        text = text.replace('>', '>')
+        # text = text.replace("'", ''') # optional
+        text = text.replace('"', '"')
+        return text
+
+
+    def _bool_to_xml(self, state):
+        """Return yWriter's representation of a boolean value.
+
+        Positional arguments:
+            state -- boolean value.
+        """
+        if state:
+            return '-1'
+        return '0'
+
+
+    def _int_to_xml(self, number):
+        """Convert integer to XML text.
+
+        Return "0" if number is None.
+
+        Positional arguments:
+            number -- integer value or None.
+        """
+        if number is None:
+            return '0'
+        return str(number)
+
+
+    def _list_to_xml(self, tagList):
+        """Convert tag list to XML text.
+
+        Return None if tagList is None.
+
+        Positional arguments:
+            tagList -- list of tags or None.
+        """
+        if tagList is None:
+            return None
+        return list_to_string(tagList)
+
+
+    def _get_scene_status(self, xmlScene):
+        """Get scene status from XML tag.
+
+        Return scene status (integer). If no status is set, return 1 (Outline).
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+        """
+        status = xmlScene.find(self.XML_STATUS_TAG)
+        if status is None:
+            return 1
+        return int(status.text)
+
+
+    def _set_scene_status(self, xmlScene, status):
+        """Set scene status in XML tag.
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+            status -- status code (integer).
+        """
+        ET.SubElement(xmlScene, self.XML_STATUS_TAG).text = str(status)
+
+
+    def _get_chapter_type(self, xmlChapter):
+        """Get chapter type from XML tag.
+
+        Return chapter type (integer). If no type is set, return 0 (Normal).
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+        """
+        chapterType = xmlChapter.find(self.XML_CHAPTER_TYPE_TAG)
+        if chapterType is not None:
+            return int(chapterType.text) # since yWriter 7.0.7.2
+        typeTag = xmlChapter.find(self.XML_TYPE_TAG)
+        if typeTag is not None:
+            return int(typeTag.text) # yWriter versions before 7.0.7.2
+        unusedTag = xmlChapter.find(self.XML_UNUSED_TAG)
+        if unusedTag is not None:
+            if unusedTag.text == '-1':
+                return 3 # Unused
+        return 0 # Normal
+
+
+    def _set_chapter_type(self, xmlChapter, chapterType):
+        """Set chapter type in XML tag.
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+            chapterType -- chapter type code (integer).
+        """
+        ET.SubElement(xmlChapter, self.XML_CHAPTER_TYPE_TAG).text = str(chapterType)
+
+
+    def _get_scene_is_reaction(self, xmlScene):
+        """Get scene type from XML tag.
+
+        Return True if scene type is "reaction". Otherwise return False (action).
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+        """
+        reactionScene = xmlScene.find(self.XML_REACTION_SCENE_TAG)
+        if reactionScene is not None:
+            if reactionScene.text == '-1':
+                return True
+        return False
+
+
+    def _get_scene_is_subplot(self, xmlScene):
+        """Get scene subplot status from XML tag.
+
+        Return True if scene is "subplot". Otherwise return False (main plot).
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+        """
+        subPlot = xmlScene.find(self.XML_SUBPLOT_TAG)
+        if subPlot is not None:
+            if subPlot.text == '-1':
+                return True
+        return False
+
+
+    def _get_chapter_is_trash(self, xmlChapter):
+        """Get chapter "trash bin" status from XML tag.
+
+        Return True if chapter is "trash bin". Otherwise return False (not trash).
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+        """
+        field = xmlChapter.find(self.XML_FIELDS_TAG)
+        if field is not None:
+            isTrash = field.find(self.XML_FIELD_IS_TRASH_TAG)
+            if isTrash is not None:
+                if isTrash.text == '1':
+                    return True
+        return False
+
+
+    def _set_chapter_is_trash(self, xmlChapter, isTrash):
+        """Set chapter "trash bin" status in XML tag.
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+            isTrash -- trash bin status (boolean).
+        """
+        fields = ET.SubElement(xmlChapter, self.XML_FIELDS_TAG)
+        ET.SubElement(fields, self.XML_FIELD_IS_TRASH_TAG).text = self._bool_to_xml(isTrash)
+
+
+    def _get_scene_do_not_export(self, xmlScene):
+        """Get scene "do not export" status from XML tag.
+
+        Return True if scene is set to "do not export". Otherwise return False (export).
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+        """
+        exportCondSpecific = xmlScene.find(self.XML_EXPORT_COND_SPECIFIC_TAG)
+        if exportCondSpecific is not None:
+            exportWhenRtf = exportCondSpecific.find(self.XML_EXPORT_WHEN_RTF_TAG)
+            if exportWhenRtf is not None:
+                if exportWhenRtf.text == '0':
+                    return True
+        return False
+
+
+    def _set_scene_do_not_export(self, xmlScene, doNotExport):
+        """Set scene "do not export" status in XML tag.
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+            doNotExport -- do-not-export status (boolean).
+        """
+        exportCondSpecific = ET.SubElement(xmlScene, self.XML_EXPORT_COND_SPECIFIC_TAG)
+        ET.SubElement(exportCondSpecific, self.XML_EXPORT_WHEN_RTF_TAG).text = self._bool_to_xml(doNotExport)
+
+
+    def _get_chapter_suppress_title(self, xmlChapter):
+        """Get chapter suppress title setting from XML tag.
+
+        Return True if chapter title is set to be suppressed in export.
+        Otherwise return False (display title).
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+        """
+        fields = xmlChapter.find(self.XML_FIELDS_TAG)
+        if fields is not None:
+            suppressChapterTitle = fields.find(self.XML_FIELD_SUPPRESS_CHAPTER_TITLE_TAG)
+            if suppressChapterTitle is not None:
+                if suppressChapterTitle.text == '1':
+                    return True
+        return False
+
+
+    def _set_chapter_suppress_title(self, xmlChapter, suppressChapterTitle):
+        """Set chapter suppress title setting in XML tag.
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+            suppressChapterTitle -- suppress chapter title setting (boolean).
+        """
+        fields = ET.SubElement(xmlChapter, self.XML_FIELDS_TAG)
+        ET.SubElement(fields, self.XML_FIELD_SUPPRESS_CHAPTER_TITLE_TAG).text = self._bool_to_xml(suppressChapterTitle)
+
+
+    def _get_chapter_suppress_break(self, xmlChapter):
+        """Get chapter suppress break setting from XML tag.
+
+        Return True if chapter break is set to be suppressed in export.
+        Otherwise return False (display break).
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+        """
+        fields = xmlChapter.find(self.XML_FIELDS_TAG)
+        if fields is not None:
+            suppressChapterBreak = fields.find(self.XML_FIELD_SUPPRESS_CHAPTER_BREAK_TAG)
+            if suppressChapterBreak is not None:
+                if suppressChapterBreak.text == '1':
+                    return True
+        return False
+
+
+    def _set_chapter_suppress_break(self, xmlChapter, suppressChapterBreak):
+        """Set chapter suppress break setting in XML tag.
+
+        Positional arguments:
+            xmlChapter -- ElementTree object.
+            suppressChapterBreak -- suppress chapter break setting (boolean).
+        """
+        fields = ET.SubElement(xmlChapter, self.XML_FIELDS_TAG)
+        ET.SubElement(fields, self.XML_FIELD_SUPPRESS_CHAPTER_BREAK_TAG).text = self._bool_to_xml(suppressChapterBreak)
+
+
+    def _get_scene_date_time(self, xmlScene):
+        """Get scene date and time from XML tag.
+
+        Return date and time strings in yw7 format ('yyyy-mm-dd', 'hh:mm:ss').
+        If no date/time is set, return ('0001-01-01', '00:00:00').
+
+        Positional arguments:
+            xmlScene -- ElementTree object.
+        """
+        if self._xml_to_bool(xmlScene.find(self.XML_SPECIFIC_DATE_MODE_TAG)):
+            ywDateTime = self._xml_to_text(xmlScene.find(self.XML_SPECIFIC_DATE_TIME_TAG))
+            if ywDateTime:
                 try:
-                    dateTime = datetime.fromisoformat(dateTimeStr)
+                    dt = datetime.datetime.strptime(ywDateTime, '%Y-%m-%d %H:%M:%S')
+                    dateString = dt.strftime('%Y-%m-%d')
+                    timeString = dt.strftime('%H:%M:%S')
+                    return dateString, timeString
                 except:
-                    self.novel.scenes[scId].date = ''
-                    self.novel.scenes[scId].time = ''
-                else:
-                    startDateTime = dateTime.isoformat().split('T')
-                    self.novel.scenes[scId].date = startDateTime[0]
-                    self.novel.scenes[scId].time = startDateTime[1]
-            else:
-                if xmlScene.find('Day') is not None:
-                    day = xmlScene.find('Day').text
+                    pass # invalid date/time format
+        return Scene.NULL_DATE, Scene.NULL_TIME # default values
 
-                    # Check if Day represents an integer.
-                    try:
-                        int(day)
-                    except ValueError:
-                        day = ''
-                    self.novel.scenes[scId].day = day
 
-                hasUnspecificTime = False
-                if xmlScene.find('Hour') is not None:
-                    hour = xmlScene.find('Hour').text.zfill(2)
-                    hasUnspecificTime = True
-                else:
-                    hour = '00'
-                if xmlScene.find('Minute') is not None:
-                    minute = xmlScene.find('Minute').text.zfill(2)
-                    hasUnspecificTime = True
-                else:
-                    minute = '00'
-                if hasUnspecificTime:
-                    self.novel.scenes[scId].time = f'{hour}:{minute}:00'
+    def _set_scene_date_time(self, xmlScene, dateString, timeString):
+        """Set scene date and time in XML tag.
 
-            #--- Scene duration.
-            if xmlScene.find('LastsDays') is not None:
-                self.novel.scenes[scId].lastsDays = xmlScene.find('LastsDays').text
-
-            if xmlScene.find('LastsHours') is not None:
-                self.novel.scenes[scId].lastsHours = xmlScene.find('LastsHours').text
-
-            if xmlScene.find('LastsMinutes') is not None:
-                self.novel.scenes[scId].lastsMinutes = xmlScene.find('LastsMinutes').text
-
-            if xmlScene.find('ReactionScene') is not None:
-                self.novel.scenes[scId].isReactionScene = True
-            else:
-                self.novel.scenes[scId].isReactionScene = False
-
-            if xmlScene.find('SubPlot') is not None:
-                self.novel.scenes[scId].isSubPlot = True
-            else:
-                self.novel.scenes[scId].isSubPlot = False
-
-            if xmlScene.find('Goal') is not None:
-                self.novel.scenes[scId].goal = xmlScene.find('Goal').text
-
-            if xmlScene.find('Conflict') is not None:
-                self.novel.scenes[scId].conflict = xmlScene.find('Conflict').text
-
-            if xmlScene.find('Outcome') is not None:
-                self.novel.scenes[scId].outcome = xmlScene.find('Outcome').text
-
-            if xmlScene.find('ImageFile') is not None:
-                self.novel.scenes[scId].image = xmlScene.find('ImageFile').text
-
-            if xmlScene.find('Characters') is not None:
-                for characters in xmlScene.find('Characters').iter('CharID'):
-                    crId = characters.text
-                    if crId in self.novel.srtCharacters:
-                        if self.novel.scenes[scId].characters is None:
-                            self.novel.scenes[scId].characters = []
-                        self.novel.scenes[scId].characters.append(crId)
-
-            if xmlScene.find('Locations') is not None:
-                for locations in xmlScene.find('Locations').iter('LocID'):
-                    lcId = locations.text
-                    if lcId in self.novel.srtLocations:
-                        if self.novel.scenes[scId].locations is None:
-                            self.novel.scenes[scId].locations = []
-                        self.novel.scenes[scId].locations.append(lcId)
-
-            if xmlScene.find('Items') is not None:
-                for items in xmlScene.find('Items').iter('ItemID'):
-                    itId = items.text
-                    if itId in self.novel.srtItems:
-                        if self.novel.scenes[scId].items is None:
-                            self.novel.scenes[scId].items = []
-                        self.novel.scenes[scId].items.append(itId)
-
-    def _read_chapters(self, root):
-        """Read attributes at chapter level from the xml element tree."""
-        self.novel.srtChapters = []
-        # This is necessary for re-reading.
-        for xmlChapter in root.find('CHAPTERS'):
-            chId = xmlChapter.find('ID').text
-            self.novel.chapters[chId] = Chapter()
-            self.novel.srtChapters.append(chId)
-
-            if xmlChapter.find('Title') is not None:
-                self.novel.chapters[chId].title = xmlChapter.find('Title').text
-
-            if xmlChapter.find('Desc') is not None:
-                self.novel.chapters[chId].desc = xmlChapter.find('Desc').text
-
-            if xmlChapter.find('SectionStart') is not None:
-                self.novel.chapters[chId].chLevel = 1
-            else:
-                self.novel.chapters[chId].chLevel = 0
-
-            # This is how yWriter 7.1.3.0 reads the chapter type:
-            #
-            # Type   |<Unused>|<Type>|<ChapterType>|chType
-            # -------+--------+------+--------------------
-            # Normal | N/A    | N/A  | N/A         | 0
-            # Normal | N/A    | 0    | N/A         | 0
-            # Notes  | x      | 1    | N/A         | 1
-            # Unused | -1     | 0    | N/A         | 3
-            # Normal | N/A    | x    | 0           | 0
-            # Notes  | x      | x    | 1           | 1
-            # Todo   | x      | x    | 2           | 2
-            # Unused | -1     | x    | x           | 3
-
-            self.novel.chapters[chId].chType = 0
-            if xmlChapter.find('Unused') is not None:
-                yUnused = True
-            else:
-                yUnused = False
-            if xmlChapter.find('ChapterType') is not None:
-                # The file may be created with yWriter version 7.0.7.2+
-                yChapterType = xmlChapter.find('ChapterType').text
-                if yChapterType == '2':
-                    self.novel.chapters[chId].chType = 2
-                elif yChapterType == '1':
-                    self.novel.chapters[chId].chType = 1
-                elif yUnused:
-                    self.novel.chapters[chId].chType = 3
-            else:
-                # The file may be created with a yWriter version prior to 7.0.7.2
-                if xmlChapter.find('Type') is not None:
-                    yType = xmlChapter.find('Type').text
-                    if yType == '1':
-                        self.novel.chapters[chId].chType = 1
-                    elif yUnused:
-                        self.novel.chapters[chId].chType = 3
-
-            self.novel.chapters[chId].suppressChapterTitle = False
-            if self.novel.chapters[chId].title is not None:
-                if self.novel.chapters[chId].title.startswith('@'):
-                    self.novel.chapters[chId].suppressChapterTitle = True
-
-            #--- Initialize custom keyword variables.
-            for fieldName in self.CHP_KWVAR:
-                self.novel.chapters[chId].kwVar[fieldName] = None
-
-            #--- Read chapter fields.
-            for xmlChapterFields in xmlChapter.findall('Fields'):
-                if xmlChapterFields.find('Field_SuppressChapterTitle') is not None:
-                    if xmlChapterFields.find('Field_SuppressChapterTitle').text == '1':
-                        self.novel.chapters[chId].suppressChapterTitle = True
-                self.novel.chapters[chId].isTrash = False
-                if xmlChapterFields.find('Field_IsTrash') is not None:
-                    if xmlChapterFields.find('Field_IsTrash').text == '1':
-                        self.novel.chapters[chId].isTrash = True
-                self.novel.chapters[chId].suppressChapterBreak = False
-                if xmlChapterFields.find('Field_SuppressChapterBreak') is not None:
-                    if xmlChapterFields.find('Field_SuppressChapterBreak').text == '1':
-                        self.novel.chapters[chId].suppressChapterBreak = True
-
-                #--- Read chapter custom fields.
-                for fieldName in self.CHP_KWVAR:
-                    field = xmlChapterFields.find(fieldName)
-                    if field is not None:
-                        self.novel.chapters[chId].kwVar[fieldName] = field.text
-
-            #--- Read chapter's scene list.
-            self.novel.chapters[chId].srtScenes = []
-            if xmlChapter.find('Scenes') is not None:
-                for scn in xmlChapter.find('Scenes').findall('ScID'):
-                    scId = scn.text
-                    if scId in self.novel.scenes:
-                        self.novel.chapters[chId].srtScenes.append(scId)
-
-    def _strip_spaces(self, lines):
-        """Local helper method.
-
-        Positional argument:
-            lines -- list of strings
-
-        Return lines with leading and trailing spaces removed.
+        Positional arguments:
+            xmlScene -- ElementTree object.
+            dateString -- date in yw7 format 'yyyy-mm-dd'.
+            timeString -- time in yw7 format 'hh:mm:ss'.
         """
-        stripped = []
-        for line in lines:
-            stripped.append(line.strip())
-        return stripped
+        ET.SubElement(xmlScene, self.XML_SPECIFIC_DATE_MODE_TAG).text = '-1'
+        ET.SubElement(xmlScene, self.XML_SPECIFIC_DATE_TIME_TAG).text = f'{dateString} {timeString}'
 
-    def _write_element_tree(self, ywProject):
-        """Write back the xml element tree to a .yw7 xml file located at filePath.
-        
-        Raise the "Error" exception in case of error. 
+
+    def get_element_id(self, xmlElement):
+        """get element ID from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
         """
-        backedUp = False
-        if os.path.isfile(ywProject.filePath):
-            try:
-                os.replace(ywProject.filePath, f'{ywProject.filePath}.bak')
-            except:
-                raise Error(f'{_("Cannot overwrite file")}: "{norm_path(ywProject.filePath)}".')
-            else:
-                backedUp = True
-        try:
-            ywProject.tree.write(ywProject.filePath, xml_declaration=False, encoding='utf-8')
-        except:
-            if backedUp:
-                os.replace(f'{ywProject.filePath}.bak', ywProject.filePath)
-            raise Error(f'{_("Cannot write file")}: "{norm_path(ywProject.filePath)}".')
+        return self._xml_to_id(xmlElement)
 
+
+    def get_element_title(self, xmlElement):
+        """get element title from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_text(xmlElement.find(self.XML_TITLE_TAG))
+
+
+    def get_element_desc(self, xmlElement):
+        """get element description from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_text(xmlElement.find(self.XML_DESC_TAG))
+
+
+    def get_element_notes(self, xmlElement):
+        """get element notes from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_text(xmlElement.find(self.XML_NOTES_TAG))
+
+
+    def get_element_tags(self, xmlElement):
+        """get element tags from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_list(xmlElement.find(self.XML_TAGS_TAG))
+
+
+    def get_element_aka(self, xmlElement):
+        """get element "aka" from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_text(xmlElement.find(self.XML_AKA_TAG))
+
+
+    def get_element_image(self, xmlElement):
+        """get element image path from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_text(xmlElement.find(self.XML_IMAGE_FILE_TAG))
+
+
+    def get_element_field(self, xmlElement, fieldId):
+        """get element custom field from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+            fieldId -- field number (1-4).
+        """
+        return self._xml_to_int(xmlElement.find(self.XML_FIELD_TITLE_TAG + str(fieldId)))
+
+
+    def get_element_status(self, xmlElement):
+        """get scene status from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_scene_status(xmlElement)
+
+
+    def get_element_type(self, xmlElement):
+        """get chapter type from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_chapter_type(xmlElement)
+
+
+    def get_element_level(self, xmlElement):
+        """get chapter level from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_int(xmlElement.find(self.XML_SECTION_START_TAG))
+
+
+    def get_element_is_reaction(self, xmlElement):
+        """get scene type from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_scene_is_reaction(xmlElement)
+
+
+    def get_element_is_subplot(self, xmlElement):
+        """get scene subplot status from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_scene_is_subplot(xmlElement)
+
+
+    def get_element_is_trash(self, xmlElement):
+        """get chapter "trash bin" status from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_chapter_is_trash(xmlElement)
+
+
+    def get_element_do_not_export(self, xmlElement):
+        """get scene "do not export" status from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_scene_do_not_export(xmlElement)
+
+
+    def get_element_suppress_chapter_title(self, xmlElement):
+        """get chapter suppress title setting from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_chapter_suppress_title(xmlElement)
+
+
+    def get_element_suppress_chapter_break(self, xmlElement):
+        """get chapter suppress break setting from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._get_chapter_suppress_break(xmlElement)
+
+
+    def get_element_append_to_previous(self, xmlElement):
+        """get scene append setting from XML tag.
+
+        Positional arguments:
+            xmlElement -- ElementTree object.
+        """
+        return self._xml_to_bool(xmlElement.find(self.XML_APPEND_TO_PREV_TAG))
