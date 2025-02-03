@@ -2,8 +2,9 @@
 import os
 import json  # For tool arguments
 from agents.story_planner import StoryPlanner
-from tools.ywriter_tools import WriteProjectNoteTool # Import the yWriter tool
-from ywriter7.yw.yw7_file import Yw7File # For creating a dummy yw7 file if needed
+from tools.ywriter_tools import WriteProjectNoteTool  # Import the yWriter tool
+from ywriter7.yw.yw7_file import Yw7File  # For creating a dummy yw7 file if needed
+from ywriter7.model.novel import Novel  # <--- Import the Novel class
 
 if __name__ == "__main__":
     # --- Ensure output directory exists ---
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     if not os.path.exists(test_yw7_file):
         print(f"Creating dummy yWriter project file: {test_yw7_file}")
         yw7_file = Yw7File(test_yw7_file)
+        yw7_file.novel = Novel()  # <--- CREATE AND ASSIGN A NOVEL OBJECT HERE
         yw7_file.write()  # Create a minimal valid .yw7 file
     else:
         print(f"Using existing yWriter project file: {test_yw7_file}")
@@ -27,7 +29,7 @@ if __name__ == "__main__":
         model="deepseek-r1:1.5b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=6500,
+        max_tokens=3500,
         top_p=0.95,
     )
 
@@ -44,7 +46,7 @@ if __name__ == "__main__":
     print(story_arc_text)  # Print story arc to console
 
     # --- Write Story Arc to yWriter Project Note using WriteProjectNoteTool ---
-    write_note_tool = WriteProjectNoteTool() # Instantiate the tool
+    write_note_tool = WriteProjectNoteTool()  # Instantiate the tool
 
     # --- Prepare arguments for the tool as a JSON string ---
     tool_args = {
@@ -52,10 +54,14 @@ if __name__ == "__main__":
         "title": "Story Arc (Agent Generated)",
         "content": story_arc_text,
     }
-    tool_args_json = json.dumps(tool_args) # Convert arguments to JSON string
+    tool_args_json = json.dumps(tool_args)  # Convert arguments to JSON string
 
     print("\n--- Calling WriteProjectNoteTool... ---")
-    tool_output = write_note_tool._run(yw7_path=test_yw7_file, title="Story Arc (Agent Generated)", content=story_arc_text) # Directly run the tool
-    print(f"--- WriteProjectNoteTool Output: ---\n{tool_output}") # Print tool output
+    tool_output = write_note_tool._run(
+        yw7_path=test_yw7_file,
+        title="Story Arc (Agent Generated)",
+        content=story_arc_text,
+    )  # Directly run the tool
+    print(f"--- WriteProjectNoteTool Output: ---\n{tool_output}")  # Print tool output
 
     print(f"\n--- yWriter project file updated: {test_yw7_file} ---")
