@@ -65,19 +65,19 @@ with tab2:
     if ollama_model_list: # Only show config if models are fetched successfully
         with st.expander("Story Planner Agent Configuration"): # Using expanders for better UI organization
             st.subheader("Story Planner Agent")
-            story_planner_model_selection = st.selectbox("Model", ollama_model_list, index=ollama_model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in ollama_model_list else 0, key="story_planner_model_selection") # Use dynamic model list - NO direct session_state assignment here anymore
-            story_planner_temperature = st.slider("Temperature", min_value=0.0, max_value=2.0, value=0.7, step=0.05, key="story_planner_temp")
-            story_planner_max_tokens = st.number_input("Max Tokens", min_value=500, max_value=30000, value=3500, step=100, key="story_planner_tokens")
-            story_planner_top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="story_planner_top_p")
-            story_planner_context_window = st.number_input("Context Window", min_value=2048, max_value=131072, value=8192, step=1024, key="story_planner_context") # INCREASED max_value and adjusted value
+            st.session_state['story_planner_model_selection'] = st.selectbox("Model", ollama_model_list, index=ollama_model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in ollama_model_list else 0, key="story_planner_model_selection") # Use dynamic model list
+            st.session_state['story_planner_temperature'] = st.slider("Temperature", min_value=0.0, max_value=2.0, value=0.7, step=0.05, key="story_planner_temp")
+            st.session_state['story_planner_max_tokens'] = st.number_input("Max Tokens", min_value=500, max_value=30000, value=3500, step=100, key="story_planner_tokens")
+            st.session_state['story_planner_top_p'] = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="story_planner_top_p")
+            st.session_state['story_planner_context'] = st.number_input("Context Window", min_value=2048, max_value=131072, value=8192, step=1024, key="story_planner_context") # INCREASED max_value and adjusted value
 
         with st.expander("Writer Agent Configuration"): # Expander for Writer Agent config
             st.subheader("Writer Agent")
-            writer_model_selection = st.selectbox("Model", ollama_model_list, index=writer_model_list.index("llama3:8b-instruct") if "llama3:8b-instruct" in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list - NO direct session_state assignment here anymore
-            writer_temperature = st.slider("Temperature", min_value=0.0, max_value=2.0, value=0.8, step=0.05, key="writer_temp")
-            writer_max_tokens = st.number_input("Max Tokens", min_value=500, max_value=30000, value=3500, step=100, key="writer_tokens")
-            writer_top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="writer_top_p")
-            writer_context_window = st.number_input("Context Window", min_value=2048, max_value=131072, value=8192, step=1024, key="writer_context")
+            st.session_state['writer_model_selection'] = st.selectbox("Model", ollama_model_list, index=writer_model_list.index("llama3:8b-instruct") if "llama3:8b-instruct" in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list
+            st.session_state['writer_temperature'] = st.slider("Temperature", min_value=0.0, max_value=2.0, value=0.8, step=0.05, key="writer_temp")
+            st.session_state['writer_max_tokens'] = st.number_input("Max Tokens", min_value=500, max_value=30000, value=3500, step=100, key="writer_tokens")
+            st.session_state['writer_top_p'] = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="writer_top_p")
+            st.session_state['writer_context'] = st.number_input("Context Window", min_value=2048, max_value=131072, value=8192, step=1024, key="writer_context")
     else:
         st.warning("Could not fetch model list from Ollama. Ensure Ollama is running and accessible.")
 
@@ -131,8 +131,22 @@ with tab3:
             output_placeholder.text(full_output) # Update placeholder in Tab 3
 
         st.session_state['story_arc_output'] = full_output # Store full output in session state
+
+        # --- File Saving Logic ---
+        output_dir = "output" # Define output directory
+        os.makedirs(output_dir, exist_ok=True) # Ensure directory exists
+        output_file_path = os.path.join(output_dir, "story_arc.txt") # Define file path
+
+        try:
+            with open(output_file_path, "w", encoding="utf-8") as outfile:
+                outfile.write(f"Genre: {genre_selection}\n\n")
+                outfile.write(full_output) # Write the full output to the file
+            st.success(f"Story arc planning complete! Saved to: {output_file_path}") # Success message with file path
+        except Exception as e:
+            st.error(f"Error writing Story Arc to file: {e}") # Error message if saving fails
+
+
         st.session_state['plan_story_arc_triggered'] = False # Reset trigger
-        st.success("Story arc planning complete!") # Keep success message in Tab 3
 
 
 with tab4:
