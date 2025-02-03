@@ -34,7 +34,7 @@ def get_ollama_models():
                 models.append(parts[0]) # Model name is the first part
         return models
     except FileNotFoundError:
-        st.error("Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH.")
+        st.error(f"Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH.")
         return []
     except subprocess.CalledProcessError as e:
         st.error(f"Error listing Ollama models. Is Ollama server running? Details: {e}")
@@ -65,7 +65,7 @@ with tab1:
     if st.button("Plan Story Arc"): # Story Planner Button (same as before)
         st.session_state['plan_story_arc_triggered'] = True 
         st.session_state['story_arc_output'] = "" 
-        st.session_state['genre_selection'] = genre_selection 
+        st.session_state['genre_selection'] = genre_selection # Store parameters in session state
         st.session_state['num_chapters'] = num_chapters
         st.session_state['additional_instructions'] = additional_instructions
 
@@ -91,7 +91,7 @@ with tab2:
 
         with st.expander("Writer Agent Configuration"): # Expander for Writer Agent config
             st.subheader("Writer Agent")
-            writer_model_selection = st.selectbox("Model", ollama_model_list, index=writer_model_list.index(st.session_state['writer_model_selection']) if st.session_state['writer_model_selection'] in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list
+            writer_model_selection = st.selectbox("Model", ollama_model_list, index=ollama_model_list.index(st.session_state['writer_model_selection']) if st.session_state['writer_model_selection'] in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list, corrected variable name
             writer_temperature = st.slider("Temperature", min_value=0.0, max_value=2.0, value=0.8, step=0.05, key="writer_temp")
             writer_max_tokens = st.number_input("Max Tokens", min_value=500, max_value=30000, value=3500, step=100, key="writer_tokens")
             writer_top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="writer_top_p")
@@ -103,54 +103,74 @@ with tab2:
 with tab3:
     st.header("Process Monitor")
     st.subheader("Story Arc Output:")
-    output_placeholder_arc = st.empty()  # Placeholder for Story Arc
-    
-    if st.session_state['plan_story_arc_triggered']: # Story Planner Logic (same as before, but using output_placeholder_arc)
-        # ... (Story Planner agent initialization and stream - using output_placeholder_arc.text(full_output)) ...
-        st.session_state['story_arc_output'] = full_output
-        st.session_state['plan_story_arc_triggered'] = False
-        st.success("Story arc planning complete!")
+    output_placeholder_arc = st.empty()  # Placeholder in Tab 3
 
-    st.subheader("Setting Builder Output:") # NEW: Setting Builder Output section
-    output_placeholder_settings = st.empty() # Placeholder for Setting Builder output
+    if st.session_state['plan_story_arc_triggered']: # Check trigger in session state
+        genre_selection = st.session_state['genre_selection'] # Get parameters from session state
+        num_chapters = st.session_state['num_chapters']
+        additional_instructions = st.session_state['additional_instructions']
 
-    if st.session_state.get('build_settings_triggered'): # NEW: Setting Builder Logic
-        st.write("Building world settings...") # Feedback message
-        # --- Load Configuration and Initialize SettingBuilder Agent ---
+        st.write(f"Planning story arc for genre: {genre_selection}, chapters: {num_chapters}") # Moved feedback to Tab 3
+
+        # --- Load Configuration (for base_url, prompts_dir) ---
         with open("config.yaml", "r") as config_file:
             config_yaml = yaml.safe_load(config_file)
         prompts_dir_path = config_yaml.get("prompts_dir", "config/prompts")
-        base_url_config = config_yaml['model_list'][0]['litellm_params']['base_url']
-        setting_builder_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b") # Using StoryPlanner model for now - make configurable later
+        base_url_config = config_yaml['model_list'][0]['litellm_params']['base_url'] # Get base_url
+        story_planner_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b") # Get model from Tab 2 or default
+        story_planner_temperature = st.session_state.get("story_planner_temp", 0.7)
+        story_planner_max_tokens = st.session_state.get("story_planner_tokens", 3500)
+        story_planner_top_p = st.session_state.get("story_planner_top_p", 0.95)
+        story_planner_context_window = st.session_state.get("story_planner_context", 8192)
 
-        setting_builder = SettingBuilder( # Initialize SettingBuilder Agent
+
+        # --- Initialize Story Planner Agent ---
+        story_planner = StoryPlanner(
             base_url=base_url_config,
-            model=setting_builder_model,
-            temperature=0.7, # Default values for now - make configurable later
-            max_tokens=2000,
-            top_p=0.95,
+            model=story_planner_model,
+            temperature=story_planner_temperature,
+            context_window=story_planner_context_window,
+            max_tokens=story_planner_max_tokens,
+            top_p=story_planner_top_p,
             prompts_dir=prompts_dir_path,
+            genre=genre_selection,
+            num_chapters=num_chapters # Use num_chapters from UI
         )
 
-        setting_output = ""
-        # --- Run Setting Builder Task (Placeholder Task for now) ---
-        setting_task_description = "Develop initial world settings and locations based on the story arc." # Simple task
-        setting_result = setting_builder.run_information_gathering_task(task_description=setting_task_description) # Assuming a method like this exists in SettingBuilder
-        setting_output = setting_result # Capture the output
+        full_output = ""
+        story_arc_stream = story_planner.plan_story_arc(
+            genre=genre_selection,
+            num_chapters=num_chapters, # Use num_chapters from UI
+            additional_instructions=additional_instructions
+        )
 
-        output_placeholder_settings.text(setting_output) # Display Setting Builder output in Tab 3
-        st.session_state['setting_builder_output'] = setting_output # Store output in session state
-        st.session_state['build_settings_triggered'] = False # Reset trigger
-        st.success("Setting building complete!") # Success message
+        for chunk in story_arc_stream:
+            full_output += chunk
+            output_placeholder.text(full_output) # Update placeholder in Tab 3
+
+        st.session_state['story_arc_output'] = full_output # Store full output in session state
+
+        # --- File Saving Logic ---
+        output_dir = "output" # Define output directory
+        os.makedirs(output_dir, exist_ok=True) # Ensure directory exists
+        output_file_path = os.path.join(output_dir, "story_arc.txt") # Define file path
+
+        try:
+            with open(output_file_path, "w", encoding="utf-8") as outfile:
+                outfile.write(f"Genre: {genre_selection}\n\n")
+                outfile.write(full_output) # Write the full output to the file
+            st.success(f"Story arc planning complete! Saved to: {output_file_path}") # Success message with file path
+        except Exception as e:
+            st.error(f"Error writing Story Arc to file: {e}") # Error message if saving fails
+
+
+        st.session_state['plan_story_arc_triggered'] = False # Reset trigger
 
 
 with tab4:
     st.header("Output Inspection")
     st.subheader("Story Arc:")
-    st.text_area("Final Story Arc Output", value=st.session_state['story_arc_output'], height=400) # Display stored Story Arc
-
-    st.subheader("World Settings:") # NEW: World Settings output in Tab 4
-    st.text_area("Final World Settings Output", value=st.session_state['setting_builder_output'], height=400) # Display World Settings
+    st.text_area("Final Story Arc Output", value=st.session_state['story_arc_output'], height=400) # Display stored output
 
 
 if __name__ == '__main__':
