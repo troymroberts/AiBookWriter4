@@ -19,7 +19,7 @@ class StoryPlanner:
         self.llm = OllamaLLM(
             base_url=base_url,
             model=model,
-            context_window=context_window
+            context_window=context_window,
             temperature=temperature,
             max_tokens=max_tokens,
             top_p=top_p
