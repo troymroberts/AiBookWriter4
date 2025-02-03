@@ -49,10 +49,10 @@ if __name__ == "__main__":
     # --- Story Planner Agent ---
     story_planner = StoryPlanner(
         base_url="http://localhost:11434",
-        model="deepseek-r1:1.5b",  # Using deepseek-r1:32b for StoryPlanner
+        model="deepseek-r1:32b",  # Using deepseek-r1:1.5b for StoryPlanner
         temperature=0.7,
         context_window=65536,
-        max_tokens=9000,
+        max_tokens=10000,
         top_p=0.95,
         prompts_dir=prompts_dir_path,
         genre=genre_selection
@@ -63,12 +63,13 @@ if __name__ == "__main__":
     print(
         f"\n--- Sending task to Story Planner: ---\n'{story_planning_task_description}'\n--- Story Arc from Story Planner: ---\n"
     )
-    story_arc_text = story_planner.plan_story_arc(  # Get story arc text
+    story_arc_stream = story_planner.plan_story_arc(  # Get story arc stream
         genre="literary_fiction",
         num_chapters=12,
         additional_instructions="Focus on character development and themes of isolation and redemption.",
     )
-    print(story_arc_text)
+    for chunk in story_arc_stream: # Iterate through the stream and print chunks
+        print(chunk, end="", flush=True)
 
     # --- Output Story Arc to Text File (Simplified) ---
     output_dir = "output"
@@ -78,7 +79,11 @@ if __name__ == "__main__":
     try:
         with open(output_file_path, "w", encoding="utf-8") as outfile:
             outfile.write(f"Genre: {genre_selection}\n\n")
-            outfile.write(story_arc_text)
+            story_arc_stream = story_planner.plan_story_arc(  # Re-run to get full text for file
+                genre="literary_fiction", num_chapters=12, additional_instructions="Focus on character development and themes of isolation and redemption."
+            )
+            for chunk in story_arc_stream: # Re-iterate through stream and write to file
+                outfile.write(chunk)
         print(f"\n--- Story Arc saved to: {output_file_path} ---")
     except Exception as e:
         print(f"--- Error writing Story Arc to file: {e} ---")
