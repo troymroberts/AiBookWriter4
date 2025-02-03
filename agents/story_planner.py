@@ -7,7 +7,7 @@ import os  # Import os for path manipulation
 class StoryPlanner:
     """Agent responsible for developing the overarching story arc."""
 
-    def __init__(self, base_url, model, prompts_dir, genre, num_chapters, temperature=0.7, max_tokens=3000, top_p=0.95, context_window=8192, streaming=True): # UPDATED: Added num_chapters parameter here
+    def __init__(self, base_url, model, prompts_dir, genre, num_chapters, temperature=0.7, max_tokens=3000, top_p=0.95, context_window=8192, streaming=True): # Updated to take prompts_dir and num_chapters
         """
         Initializes the StoryPlanner agent with LLM configuration and prompts loaded from files.
         """
@@ -33,14 +33,14 @@ class StoryPlanner:
             ("user", self.user_prompt_template)
         ])
         self.genre = genre
-        self.num_chapters = num_chapters # Store num_chapters as instance variable  <--- ADDED THIS LINE
+        self.num_chapters = num_chapters # Store num_chapters as instance variable
 
-    def plan_story_arc(self, genre, num_chapters=10, additional_instructions=""): # ADDED genre parameter here
+    def plan_story_arc(self, genre, num_chapters, additional_instructions=""): # UPDATED: Removed default num_chapters=10 and using parameter
         """Plans the story arc for a novel, incorporating the configured genre."""
         chain = self.prompt | self.llm
         for chunk in chain.stream({ # Use chain.stream() for streaming
             "genre": genre, # Use the passed-in genre parameter
-            "num_chapters": self.num_chapters, # Use self.num_chapters here
+            "num_chapters": num_chapters, # UPDATED: Now using the num_chapters parameter passed to this method
             "additional_instructions": additional_instructions
         }):
             yield chunk # Yield each chunk to the caller for streaming
