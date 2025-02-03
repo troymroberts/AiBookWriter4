@@ -14,13 +14,13 @@ def get_ollama_models():
     # ... (get_ollama_models function - same as before) ...
 
 
-def run_book_creation_workflow(): # MOVED FUNCTION DEFINITION UP HERE - Corrected order
+def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Corrected order
     """Executes the book creation workflow: StoryPlanner -> SettingBuilder -> OutlineCreator."""
     genre_selection = st.session_state['genre_selection']
     num_chapters = st.session_state['num_chapters']
     additional_instructions = st.session_state['additional_instructions']
 
-    st.write(f"Starting book creation workflow for genre: {genre_selection}, chapters: {num_chapters}") # Feedback
+    st.write(f"Starting book creation workflow for genre: {genre_selection}, chapters: {num_chapters}")  # Feedback
 
     # --- Load Configuration (for base_url, prompts_dir) ---
     with open("config.yaml", "r") as config_file:
@@ -30,20 +30,20 @@ def run_book_creation_workflow(): # MOVED FUNCTION DEFINITION UP HERE - Correcte
 
     # --- Initialize Agents ---
     story_planner_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b")
-    story_planner = StoryPlanner( # Initialize StoryPlanner
-        base_url=base_url_config, model=story_planner_model, prompts_dir=prompts_dir_path, genre=genre_selection, num_chapters=num_chapters, streaming=True) # ADDED streaming=True
+    story_planner = StoryPlanner(  # Initialize StoryPlanner
+        base_url=base_url_config, model=story_planner_model, prompts_dir=prompts_dir_path, genre=genre_selection, num_chapters=num_chapters, streaming=True)  # ADDED streaming=True
 
-    setting_builder_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b") # Using StoryPlanner model for SettingBuilder for now
-    setting_builder = SettingBuilder( # Initialize SettingBuilder
-        base_url=base_url_config, model=setting_builder_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True) # ADDED streaming=True and config from Tab 2
+    setting_builder_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b")  # Using StoryPlanner model for SettingBuilder for now
+    setting_builder = SettingBuilder(  # Initialize SettingBuilder
+        base_url=base_url_config, model=setting_builder_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
 
-    outline_creator_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b") # Using StoryPlanner model for OutlineCreator for now
-    outline_creator = OutlineCreator( # Initialize OutlineCreator
-        base_url=base_url_config, model=outline_creator_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True) # ADDED streaming=True and config from Tab 2
+    outline_creator_model = st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b")  # Using StoryPlanner model for OutlineCreator for now
+    outline_creator = OutlineCreator(  # Initialize OutlineCreator
+        base_url=base_url_config, model=outline_creator_model, prompts_dir=prompts_dir_path, temperature=st.session_state.get("story_planner_temperature", 0.7), max_tokens=st.session_state.get("story_planner_max_tokens", 2000), top_p=st.session_state.get("story_planner_top_p", 0.95), context_window=st.session_state.get("story_planner_context", 8192), streaming=True)  # ADDED streaming=True and config from Tab 2
 
 
     # --- Run Story Planner Task ---
-    st.subheader("Story Arc Output:") # Section for Story Arc Output
+    st.subheader("Story Arc Output:")  # Section for Story Arc Output
     output_placeholder_arc = st.empty()
     story_arc_stream = story_planner.plan_story_arc(genre=genre_selection, num_chapters=num_chapters, additional_instructions=additional_instructions)
     full_story_arc_output = ""
@@ -54,36 +54,34 @@ def run_book_creation_workflow(): # MOVED FUNCTION DEFINITION UP HERE - Correcte
     st.success("Story arc planning complete!")
 
     # --- Run Setting Builder Task ---
-    st.subheader("Setting Builder Output:") # Section for Setting Builder Output
+    st.subheader("Setting Builder Output:")  # Section for Setting Builder Output
     output_placeholder_settings = st.empty()
     setting_task_description = "Develop initial world settings and locations based on the story arc."
-    setting_stream = setting_builder.run_information_gathering_task(task_description=setting_task_description, outline_context=full_story_arc_output) # Pass story arc output as context, switched to streaming
+    setting_stream = setting_builder.run_information_gathering_task(task_description=setting_task_description, outline_context=full_story_arc_output)  # Pass story arc output as context, switched to streaming
     full_setting_output = ""
-    for chunk in setting_stream: # Stream Setting Builder output
+    for chunk in setting_stream:  # Stream Setting Builder output
         full_setting_output += chunk
         output_placeholder_settings.text(full_setting_output)
     st.session_state['setting_builder_output'] = full_setting_output
     st.success("Setting building complete!")
 
     # --- Run Outline Creator Task ---
-    st.subheader("Outline Creator Output:") # Section for Outline Creator Output
+    st.subheader("Outline Creator Output:")  # Section for Outline Creator Output
     output_placeholder_outline = st.empty()
     outline_task_description = "Create detailed chapter outlines based on the story arc."
-    outline_stream = outline_creator.run_information_gathering_task(task_description=outline_task_description, project_notes_content=full_story_arc_output) # Pass story arc output as project notes, switched to streaming
+    outline_stream = outline_creator.run_information_gathering_task(task_description=outline_task_description, project_notes_content=full_story_arc_output)  # Pass story arc output as project notes, switched to streaming
     full_outline_output = ""
-    for chunk in outline_stream: # Stream Outline Creator output
+    for chunk in outline_stream:  # Stream Outline Creator output
         full_outline_output += chunk
         output_placeholder_outline.text(full_outline_output)
     st.session_state['outline_creator_output'] = full_outline_output
     st.success("Outline creation complete!")
 
+    st.session_state['plan_story_arc_triggered'] = False  # Reset Story Planner trigger - not really needed anymore for this workflow
+    st.session_state['build_settings_triggered'] = False  # Reset Setting Builder trigger - not really needed anymore for this workflow
+    st.session_state['create_outline_triggered'] = False  # Reset Outline Creator trigger - not really needed anymore for this workflow
 
-    st.session_state['plan_story_arc_triggered'] = False # Reset Story Planner trigger - not really needed anymore for this workflow
-    st.session_state['build_settings_triggered'] = False # Reset Setting Builder trigger - not really needed anymore for this workflow
-    st.session_state['create_outline_triggered'] = False # Reset Outline Creator trigger - not really needed anymore for this workflow
-
-
-    st.success("Book creation workflow initiated!") # Overall success message for workflow
+    st.success("Book creation workflow initiated!")  # Overall success message for workflow
 
 
 def get_ollama_models():
@@ -92,17 +90,31 @@ def get_ollama_models():
 
 st.title("AI Book Writer Control Panel")
 
-tab1, tab2, tab3, tab4 = st.tabs(["Project Setup", "Agent Configuration", "Process Monitor", "Output"])
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["Project Setup", "Agent Configuration", "Process Monitor", "Output"]
+)
 
 
 with tab1:
     st.header("Project Setup")
 
     genre_dir = "config/genres"  # Path to your genres directory
-    genre_files = [f[:-3] for f in os.listdir(genre_dir) if f.endswith(".py")]  # List genre names
-    genre_selection = st.selectbox("Select Genre", genre_files, index=genre_files.index("literary_fiction") if "literary_fiction" in genre_files else 0)
+    genre_files = [
+        f[:-3] for f in os.listdir(genre_dir) if f.endswith(".py")
+    ]  # List genre names
+    genre_selection = st.selectbox(
+        "Select Genre",
+        genre_files,
+        index=genre_files.index("literary_fiction")
+        if "literary_fiction" in genre_files
+        else 0,
+    )
 
-    initial_prompt = st.text_area("Initial Story Idea/Prompt", value="A story about a solitary lighthouse keeper who discovers a mysterious message in a bottle.", height=150)
+    initial_prompt = st.text_area(
+        "Initial Story Idea/Prompt",
+        value="A story about a solitary lighthouse keeper who discovers a mysterious message in a bottle.",
+        height=150,
+    )
     num_chapters = st.slider("Number of Chapters", min_value=1, max_value=30, value=4)  # Default to 4 now
     additional_instructions = st.text_area(
         "Additional Instructions (optional)",
