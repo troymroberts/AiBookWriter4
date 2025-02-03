@@ -166,28 +166,125 @@ with tab2:
     st.session_state["story_planner_model_selection"] = st.selectbox(
         "Model for Story Planner",
         model_list,
-        index=model_list.index("deepseek-r1:1.5b")
-+```diff
---- a/troymroberts-aibookwriter4 (2).txt
-+++ b/troymroberts-aibookwriter4 (2).txt
-@@ -8,6 +8,11 @@
- import io  # To capture stdout
- import subprocess  # For running ollama command
+        index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0, # Corrected line: Added closing parenthesis here
+        key="story_planner_model_selectbox",
+    )
+    st.session_state["story_planner_temperature"] = st.slider(
+        "Temperature (Story Planner)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.7,
+        step=0.01,
+        key="story_planner_temp_slider",
+    )
+    st.session_state["story_planner_max_tokens"] = st.slider(
+        "Max Tokens (Story Planner)",
+        min_value=100,
+        max_value=4000,
+        value=2000,
+        step=100,
+        key="story_planner_tokens_slider",
+    )
+    st.session_state["story_planner_top_p"] = st.slider(
+        "Top P (Story Planner)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.95,
+        step=0.01,
+        key="story_planner_top_p_slider",
+    )
+    st.session_state["story_planner_context"] = st.slider(
+        "Context Window (Story Planner)",
+        min_value=2048,
+        max_value=32768,
+        value=8192,
+        step=1024,
+        key="story_planner_context_slider",
+    )
 
-+# Initialize session state
-+if 'story_arc_output' not in st.session_state:
-+    st.session_state['story_arc_output'] = ""
-+if 'setting_builder_output' not in st.session_state:
-+    st.session_state['setting_builder_output'] = ""
- # Initialize session state - MOVED TO TOP (same as before) ...
+    st.subheader("Setting Builder Agent")
++    st.session_state["setting_builder_model_selection"] = st.selectbox(
++        "Model for Setting Builder",
++        model_list,
++        index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
++        key="setting_builder_model_selectbox",
++    )
++    st.session_state["setting_builder_temperature"] = st.slider(
++        "Temperature (Setting Builder)",
++        min_value=0.0,
++        max_value=1.0,
++        value=0.7,
++        step=0.01,
++        key="setting_builder_temp_slider",
++    )
++    st.session_state["setting_builder_max_tokens"] = st.slider(
++        "Max Tokens (Setting Builder)",
++        min_value=100,
++        max_value=4000,
++        value=2000,
++        step=100,
++        key="setting_builder_tokens_slider",
++    )
++    st.session_state["setting_builder_top_p"] = st.slider(
++        "Top P (Setting Builder)",
++        min_value=0.0,
++        max_value=1.0,
++        value=0.95,
++        step=0.01,
++        key="setting_builder_top_p_slider",
++    )
++    st.session_state["setting_builder_context"] = st.slider(
++        "Context Window (Setting Builder)",
++        min_value=2048,
++        max_value=32768,
++        value=8192,
++        step=1024,
++        key="setting_builder_context_slider",
++    )
++
++    st.subheader("Outline Creator Agent")
++    st.session_state["outline_creator_model_selection"] = st.selectbox(
++        "Model for Outline Creator",
++        model_list,
++        index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
++        key="outline_creator_model_selectbox",
++    )
++    st.session_state["outline_creator_temperature"] = st.slider(
++        "Temperature (Outline Creator)",
++        min_value=0.0,
++        max_value=1.0,
++        value=0.7,
++        step=0.01,
++        key="outline_creator_temp_slider",
++    )
++    st.session_state["outline_creator_max_tokens"] = st.slider(
++        "Max Tokens (Outline Creator)",
++        min_value=100,
++        max_value=4000,
++        value=2000,
++        step=100,
++        key="outline_creator_tokens_slider",
++    )
++    st.session_state["outline_creator_top_p"] = st.slider(
++        "Top P (Outline Creator)",
++        min_value=0.0,
++        max_value=1.0,
++        value=0.95,
++        step=0.01,
++        key="outline_creator_top_p_slider",
++    )
++    st.session_state["outline_creator_context"] = st.slider(
++        "Context Window (Outline Creator)",
++        min_value=2048,
++        max_value=32768,
++        value=8192,
++        step=1024,
++        key="outline_creator_context_slider",
++    )
 
- def get_ollama_models():
-@@ -116,7 +121,7 @@
+
++    # ... (Agent configurations for other agents would follow a similar pattern) ...
 
 
- def get_ollama_models():
--    # ... (get_ollama_models function - same as before) ...
-+    pass # ... (get_ollama_models function - same as before) ...
- 
-
- st.title("AI Book Writer Control Panel")
+ with tab3:
+     st.header("Process Monitor")
