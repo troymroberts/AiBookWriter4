@@ -1,0 +1,4 @@
+model_list:
+  - model_name: ollama/qwen2.5:1.5b
+    litellm_params:
+      base_url: http://10.1.1.47:11434

@@ -1,0 +1,94 @@
+num_chapters: 2          # Default number of chapters
+min_words_per_chapter: 2500  # Minimum word count per chapter
+max_words_per_chapter: 4000  # Maximum word count per chapter
+
+character:
+    depth: 0.9                # Base complexity of character development
+    personality_depth: 0.9    # Psychological and emotional layers
+    voice_consistency: 0.9    # Distinct speech patterns and internal monologue
+    relationship_depth: 0.9   # Complexity of interpersonal dynamics
+    arc_type: "complex"       # Options: "complex", "gradual", "subtle", "transformative"
+    backstory_depth: 0.8      # Integration of past experiences
+    motivation_complexity: 0.9 # Layered character motivations
+    psychology: 0.9           # Depth of psychological exploration
+
+narrative:
+    multi_threaded_plotting: true      # Multiple interweaving plot lines
+    complexity: 0.8               # Intricacy of plot elements
+    foreshadowing_frequency: 0.8       # Integration of future story elements
+    reinforcement: 0.9           # Consistency of thematic elements
+    subplot_density: 0.7               # Quantity and complexity of subplots
+    resolution_style: "nuanced"   # Options: "nuanced", "open_ended", "circular", "ambiguous"
+    layering: 0.9            # Multiple levels of meaning
+    innovation: 0.8         # Experimental narrative structures
+    time_treatment: "nonlinear"        # Options: "nonlinear", "fragmented", "circular", "layered"
+    perspective_shifts: 0.7            # Frequency of viewpoint changes
+
+scene:
+    pacing_variety: 0.8          # Mix of contemplative and dynamic scenes
+    sensory_detail_depth: 0.9          # Richness of sensory descriptions
+    tension_curve_control: 0.7         # Management of scene-level tension
+    dialogue_authenticity: 0.9         # Naturalistic dialogue style
+    setting_integration: 0.8           # Setting as character/theme reflection
+    transitions: "fluid"         # Options: "fluid", "abrupt", "thematic", "associative"
+    atmospheric_density: 0.9           # Richness of mood and atmosphere
+    symbolism_in_setting: 0.9         # Use of setting for symbolic meaning
+    temporal_flow: "variable"         # Options: "variable", "compressed", "expanded"
+    detail_selection: "significant"    # Options: "significant", "atmospheric", "psychological"
+
+style:
+    narrative_style: "third_person_limited" # Narrative perspective
+    complexity: 0.8              # Sophistication of language
+    symbolism_density: 0.9             # Frequency of symbolic elements
+    metaphor_frequency: 0.8            # Use of metaphorical language
+    subtext_depth: 0.9                 # Layers of unstated meaning
+    innovation: 0.7           # Experimental language use
+    sentence_variety: 0.9              # Mix of sentence structures
+    rhythm_control: 0.8                # Prose rhythm management
+    diction_sophistication: 0.9        # Vocabulary and word choice
+    consistency: 0.9         # Maintenance of style
+
+theme:
+    complexity: 0.9              # Depth of thematic exploration
+    moral_ambiguity: 0.9              # Complexity of moral questions
+    philosophical_depth: 0.8           # Integration of philosophical ideas
+    social_commentary_level: 0.7       # Degree of social observation
+    psychological_exploration: 0.9      # Depth of psychological themes
+    cultural_resonance: 0.8            # Connection to broader human experience
+    intellectual_engagement: 0.9       # Complexity of ideas explored
+    metaphysical_content: 0.7          # Exploration of existential questions
+    symbolic_resonance: 0.9            # Depth of symbolic meaning
+    layering: 0.9             # Multiple interacting themes
+    focus: "isolation"           # Suggested themes: "isolation", "redemption", "identity", "loss", "connection"
+
+literary_techniques:
+    stream_of_consciousness: 0.7       # Use of stream-of-consciousness
+    unreliable_narration: 0.6          # Degree of narrator unreliability
+    metafictional_elements: 0.5        # Self-referential elements
+    intertextuality: 0.6               # References to other texts
+    experimental_techniques: 0.6        # Use of innovative literary devices
+
+advanced_writing:
+    motif_development: 0.8             # Recurring symbolic elements
+    image_patterns: 0.9              # Consistent image systems
+    psychological_acuity: 0.9          # Insight into human nature
+    emotional_modulation: 0.8          # Control of emotional resonance
+    narrative_distance: "variable"      # Options: "variable", "close", "distant", "oscillating"
+
+pacing:
+    speed_chapter_start: 0.3     # Slower pace at chapter beginnings for setup
+    speed_chapter_mid: 0.6       # Moderate pace in chapter middle for development
+    speed_chapter_end: 0.5       # Slightly slower pace at chapter ends for reflection
+
+# Human Characteristics Settings - Keep these at 1.0 for Literary Fiction to maximize nuance
+human_characteristics:
+    show_dont_tell: 1.0
+    subtext_nuance: 1.0
+    personal_opinions: 1.0
+    colloquial_expressions: 1.0
+    logical_leaps: 1.0
+    subjective_expressions: 1.0
+    rhetorical_techniques: 1.0
+    personal_experiences: 1.0
+    character_development: 1.0
+    natural_flow: 1.0
