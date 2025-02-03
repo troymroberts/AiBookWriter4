@@ -12,30 +12,37 @@ if 'story_arc_output' not in st.session_state:
 if 'plan_story_arc_triggered' not in st.session_state:
     st.session_state['plan_story_arc_triggered'] = False
 if 'story_planner_model_selection' not in st.session_state: # Initialize model selections in session state
-    st.session_state['story_planner_model_selection'] = "deepseek-r1:1.5b"
+    st.session_state['story_planner_model_selection'] = "deepseek-r1:1.5b" # Changed default to deepseek-r1:1.5b
 if 'writer_model_selection' not in st.session_state:
-    st.session_state['writer_model_selection'] = "llama3:8b-instruct"
+    st.session_state['writer_model_selection'] = "deepseek-r1:1.5b" # Changed default to deepseek-r1:1.5b
 
 
 def get_ollama_models():
-    """Fetches the list of available models from the Ollama server."""
+    """Fetches the list of available models from the Ollama server with enhanced debugging."""
     try:
+        st.write("DEBUG: Running 'ollama list' command...") # Debug print before command
         result = subprocess.run(['ollama', 'list'], capture_output=True, text=True, check=True)
+        st.write("DEBUG: 'ollama list' command completed successfully.") # Debug print after success
         output_lines = result.stdout.strip().split('\n')
         models = []
         for line in output_lines[1:]: # Skip header line
             parts = line.split()
             if parts:
                 models.append(parts[0]) # Model name is the first part
+        st.write("DEBUG: Fetched models:", models) # Debug print of fetched models
+        if "deepseek-r1:1.5b" not in models: # Changed check to deepseek-r1:1.5b
+            st.warning("WARNING: 'deepseek-r1:1.5b' is not in the fetched model list.") # Warning if model is missing
         return models
-    except FileNotFoundError:
-        st.error("Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH.")
+    except FileNotFoundError as e:
+        st.error(f"Error: `ollama` command not found. Please ensure Ollama is installed and in your PATH. Details: {e}")
         return []
     except subprocess.CalledProcessError as e:
         st.error(f"Error listing Ollama models. Is Ollama server running? Details: {e}")
+        st.error(f"Subprocess error output: {e.stderr}") # Print stderr output for subprocess errors
+        st.error(f"Subprocess error return code: {e.returncode}") # Print return code
         return []
     except Exception as e:
-        st.error(f"An unexpected error occurred while fetching Ollama models: {e}")
+        st.error(f"An unexpected error occurred while fetching Ollama models: {e}. Details: {e}")
         return []
 
 
@@ -69,6 +76,7 @@ with tab2:
     ollama_model_list = get_ollama_models() # Fetch models from Ollama
 
     if ollama_model_list: # Only show config if models are fetched successfully
+        st.write("DEBUG: ollama_model_list:", ollama_model_list) # DEBUG PRINT - ADD THIS LINE
         with st.expander("Story Planner Agent Configuration"): # Using expanders for better UI organization
             st.subheader("Story Planner Agent")
             story_planner_model_selection = st.selectbox("Model", ollama_model_list, index=ollama_model_list.index(st.session_state['story_planner_model_selection']) if st.session_state['story_planner_model_selection'] in ollama_model_list else 0, key="story_planner_model_selection") # Use dynamic model list
