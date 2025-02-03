@@ -103,11 +103,11 @@ with tab2:
             story_planner_temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.05, key="story_planner_temp")
             story_planner_max_tokens = st.number_input("Max Tokens", min_value=500, max_value=4000, value=3500, step=100, key="story_planner_tokens")
             story_planner_top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="story_planner_top_p")
-            story_planner_context_window = st.number_input("Context Window", min_value=2048, max_value=32768, value=65536, step=1024, key="story_planner_context")
+            story_planner_context_window = st.number_input("Context Window", min_value=2048, max_value=131072, value=8192, step=1024, key="story_planner_context") # INCREASED max_value and adjusted value
 
         with st.expander("Writer Agent Configuration"): # Expander for Writer Agent config
             st.subheader("Writer Agent")
-            writer_model_selection = st.selectbox("Model", ollama_model_list, index=ollama_model_list.index("llama3:8b-instruct") if "llama3:8b-instruct" in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list
+            writer_model_selection = st.selectbox("Model", ollama_model_list, index=writer_model_list.index("llama3:8b-instruct") if "llama3:8b-instruct" in ollama_model_list else 0, key="writer_model_selection") # Use dynamic model list
             writer_temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.8, step=0.05, key="writer_temp")
             writer_max_tokens = st.number_input("Max Tokens", min_value=500, max_value=4000, value=3500, step=100, key="writer_tokens")
             writer_top_p = st.slider("Top P", min_value=0.0, max_value=1.0, value=0.95, step=0.05, key="writer_top_p")
