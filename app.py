@@ -8,10 +8,14 @@ from agents.writer import Writer  # Import Writer Agent
 import io  # To capture stdout
 import subprocess  # For running ollama command
 
-# Initialize session state - MOVED TO TOP (same as before) ...
+# Initialize session state
+if 'story_arc_output' not in st.session_state:
+    st.session_state['story_arc_output'] = ""
+if 'setting_builder_output' not in st.session_state:
+    st.session_state['setting_builder_output'] = ""
 
 def get_ollama_models():
-    # ... (get_ollama_models function - same as before) ...
+    pass # ... (get_ollama_models function - same as before) ...
 
 
 def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Corrected order
@@ -84,9 +88,6 @@ def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Correct
     st.success("Book creation workflow initiated!")  # Overall success message for workflow
 
 
-def get_ollama_models():
-    # ... (get_ollama_models function - same as before) ...
-
 
 st.title("AI Book Writer Control Panel")
 
@@ -133,7 +134,59 @@ with tab1:
 
 
 with tab2:
-    # ... (Tab 2 code - Agent Configuration - same as before) ...
+    st.header("Agent Configuration")
+
+    st.subheader("Ollama Models")
+    ollama_models = get_ollama_models()  # Fetch available Ollama models
+    if ollama_models:
+        model_list = [model['name'] for model in ollama_models['models']]
+    else:
+        model_list = ["No models found"]  # Default if no models fetched
+
+    st.subheader("Story Planner Agent")
+    st.session_state["story_planner_model_selection"] = st.selectbox(
+        "Model for Story Planner",
+        model_list,
+        index=model_list.index("deepseek-r1:1.5b")
+        if "deepseek-r1:1.5b" in model_list
+        else 0,
+        key="story_planner_model_selectbox",
+    )
+    st.session_state["story_planner_temperature"] = st.slider(
+        "Temperature (Story Planner)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.7,
+        step=0.01,
+        key="story_planner_temp_slider",
+    )
+    st.session_state["story_planner_max_tokens"] = st.slider(
+        "Max Tokens (Story Planner)",
+        min_value=100,
+        max_value=4000,
+        value=2000,
+        step=100,
+        key="story_planner_tokens_slider",
+    )
+    st.session_state["story_planner_top_p"] = st.slider(
+        "Top P (Story Planner)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.95,
+        step=0.01,
+        key="story_planner_top_p_slider",
+    )
+    st.session_state["story_planner_context"] = st.slider(
+        "Context Window (Story Planner)",
+        min_value=2048,
+        max_value=32768,
+        value=8192,
+        step=1024,
+        key="story_planner_context_slider",
+    )
+
+    # ... (Agent configurations for other agents would follow a similar pattern) ...
+
 
 with tab3:
     st.header("Process Monitor")
