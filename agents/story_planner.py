@@ -34,7 +34,7 @@ class StoryPlanner:
         ])
         self.genre = genre
 
-        def plan_story_arc(self, genre, num_chapters=10, additional_instructions=""): # ADDED genre parameter here
+    def plan_story_arc(self, genre, num_chapters=10, additional_instructions=""): # ADDED genre parameter here
         """Plans the story arc for a novel, incorporating the configured genre."""
         chain = self.prompt | self.llm
         result = chain.invoke({
