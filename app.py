@@ -212,3 +212,4 @@ with tab2:
     st.session_state["setting_builder_temperature"] = st.slider(
          "Temperature (Setting Builder)",
          min_value=0.0,
+   )
