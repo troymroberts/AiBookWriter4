@@ -21,18 +21,36 @@ if 'outline_creator_output' not in st.session_state:
 def get_ollama_models():
     """Fetches the list of available Ollama models using the 'ollama list' command."""
     try:
-        process = subprocess.run(['ollama', 'list', '--format', 'json'], capture_output=True, text=True, check=True)
-        output = process.stdout
-        models_json = json.loads(output)
-        return models_json
-    except subprocess.CalledProcessError as e:
-        st.error(f"Error fetching Ollama models: {e}")
-        return None
-    except FileNotFoundError:
-        st.error("Ollama is not installed or not in your PATH.")
-        return None
-    except json.JSONDecodeError:
-        st.error("Could not decode Ollama model list as JSON.")
+        # First check if ollama is installed
+        try:
+            subprocess.run(['ollama', '--version'], capture_output=True, check=True)
+        except FileNotFoundError:
+            st.error("Ollama is not installed or not in your PATH. Please install Ollama first.")
+            return None
+        
+        # Try to get model list
+        try:
+            process = subprocess.run(['ollama', 'list', '--format', 'json'], capture_output=True, text=True, check=True)
+        except subprocess.CalledProcessError as e:
+            if "connection refused" in str(e.stderr).lower():
+                st.error("Cannot connect to Ollama. Please make sure Ollama is running using 'ollama serve'")
+            else:
+                st.error(f"Error running Ollama: {e.stderr}")
+            return None
+            
+        # Parse the output
+        try:
+            output = process.stdout
+            models_json = json.loads(output)
+            if not models_json.get('models'):
+                st.warning("No models found. You may need to pull some models first using 'ollama pull MODEL_NAME'")
+            return models_json
+        except json.JSONDecodeError:
+            st.error("Could not decode Ollama model list as JSON.")
+            return None
+            
+    except Exception as e:
+        st.error(f"Unexpected error: {str(e)}")
         return None
 
 

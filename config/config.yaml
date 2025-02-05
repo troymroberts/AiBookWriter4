@@ -1,7 +1,7 @@
 model_list:
   - model_name: ollama/qwen2.5:1.5b
     litellm_params:
-      base_url: http://10.1.1.47:11434
+      base_url: http://127.0.0.1:11434
 
 genre: literary_fiction # Default genre selection
 prompts_file: config/prompts.yaml # Path to the prompts configuration file
