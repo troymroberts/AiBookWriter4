@@ -1,3 +1,4 @@
+--- START OF FILE app.py ---
 import streamlit as st
 import yaml
 import os
@@ -122,7 +123,6 @@ def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Correct
     st.session_state['create_outline_triggered'] = False  # Reset Outline Creator trigger - not really needed anymore for this workflow
 
     st.success("Book creation workflow initiated!")  # Overall success message for workflow
-
 
 
 st.title("AI Book Writer Control Panel")
@@ -301,5 +301,48 @@ with tab2:
     )
 
 
- with tab3:
-     st.header("Process Monitor")
+with tab3: # CORRECTED INDENTATION
+    st.header("Process Monitor")
+    # --- Story Arc Output Display (Moved to Workflow Function) ---
+    # --- Setting Builder Output Display (Moved to Workflow Function) ---
+    # --- Outline Creator Output Display (NEW) ---
+    st.subheader("Outline Creator Output:")  # Section for Outline Creator Output
+    output_placeholder_outline = st.empty()  # Placeholder for Outline Creator output
+    if st.session_state.get("outline_creator_output"):
+        output_placeholder_outline.text(st.session_state["outline_creator_output"])
+
+    st.subheader("Setting Builder Output:")  # Section for Setting Builder Output
+    output_placeholder_settings = st.empty()
+    if st.session_state.get("setting_builder_output"):
+        output_placeholder_settings.text(st.session_state["setting_builder_output"])
+
+    st.subheader("Story Arc Output:")  # Section for Story Arc Output
+    output_placeholder_arc = st.empty()
+    if st.session_state.get("story_arc_output"):
+        output_placeholder_arc.text(st.session_state["story_arc_output"])
+
+
+with tab4:
+    st.header("Output Inspection")
+    st.subheader("Story Arc:")
+    st.text_area(
+        "Final Story Arc Output",
+        value=st.session_state["story_arc_output"],
+        height=400,
+    )  # Display stored Story Arc
+    st.subheader("World Settings:")  # NEW: World Settings output in Tab 4
+    st.text_area(
+        "Final World Settings Output",
+        value=st.session_state["setting_builder_output"],
+        height=400,
+    )  # Display World Settings
+    st.subheader("Chapter Outlines:")  # NEW: Chapter Outlines output in Tab 4
+    st.text_area(
+        "Final Chapter Outlines Output",
+        value=st.session_state["outline_creator_output"],
+        height=400,
+    )  # Display Chapter Outlines
+
+
+if __name__ == "__main__":
+    pass
