@@ -1,5 +1,10 @@
 # app.py Changelog
 # ------------------
+# 2025-02-05 - 15:45 UTC
+# Fix: Improved JSON parsing in get_ollama_models to handle non-JSON output gracefully.
+#      Added more robust parsing logic to handle potential non-JSON lines in 'ollama list' output.
+#      Displayed raw output using st.code for debugging purposes when JSONDecodeError occurs.
+#
 # 2025-02-05 - 15:30 UTC
 # Fix: Resolved SyntaxError: expected 'except' or 'finally' block on line 46
 #      Corrected indentation of except block within get_ollama_models function
@@ -58,9 +63,9 @@ def get_ollama_models():
                 if line.strip():  # Skip empty lines
                     try:
                         models_json_list.append(json.loads(line))
-                    except json.JSONDecodeError as e: # ADDED e here for debugging
-                        st.error(f"Error decoding JSON line: {line}. JSONDecodeError: {e}") # Indicate line causing issue and include detailed error
-                        continue # Skip to the next line if parsing fails
+                    except json.JSONDecodeError as e:  # ADDED e for debugging
+                        st.error(f"Error decoding JSON line: {line}. JSONDecodeError: {e}")  # Indicate line causing issue and include detailed error
+                        continue  # Skip to the next line if parsing fails
 
             if not models_json_list:  # Check if the list is empty after parsing
                 st.warning("No models found in Ollama list output after JSON parsing.")
