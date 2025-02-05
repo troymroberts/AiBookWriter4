@@ -42,17 +42,27 @@ def get_ollama_models():
         # Parse the output
         try: # Start of Parse Output Try Block
             output = process.stdout
-            # MODIFIED JSON PARSING - Expecting each line to be a json object
-            models_json_list = [json.loads(line) for line in output.strip().split('\n') if line] # handles multiple json objects in output
+            st.code(output) # Display raw output for debugging
++           
+            # Attempt JSON parsing - More robust parsing
++           models_json_list = []
++           for line in output.strip().split('\n'):
++               if line.strip():  # Skip empty lines
++                   try:
++                       models_json_list.append(json.loads(line))
++                   except json.JSONDecodeError:
++                       st.error(f"Error decoding JSON line: {line}") # Indicate line causing issue
++                       continue # Skip to the next line if parsing fails
 
             if not models_json_list: # Check if the list is empty after parsing
-                st.warning("No models found in Ollama list output.")
+                st.warning("No models found in Ollama list output after JSON parsing.")
                 return {'models': []} # Return empty model list
 
             return {'models': models_json_list} # Return parsed list of models
 
-        except json.JSONDecodeError: # Expecting except block here
-            st.error("Could not decode Ollama model list as JSON. Please check the output format of 'ollama list'")
+
+        except json.JSONDecodeError as e: # Expecting except block here
+            st.error(f"Could not decode Ollama model list as JSON. JSONDecodeError: {e}") # Include detailed JSON error
             return None # Ensure return None in except block
 
     except Exception as e: # Expecting except block here
