@@ -42,17 +42,24 @@ def get_ollama_models():
         # Parse the output
         try:
             output = process.stdout
-            models_json = json.loads(output)
-            if not models_json.get('models'):
-                st.warning("No models found. You may need to pull some models first using 'ollama pull MODEL_NAME'")
-            return models_json
+            # MODIFIED JSON PARSING - Expecting each line to be a json object
++           models_json_list = [json.loads(line) for line in output.strip().split('\n') if line] # handles multiple json objects in output
+
++           if not models_json_list: # Check if the list is empty after parsing
++               st.warning("No models found in Ollama list output.")
++               return {'models': []} # Return empty model list
+
++           return {'models': models_json_list} # Return parsed list of models
+
+
         except json.JSONDecodeError:
-            st.error("Could not decode Ollama model list as JSON.")
+            st.error("Could not decode Ollama model list as JSON. Please check the output format of 'ollama list'")
             return None
 
     except Exception as e:
         st.error(f"Unexpected error: {str(e)}")
         return None
+
 
 
 def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Corrected order
@@ -346,3 +353,4 @@ with tab4:
 
 if __name__ == "__main__":
     pass
+#--- END OF FILE app.py ---#
