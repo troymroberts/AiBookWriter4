@@ -1,4 +1,3 @@
-#--- START OF FILE agents/setting_builder.py ---
 # --- agents/setting_builder.py ---
 from langchain_ollama import OllamaLLM
 from langchain.prompts import ChatPromptTemplate
