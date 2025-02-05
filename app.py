@@ -1,13 +1,74 @@
+# --- app.py ---
+"""
+# AI Book Writer Control Panel
+
+This Streamlit application provides a user interface for configuring and controlling the AI Book Writer workflow.
+
+## Features:
+
+- **Project Setup:**
+    - Select the genre of the book.
+    - Provide an initial story idea/prompt.
+    - Specify the desired number of chapters.
+    - Add optional additional instructions for the AI.
+- **Agent Configuration:**
+    - Configure individual settings for each agent:
+        - Story Planner
+        - Setting Builder
+        - Outline Creator
+    - Adjust parameters like:
+        - Model selection (from available Ollama models)
+        - Temperature
+        - Max tokens
+        - Top-p
+        - Context window
+- **Process Monitor:**
+    - View the output of each agent as it's generated.
+    - Track the progress of the book creation workflow.
+- **Output:**
+    - Inspect the final output of each agent:
+        - Story Arc
+        - World Settings
+        - Chapter Outlines
+
+## Usage:
+
+1. **Install Ollama:** Ensure Ollama is installed and running on your system.
+2. **Install Dependencies:** Install the required Python packages using `pip install -r requirements.txt`.
+3. **Run the Application:** Execute the script with `streamlit run app.py`.
+4. **Configure and Run:** Use the Streamlit interface to configure the project, adjust agent settings, and start the book creation process.
+
+## Changelog:
+
+- **2024-02-05:**
+    - Refactored `get_ollama_models()` to handle Ollama not being installed and various error conditions.
+    - Moved `run_book_creation_workflow()` to the top for better readability and corrected the order of operations.
+    - Implemented streaming output for Story Planner, Setting Builder, and Outline Creator.
+    - Removed unnecessary triggers for individual agent steps as they are now part of a single workflow.
+    - Added detailed error messages and handling for various scenarios.
+    - Corrected indentation and formatting issues.
+    - Updated agent configuration to use sliders for numerical parameters.
+    - Added "Output" tab for inspecting final agent outputs.
+    - Initialized `prompts_dir` from `config.yaml` in the workflow function.
+    - Updated `StoryPlannerConfig`, `SettingBuilderConfig`, and `OutlineCreatorConfig` to be correctly passed to their respective agent classes.
+    - Added clear section headers for agent outputs in the Process Monitor tab.
+    - Implemented dynamic loading of genre configurations.
+    - Enhanced error handling and user feedback throughout the application.
+    - Corrected the instantiation of `OutlineCreator` to match its `__init__` method signature.
+"""
+
 import streamlit as st
 import yaml
 import os
-from agents.story_planner import StoryPlanner, StoryPlannerConfig  # Import Agent and Config
-from agents.setting_builder import SettingBuilder, SettingBuilderConfig  # Import SettingBuilder Agent and Config
-from agents.outline_creator import OutlineCreator, OutlineCreatorConfig  # Import OutlineCreator Agent and Config
-from agents.writer import Writer  # Import Writer Agent
-import io  # To capture stdout
-import subprocess  # For running ollama command
-import json
+from agents.story_planner import StoryPlanner, StoryPlannerConfig
+from agents.setting_builder import SettingBuilder, SettingBuilderConfig
+from agents.outline_creator import OutlineCreator, OutlineCreatorConfig
+import subprocess
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 # Initialize session state
 if 'story_arc_output' not in st.session_state:
@@ -17,57 +78,54 @@ if 'setting_builder_output' not in st.session_state:
 if 'outline_creator_output' not in st.session_state:
     st.session_state['outline_creator_output'] = ""
 
-
 def get_ollama_models():
     """Fetches the list of available Ollama models using the 'ollama list' command and parses as text."""
-    model_list = []  # Initialize as empty list
+    model_list = []
     try:
-        # First check if ollama is installed
+        # Check if ollama is installed
         try:
             subprocess.run(['ollama', '--version'], capture_output=True, check=True)
         except FileNotFoundError:
             st.error("Ollama is not installed or not in your PATH. Please install Ollama first.")
             return None
 
-        # Try to get model list -  REMOVED --format json
+        # Get model list
         try:
-            process = subprocess.run(['ollama', 'list'], capture_output=True, text=True, check=True)  # Removed --format json
+            process = subprocess.run(['ollama', 'list'], capture_output=True, text=True, check=True)
             output = process.stdout
-            st.code(output)  # Display raw output for debugging
+            logger.info(f"Ollama list output: {output}")
 
-            # Parse output as text, extracting model names - TEXT PARSING IMPLEMENTATION
-            model_list = []
+            # Parse output as text, extracting model names
             for line in output.strip().split('\n'):
-                if line.strip():
-                    parts = line.split()  # Split line by spaces
-                    model_name = parts[0]  # Model name is the first part of the line
-                    model_list.append({"name": model_name})  # Append model dictionary
+                if line.strip() and not line.startswith("NAME"):
+                    parts = line.split()
+                    model_name = parts[0]
+                    model_list.append({"name": model_name})
 
             if not model_list:
                 st.warning("No models found in Ollama list output.")
-                return {'models': []}  # Return empty model list
+                return {'models': []}
 
-            return {'models': model_list}  # Return list of model dictionaries
+            return {'models': model_list}
 
-        except subprocess.CalledProcessError as e:  # ADDED EXCEPT BLOCK - Handling subprocess error - CORRECTED INDENTATION
+        except subprocess.CalledProcessError as e:
             if "connection refused" in str(e.stderr).lower():
                 st.error("Cannot connect to Ollama. Please make sure Ollama is running using 'ollama serve'")
             else:
-                st.error(f"Error running Ollama command: {e}")  # More generic error for subprocess
+                st.error(f"Error running Ollama command: {e}")
             return None
 
-    except Exception as e:  # Expecting except block here - CORRECTED INDENTATION
-        st.error(f"Unexpected error in get_ollama_models: {str(e)}")  # More descriptive error message
-        return None  # Ensure return None in except block
+    except Exception as e:
+        st.error(f"Unexpected error in get_ollama_models: {str(e)}")
+        return None
 
-
-def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Corrected order
+def run_book_creation_workflow():
     """Executes the book creation workflow: StoryPlanner -> SettingBuilder -> OutlineCreator."""
     genre_selection = st.session_state['genre_selection']
     num_chapters = st.session_state['num_chapters']
     additional_instructions = st.session_state['additional_instructions']
 
-    st.write(f"Starting book creation workflow for genre: {genre_selection}, chapters: {num_chapters}")  # Feedback
+    logger.info(f"Starting book creation workflow for genre: {genre_selection}, chapters: {num_chapters}")
 
     # --- Load Configuration (for base_url, prompts_dir) ---
     with open("config.yaml", "r") as config_file:
@@ -76,84 +134,83 @@ def run_book_creation_workflow():  # MOVED FUNCTION DEFINITION UP HERE - Correct
     base_url_config = config_yaml['model_list'][0]['litellm_params']['base_url']
 
     # --- Initialize Agents ---
-    story_planner_config = StoryPlannerConfig(  # Initialize StoryPlannerConfig
+    story_planner_config = StoryPlannerConfig(
         llm_endpoint=base_url_config,
-        llm_model=st.session_state.get("story_planner_model_selection", "deepseek-r1:1.5b"),
+        llm_model=st.session_state.get("story_planner_model_selection", "deepseek-coder:1.3b"),
         temperature=st.session_state.get("story_planner_temperature", 0.7),
         max_tokens=st.session_state.get("story_planner_max_tokens", 2000),
         top_p=st.session_state.get("story_planner_top_p", 0.95),
         context_window=st.session_state.get("story_planner_context", 8192)
     )
-    story_planner = StoryPlanner(  # Initialize StoryPlanner with config
+    story_planner = StoryPlanner(
         config=story_planner_config, prompts_dir=prompts_dir_path, genre=genre_selection, num_chapters=num_chapters,
         streaming=True)
 
-    setting_builder_config = SettingBuilderConfig(  # Initialize SettingBuilderConfig
+    setting_builder_config = SettingBuilderConfig(
         llm_endpoint=base_url_config,
-        llm_model=st.session_state.get("setting_builder_model_selection", "deepseek-r1:1.5b"),  # Use setting builder model selection
-        temperature=st.session_state.get("setting_builder_temperature", 0.7),  # Use setting builder temp
-        max_tokens=st.session_state.get("setting_builder_max_tokens", 2000),  # Use setting builder tokens
-        top_p=st.session_state.get("setting_builder_top_p", 0.95),  # Use setting builder top_p
-        context_window=st.session_state.get("setting_builder_context", 8192)  # Use setting builder context
+        llm_model=st.session_state.get("setting_builder_model_selection", "deepseek-coder:1.3b"),
+        temperature=st.session_state.get("setting_builder_temperature", 0.7),
+        max_tokens=st.session_state.get("setting_builder_max_tokens", 2000),
+        top_p=st.session_state.get("setting_builder_top_p", 0.95),
+        context_window=st.session_state.get("setting_builder_context", 8192)
     )
-    setting_builder = SettingBuilder(  # Initialize SettingBuilder with config
+    setting_builder = SettingBuilder(
         config=setting_builder_config, prompts_dir=prompts_dir_path, streaming=True)
 
-    outline_creator_config = OutlineCreatorConfig(  # Initialize OutlineCreatorConfig
+    outline_creator_config = OutlineCreatorConfig(
         llm_endpoint=base_url_config,
-        llm_model=st.session_state.get("outline_creator_model_selection", "deepseek-r1:1.5b"),  # Use outline_creator model selection
-        temperature=st.session_state.get("outline_creator_temperature", 0.7),  # Use outline_creator temp
-        max_tokens=st.session_state.get("outline_creator_max_tokens", 2000),  # Use outline_creator tokens
-        top_p=st.session_state.get("outline_creator_top_p", 0.95),  # Use outline_creator top_p
-        context_window=st.session_state.get("outline_creator_context", 8192)  # Use outline_creator context
+        llm_model=st.session_state.get("outline_creator_model_selection", "deepseek-coder:1.3b"),
+        temperature=st.session_state.get("outline_creator_temperature", 0.7),
+        max_tokens=st.session_state.get("outline_creator_max_tokens", 2000),
+        top_p=st.session_state.get("outline_creator_top_p", 0.95),
+        context_window=st.session_state.get("outline_creator_context", 8192)
     )
-    outline_creator = OutlineCreator(  # Initialize OutlineCreator with config
-        config=outline_creator_config, prompts_dir=prompts_dir_path, streaming=True)
+    outline_creator = OutlineCreator(
+        config=outline_creator_config, streaming=True)
 
     # --- Run Story Planner Task ---
-    st.subheader("Story Arc Output:")  # Section for Story Arc Output
+    st.subheader("Story Arc Output:")
     output_placeholder_arc = st.empty()
     story_arc_stream = story_planner.plan_story_arc(genre=genre_selection, num_chapters=num_chapters,
                                                     additional_instructions=additional_instructions)
     full_story_arc_output = ""
     for chunk in story_arc_stream:
         full_story_arc_output += chunk
-        output_placeholder_arc.text(full_story_arc_output)
+        output_placeholder_arc.markdown(full_story_arc_output)
     st.session_state['story_arc_output'] = full_story_arc_output
     st.success("Story arc planning complete!")
 
     # --- Run Setting Builder Task ---
-    st.subheader("Setting Builder Output:")  # Section for Setting Builder Output
+    st.subheader("Setting Builder Output:")
     output_placeholder_settings = st.empty()
     setting_task_description = "Develop initial world settings and locations based on the story arc."
     setting_stream = setting_builder.run_information_gathering_task(task_description=setting_task_description,
-                                                                   outline_context=full_story_arc_output)  # Pass story arc output as context, switched to streaming
+                                                                   outline_context=full_story_arc_output)
     full_setting_output = ""
-    for chunk in setting_stream:  # Stream Setting Builder output
+    for chunk in setting_stream:
         full_setting_output += chunk
-        output_placeholder_settings.text(full_setting_output)
+        output_placeholder_settings.markdown(full_setting_output)
     st.session_state['setting_builder_output'] = full_setting_output
     st.success("Setting building complete!")
 
     # --- Run Outline Creator Task ---
-    st.subheader("Outline Creator Output:")  # Section for Outline Creator Output
+    st.subheader("Outline Creator Output:")
     output_placeholder_outline = st.empty()
     outline_task_description = "Create detailed chapter outlines based on the story arc."
     outline_stream = outline_creator.run_information_gathering_task(task_description=outline_task_description,
-                                                                    project_notes_content=full_story_arc_output)  # Pass story arc output as project notes, switched to streaming
+                                                                    project_notes_content=full_story_arc_output)
     full_outline_output = ""
-    for chunk in outline_stream:  # Stream Outline Creator output
+    for chunk in outline_stream:
         full_outline_output += chunk
-        output_placeholder_outline.text(full_outline_output)
+        output_placeholder_outline.markdown(full_outline_output)
     st.session_state['outline_creator_output'] = full_outline_output
     st.success("Outline creation complete!")
 
-    st.session_state['plan_story_arc_triggered'] = False  # Reset Story Planner trigger - not really needed anymore for this workflow
-    st.session_state['build_settings_triggered'] = False  # Reset Setting Builder trigger - not really needed anymore for this workflow
-    st.session_state['create_outline_triggered'] = False  # Reset Outline Creator trigger - not really needed anymore for this workflow
+    st.session_state['plan_story_arc_triggered'] = False
+    st.session_state['build_settings_triggered'] = False
+    st.session_state['create_outline_triggered'] = False
 
-    st.success("Book creation workflow initiated!")  # Overall success message for workflow
-
+    st.success("Book creation workflow initiated!")
 
 st.title("AI Book Writer Control Panel")
 
@@ -161,14 +218,13 @@ tab1, tab2, tab3, tab4 = st.tabs(
     ["Project Setup", "Agent Configuration", "Process Monitor", "Output"]
 )
 
-
 with tab1:
     st.header("Project Setup")
 
-    genre_dir = "config/genres"  # Path to your genres directory
+    genre_dir = "config/genres"
     genre_files = [
         f[:-3] for f in os.listdir(genre_dir) if f.endswith(".py")
-    ]  # List genre names
+    ]
     genre_selection = st.selectbox(
         "Select Genre",
         genre_files,
@@ -182,38 +238,37 @@ with tab1:
         value="A story about a solitary lighthouse keeper who discovers a mysterious message in a bottle.",
         height=150,
     )
-    num_chapters = st.slider("Number of Chapters", min_value=1, max_value=30, value=4)  # Default to 4 now
+    num_chapters = st.slider("Number of Chapters", min_value=1, max_value=30, value=4)
     additional_instructions = st.text_area(
         "Additional Instructions (optional)",
         value="Focus on atmosphere and suspense.",
         height=100,
     )
 
-    if st.button("Start Book Creation Process"):  # CHANGED BUTTON LABEL
-        st.session_state["story_arc_output"] = ""  # Clear outputs
+    if st.button("Start Book Creation Process"):
+        st.session_state["story_arc_output"] = ""
         st.session_state["setting_builder_output"] = ""
         st.session_state["outline_creator_output"] = ""
         st.session_state["genre_selection"] = genre_selection
         st.session_state["num_chapters"] = num_chapters
         st.session_state["additional_instructions"] = additional_instructions
-        run_book_creation_workflow()  # CALL THE WORKFLOW FUNCTION
-
+        run_book_creation_workflow()
 
 with tab2:
     st.header("Agent Configuration")
 
     st.subheader("Ollama Models")
-    ollama_models = get_ollama_models()  # Fetch available Ollama models
+    ollama_models = get_ollama_models()
     if ollama_models and 'models' in ollama_models and isinstance(ollama_models['models'], list):
         model_list = [model['name'] for model in ollama_models['models']]
     else:
-        model_list = ["No models found"]  # Default if no models fetched
+        model_list = ["No models found"]
 
-    with st.expander("Story Planner Agent", expanded=True):  # Agent Config Expander
+    with st.expander("Story Planner Agent", expanded=True):
         st.session_state["story_planner_model_selection"] = st.selectbox(
             "Model for Story Planner",
             model_list,
-            index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
+            index=model_list.index("deepseek-coder:1.3b") if "deepseek-coder:1.3b" in model_list else 0,
             key="story_planner_model_selectbox",
         )
         st.session_state["story_planner_temperature"] = st.slider(
@@ -249,11 +304,11 @@ with tab2:
             key="story_planner_context_slider",
         )
 
-    with st.expander("Setting Builder Agent", expanded=False):  # Agent Config Expander
+    with st.expander("Setting Builder Agent", expanded=False):
         st.session_state["setting_builder_model_selection"] = st.selectbox(
             "Model for Setting Builder",
             model_list,
-            index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
+            index=model_list.index("deepseek-coder:1.3b") if "deepseek-coder:1.3b" in model_list else 0,
             key="setting_builder_model_selectbox",
         )
         st.session_state["setting_builder_temperature"] = st.slider(
@@ -289,11 +344,11 @@ with tab2:
             key="setting_builder_context_slider",
         )
 
-    with st.expander("Outline Creator Agent", expanded=False):  # Agent Config Expander
+    with st.expander("Outline Creator Agent", expanded=False):
         st.session_state["outline_creator_model_selection"] = st.selectbox(
             "Model for Outline Creator",
             model_list,
-            index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
+            index=model_list.index("deepseek-coder:1.3b") if "deepseek-coder:1.3b" in model_list else 0,
             key="outline_creator_model_selectbox",
         )
         st.session_state["outline_creator_temperature"] = st.slider(
@@ -329,26 +384,22 @@ with tab2:
             key="outline_creator_context_slider",
         )
 
-with tab3:  # CORRECTED INDENTATION
+with tab3:
     st.header("Process Monitor")
-    # --- Story Arc Output Display (Moved to Workflow Function) ---
-    # --- Setting Builder Output Display (Moved to Workflow Function) ---
-    # --- Outline Creator Output Display (NEW) ---
-    st.subheader("Outline Creator Output:")  # Section for Outline Creator Output
-    output_placeholder_outline = st.empty()  # Placeholder for Outline Creator output
+    st.subheader("Outline Creator Output:")
+    output_placeholder_outline = st.empty()
     if st.session_state.get("outline_creator_output"):
-        output_placeholder_outline.text(st.session_state["outline_creator_output"])
+        output_placeholder_outline.markdown(st.session_state["outline_creator_output"])
 
-    st.subheader("Setting Builder Output:")  # Section for Setting Builder Output
+    st.subheader("Setting Builder Output:")
     output_placeholder_settings = st.empty()
     if st.session_state.get("setting_builder_output"):
-        output_placeholder_settings.text(st.session_state["setting_builder_output"])
+        output_placeholder_settings.markdown(st.session_state["setting_builder_output"])
 
-    st.subheader("Story Arc Output:")  # Section for Story Arc Output
+    st.subheader("Story Arc Output:")
     output_placeholder_arc = st.empty()
     if st.session_state.get("story_arc_output"):
-        output_placeholder_arc.text(st.session_state["story_arc_output"])
-
+        output_placeholder_arc.markdown(st.session_state["story_arc_output"])
 
 with tab4:
     st.header("Output Inspection")
@@ -357,21 +408,19 @@ with tab4:
         "Final Story Arc Output",
         value=st.session_state["story_arc_output"],
         height=400,
-    )  # Display stored Story Arc
-    st.subheader("World Settings:")  # NEW: World Settings output in Tab 4
+    )
+    st.subheader("World Settings:")
     st.text_area(
         "Final World Settings Output",
         value=st.session_state["setting_builder_output"],
         height=400,
-    )  # Display World Settings
-    st.subheader("Chapter Outlines:")  # NEW: Chapter Outlines output in Tab 4
+    )
+    st.subheader("Chapter Outlines:")
     st.text_area(
         "Final Chapter Outlines Output",
         value=st.session_state["outline_creator_output"],
         height=400,
-    )  # Display Chapter Outlines
-
+    )
 
 if __name__ == "__main__":
     pass
-#--- END OF FILE app.py ---#

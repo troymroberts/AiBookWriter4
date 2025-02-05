@@ -1,3 +1,18 @@
+# --- agents/outline_creator.py ---
+"""
+Outline Creator Agent
+
+This module defines the `OutlineCreator` agent, responsible for generating detailed chapter outlines based on the story arc plan.
+
+Classes:
+
+- OutlineCreatorConfig: Configuration model for the OutlineCreator agent.
+- ChapterBreakdownTool: Placeholder for a custom tool to assist with chapter breakdowns.
+- OutlineTemplateTool: Placeholder for a custom tool to format outlines.
+- OutlineCreator: Agent responsible for generating detailed chapter outlines.
+
+"""
+
 from crewai import Agent
 from pydantic import BaseModel, Field
 from typing import Optional
@@ -15,8 +30,9 @@ from tools.ywriter_tools import (
 
 # Configuration model for the OutlineCreator agent
 class OutlineCreatorConfig(BaseModel):
+    """Configuration for the OutlineCreator agent."""
     llm_endpoint: str = Field(
-        default="http://localhost:11434",
+        default="http://localhost:11444",
         description="Endpoint for the language model server.",
     )
     llm_model: str = Field(
@@ -42,26 +58,30 @@ class OutlineCreatorConfig(BaseModel):
         default=None, description="Response template for the outline creator agent."
     )
 
-    class Config:
+    class Config: # Pydantic configuration class.
         arbitrary_types_allowed = True
 
 # Placeholder for a custom tool to assist with chapter breakdowns
 class ChapterBreakdownTool(BaseTool):
+    """Placeholder for a custom tool to assist with chapter breakdowns."""
     name: str = "Chapter Breakdown Tool"
     description: str = "Assists in dividing the story arc into chapters with appropriate pacing."
 
     def _run(self, **kwargs) -> str:
+        """Implementation for breaking down chapters."""
         # Implementation for breaking down chapters
         return "Chapter breakdown logic executed."
 
 # Placeholder for a custom tool to format outlines
 class OutlineTemplateTool(BaseTool):
+    """Placeholder for a custom tool to format outlines."""
     name: str = "Outline Template Tool"
     description: str = (
         "Formats the outline according to genre conventions and project requirements."
     )
 
     def _run(self, **kwargs) -> str:
+        """Implementation for formatting the outline."""
         # Implementation for formatting the outline
         return "Outline formatting logic executed."
 
@@ -71,6 +91,7 @@ class OutlineCreator(Agent):
     """
 
     def __init__(self, config: OutlineCreatorConfig, tools: Optional[list[BaseTool]] = None):
+        """Initializes the OutlineCreator agent with tools and configuration."""
         if tools is None:
             tools = []
 
@@ -103,6 +124,7 @@ class OutlineCreator(Agent):
         )
 
     def create_llm(self, config: OutlineCreatorConfig):
+        """Creates a language model instance for the OutlineCreator agent."""
         from crewai.llm import LLM
 
         return LLM(
