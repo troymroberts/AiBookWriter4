@@ -1,3 +1,4 @@
+#--- START OF FILE agents/setting_builder.py ---
 # --- agents/setting_builder.py ---
 from langchain_ollama import OllamaLLM
 from langchain.prompts import ChatPromptTemplate
@@ -60,7 +61,7 @@ class SettingBuilder:
             streaming=streaming
         )
         # Load prompts from genre-specific config file
-        prompts_dir = prompts_dir # Ensure prompts_dir is used from init
+        prompts_dir = prompts_dir  # Ensure prompts_dir is used from init
         prompt_file_path = os.path.join(prompts_dir, "setting_builder.yaml") # Construct prompt file path
         with open(prompt_file_path, "r") as f:
             agent_prompts = yaml.safe_load(f) # Load prompts for this agent
@@ -81,3 +82,4 @@ class SettingBuilder:
             "outline_context": outline_context  # Pass outline_context to prompt
         })
         return result
+#--- END OF FILE agents/setting_builder.py ---
