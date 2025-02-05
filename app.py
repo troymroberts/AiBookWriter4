@@ -27,17 +27,17 @@ def get_ollama_models():
         except FileNotFoundError:
             st.error("Ollama is not installed or not in your PATH. Please install Ollama first.")
             return None
-        
-        # Try to get model list
+
+        # Try to get model list -  REMOVED --format json
         try:
-            process = subprocess.run(['ollama', 'list', '--format', 'json'], capture_output=True, text=True, check=True)
+            process = subprocess.run(['ollama', 'list'], capture_output=True, text=True, check=True) # Removed --format json
         except subprocess.CalledProcessError as e:
             if "connection refused" in str(e.stderr).lower():
                 st.error("Cannot connect to Ollama. Please make sure Ollama is running using 'ollama serve'")
             else:
                 st.error(f"Error running Ollama: {e.stderr}")
             return None
-            
+
         # Parse the output
         try:
             output = process.stdout
@@ -48,7 +48,7 @@ def get_ollama_models():
         except json.JSONDecodeError:
             st.error("Could not decode Ollama model list as JSON.")
             return None
-            
+
     except Exception as e:
         st.error(f"Unexpected error: {str(e)}")
         return None
@@ -226,8 +226,80 @@ with tab2:
         model_list,
         index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
         key="setting_builder_model_selectbox",
-   )
+    )
     st.session_state["setting_builder_temperature"] = st.slider(
-         "Temperature (Setting Builder)",
-         min_value=0.0,
-   )
+        "Temperature (Setting Builder)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.7,
+        step=0.01,
+        key="setting_builder_temp_slider",
+    )
+    st.session_state["setting_builder_max_tokens"] = st.slider(
+        "Max Tokens (Setting Builder)",
+        min_value=100,
+        max_value=4000,
+        value=2000,
+        step=100,
+        key="setting_builder_tokens_slider",
+    )
+    st.session_state["setting_builder_top_p"] = st.slider(
+        "Top P (Setting Builder)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.95,
+        step=0.01,
+        key="setting_builder_top_p_slider",
+    )
+    st.session_state["setting_builder_context"] = st.slider(
+        "Context Window (Setting Builder)",
+        min_value=2048,
+        max_value=32768,
+        value=8192,
+        step=1024,
+        key="setting_builder_context_slider",
+    )
+
+    st.subheader("Outline Creator Agent")
+    st.session_state["outline_creator_model_selection"] = st.selectbox(
+        "Model for Outline Creator",
+        model_list,
+        index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
+        key="outline_creator_model_selectbox",
+    )
+    st.session_state["outline_creator_temperature"] = st.slider(
+        "Temperature (Outline Creator)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.7,
+        step=0.01,
+        key="outline_creator_temp_slider",
+    )
+    st.session_state["outline_creator_max_tokens"] = st.slider(
+        "Max Tokens (Outline Creator)",
+        min_value=100,
+        max_value=4000,
+        value=2000,
+        step=100,
+        key="outline_creator_tokens_slider",
+    )
+    st.session_state["outline_creator_top_p"] = st.slider(
+        "Top P (Outline Creator)",
+        min_value=0.0,
+        max_value=1.0,
+        value=0.95,
+        step=0.01,
+        key="outline_creator_top_p_slider",
+    )
+    st.session_state["outline_creator_context"] = st.slider(
+        "Context Window (Outline Creator)",
+        min_value=2048,
+        max_value=32768,
+        value=8192,
+        step=1024,
+        key="outline_creator_context_slider",
+    )
+
+
+ with tab3:
+     st.header("Process Monitor")
