@@ -209,6 +209,6 @@ with tab2:
         index=model_list.index("deepseek-r1:1.5b") if "deepseek-r1:1.5b" in model_list else 0,
         key="setting_builder_model_selectbox",
    )
-     st.session_state["setting_builder_temperature"] = st.slider(
+    st.session_state["setting_builder_temperature"] = st.slider(
          "Temperature (Setting Builder)",
          min_value=0.0,
