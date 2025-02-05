@@ -1,3 +1,12 @@
+--- START OF FILE app.py ---
+# app.py Changelog
+# ------------------
+# 2025-02-05 - 15:30 UTC
+# Fix: Resolved SyntaxError: expected 'except' or 'finally' block on line 46
+#      Corrected indentation of except block within get_ollama_models function
+#      to properly handle JSONDecodeError and Exception.
+#      Added descriptive error messages and return None in except blocks for robustness.
+# ------------------
 #--- START OF FILE app.py ---#
 import streamlit as st
 import yaml
@@ -40,34 +49,33 @@ def get_ollama_models():
             return None
 
         # Parse the output
-        try: # Start of Parse Output Try Block
+        try:  # Start of Parse Output Try Block
             output = process.stdout
             st.code(output) # Display raw output for debugging
-+           
+
             # Attempt JSON parsing - More robust parsing
-+           models_json_list = []
-+           for line in output.strip().split('\n'):
-+               if line.strip():  # Skip empty lines
-+                   try:
-+                       models_json_list.append(json.loads(line))
-+                   except json.JSONDecodeError:
-+                       st.error(f"Error decoding JSON line: {line}") # Indicate line causing issue
-+                       continue # Skip to the next line if parsing fails
+            models_json_list = []
+            for line in output.strip().split('\n'):
+                if line.strip():  # Skip empty lines
+                    try:
+                        models_json_list.append(json.loads(line))
+                    except json.JSONDecodeError as e: # ADDED e here for debugging
+                        st.error(f"Error decoding JSON line: {line}. JSONDecodeError: {e}") # Indicate line causing issue and include detailed error
+                        continue # Skip to the next line if parsing fails
 
-            if not models_json_list: # Check if the list is empty after parsing
+            if not models_json_list:  # Check if the list is empty after parsing
                 st.warning("No models found in Ollama list output after JSON parsing.")
-                return {'models': []} # Return empty model list
+                return {'models': []}  # Return empty model list
 
-            return {'models': models_json_list} # Return parsed list of models
+            return {'models': models_json_list}  # Return parsed list of models
 
+        except json.JSONDecodeError as e:  # Expecting except block here - CORRECTED INDENTATION
+            st.error(f"Could not decode Ollama model list as JSON. JSONDecodeError: {e}")  # Include detailed JSON error
+            return None  # Ensure return None in except block
 
-        except json.JSONDecodeError as e: # Expecting except block here
-            st.error(f"Could not decode Ollama model list as JSON. JSONDecodeError: {e}") # Include detailed JSON error
-            return None # Ensure return None in except block
-
-    except Exception as e: # Expecting except block here
-        st.error(f"Unexpected error in get_ollama_models: {str(e)}") # More descriptive error message
-        return None # Ensure return None in except block
+    except Exception as e:  # Expecting except block here - CORRECTED INDENTATION
+        st.error(f"Unexpected error in get_ollama_models: {str(e)}")  # More descriptive error message
+        return None  # Ensure return None in except block
 
 
 
