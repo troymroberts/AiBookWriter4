@@ -61,12 +61,12 @@ class SettingBuilder:
         )
         # Load prompts from genre-specific config file
         prompts_dir = prompts_dir  # Ensure prompts_dir is used from init
-        prompt_file_path = os.path.join(prompts_dir, "setting_builder.yaml") # Construct prompt file path
+        prompt_file_path = os.path.join(prompts_dir, "setting_builder.yaml")  # Construct prompt file path
         with open(prompt_file_path, "r") as f:
-            agent_prompts = yaml.safe_load(f) # Load prompts for this agent
+            agent_prompts = yaml.safe_load(f)  # Load prompts for this agent
 
-        self.system_message = agent_prompts['system_message'] # Load system message
-        self.user_prompt_template = agent_prompts['user_prompt'] # Load user prompt template
+        self.system_message = agent_prompts['system_message']  # Load system message
+        self.user_prompt_template = agent_prompts['user_prompt']  # Load user prompt template
 
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", self.system_message),
