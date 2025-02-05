@@ -1,9 +1,14 @@
 # app.py Changelog
 # ------------------
-# 2025-02-05 - 16:10 UTC
-# Fix: Resolved SyntaxError: expected 'except' or 'finally' block AGAIN on line 57
-#      Added a missing 'except' block after the inner 'try' block in `get_ollama_models()`.
-#      Ensured proper nesting and indentation of try-except blocks.
+# 2025-02-05 - 16:15 UTC
+# Fix: Resolved SyntaxError: expected 'except' or 'finally' block AGAIN on line 72
+#      Corrected indentation of the 'except subprocess.CalledProcessError as e:' block 
+#      to align properly with its corresponding 'try' block when running 'ollama list'.
+#
+# 2025-02-05 - 16:00 UTC
+# Fix: Switched from JSON parsing to text parsing for Ollama model list.
+#      Modified get_ollama_models to parse 'ollama list' output as plain text,
+#      extracting model names directly from each line, as JSON parsing consistently fails.
 #
 # 2025-02-05 - 15:45 UTC
 # Fix: Improved JSON parsing in get_ollama_models to handle non-JSON output gracefully.
@@ -69,12 +74,12 @@ def get_ollama_models():
             return {'models': model_list} # Return list of model dictionaries
 
 
-+       except subprocess.CalledProcessError as e: # ADDED EXCEPT BLOCK - Handling subprocess error
-+           if "connection refused" in str(e.stderr).lower():
-+               st.error("Cannot connect to Ollama. Please make sure Ollama is running using 'ollama serve'")
-+           else:
-+               st.error(f"Error running Ollama command: {e}") # More generic error for subprocess
-+           return None
+        except subprocess.CalledProcessError as e:  # ADDED EXCEPT BLOCK - Handling subprocess error - CORRECTED INDENTATION
+            if "connection refused" in str(e.stderr).lower():
+                st.error("Cannot connect to Ollama. Please make sure Ollama is running using 'ollama serve'")
+            else:
+                st.error(f"Error running Ollama command: {e}") # More generic error for subprocess
+            return None
 
 
     except Exception as e:  # Expecting except block here - CORRECTED INDENTATION
