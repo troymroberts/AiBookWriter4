@@ -1,4 +1,3 @@
---- START OF FILE app.py ---
 # app.py Changelog
 # ------------------
 # 2025-02-05 - 15:30 UTC
