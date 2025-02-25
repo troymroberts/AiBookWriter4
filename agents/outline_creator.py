@@ -15,7 +15,7 @@ Classes:
 
 from crewai import Agent
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 from crewai.tools import BaseTool
 # from crewai_tools import  # Add this when we have specific tools later
 from tools.ywriter_tools import (
@@ -90,7 +90,7 @@ class OutlineCreator(Agent):
     Agent responsible for generating detailed chapter outlines based on the story arc plan.
     """
 
-    def __init__(self, config: OutlineCreatorConfig, tools: Optional[list[BaseTool]] = None):
+    def __init__(self, config: OutlineCreatorConfig, tools: Optional[List[BaseTool]] = None):
         """Initializes the OutlineCreator agent with tools and configuration."""
         if tools is None:
             tools = []
