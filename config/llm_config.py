@@ -77,6 +77,8 @@ class LLMConfig:
             return self._get_anthropic_config(agent_name)
         elif provider == "gemini":
             return self._get_gemini_config(agent_name)
+        elif provider == "groq":
+            return self._get_groq_config(agent_name)
         else:
             raise ValueError(f"Unsupported LLM provider: {provider}")
 
@@ -172,6 +174,37 @@ class LLMConfig:
             "temperature": self._get_temperature(agent_name),
             "max_tokens": self._get_max_tokens(agent_name),
             "streaming": os.getenv("LLM_STREAMING", "true").lower() == "true",
+        }
+
+        return config
+
+    def _get_groq_config(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Get Groq provider configuration."""
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY not found in environment variables")
+
+        # Try agent-specific model first
+        model = None
+        if agent_name:
+            agent_config = self.app_config.get('agents', {}).get(agent_name, {})
+            if 'model' in agent_config:
+                model = agent_config['model']
+
+        # Fall back to default Groq model
+        if not model:
+            model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+
+        # Groq uses OpenAI-compatible API with groq/ prefix
+        if not model.startswith("groq/"):
+            model = f"groq/{model}"
+
+        config = {
+            "provider": "groq",
+            "model": model,
+            "api_key": api_key,
+            "temperature": self._get_temperature(agent_name),
+            "max_tokens": self._get_max_tokens(agent_name),
         }
 
         return config

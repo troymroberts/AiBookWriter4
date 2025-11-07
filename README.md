@@ -10,6 +10,7 @@ An agentic AI book writing application that uses multiple specialized AI agents 
   - Character Creator, Relationship Architect, Lore Builder
 
 - **Multiple LLM Providers**: Flexible support for various AI providers
+  - **Groq** - Fast & free API (llama-3.3-70b, mixtral-8x7b) **← Recommended for testing!**
   - **Ollama** - Run models locally (llama3, deepseek, qwen, etc.)
   - **Anthropic Claude** - Use Claude 3.5 Sonnet, Opus, or Haiku
   - **Google Gemini** - Access Gemini 2.0 Flash, 1.5 Pro, etc.
@@ -32,6 +33,7 @@ An agentic AI book writing application that uses multiple specialized AI agents 
 ## 📋 Requirements
 
 - Python 3.10 - 3.13
+- **For Groq (Recommended)**: Free API key from https://console.groq.com/
 - For local models: Ollama installed and running
 - For Claude: Anthropic API key
 - For Gemini: Google API key
@@ -67,6 +69,13 @@ cp .env.example .env
 ```
 
 Edit `.env` and configure your preferred LLM provider:
+
+**For Groq (Recommended - Fast & Free!):**
+```bash
+DEFAULT_LLM_PROVIDER=groq
+GROQ_API_KEY=your_api_key_here
+GROQ_MODEL=llama-3.3-70b-versatile
+```
 
 **For Ollama (Local Models):**
 ```bash
