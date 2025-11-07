@@ -503,3 +503,178 @@ LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
 │                                                                              │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
+[92m15:23:54 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:23:54,309 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:23:54,430 - WARNING - Rate limit hit for groq. Backing off for 4.66s (multiplier: 2.0x)
+2025-11-07 15:23:54,430 - WARNING - Rate limit hit for groq/llama-3.3-70b-versatile. Retry 1/5 after 4.66s
+[92m15:23:59 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:23:59,091 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:23:59,162 - WARNING - Rate limit hit for groq. Backing off for 8.39s (multiplier: 4.0x)
+2025-11-07 15:23:59,163 - WARNING - Rate limit hit for groq/llama-3.3-70b-versatile. Retry 2/5 after 8.39s
+[92m15:24:07 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:24:07,559 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:24:07,667 - WARNING - Rate limit hit for groq. Backing off for 18.95s (multiplier: 8.0x)
+2025-11-07 15:24:07,667 - WARNING - Rate limit hit for groq/llama-3.3-70b-versatile. Retry 3/5 after 18.95s
+[92m15:24:26 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:24:26,614 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:24:26,690 - WARNING - Rate limit hit for groq. Backing off for 33.13s (multiplier: 16.0x)
+2025-11-07 15:24:26,691 - WARNING - Rate limit hit for groq/llama-3.3-70b-versatile. Retry 4/5 after 33.13s
+[92m15:24:59 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:24:59,825 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 15:25:00,035 - ERROR - Max retries (5) exceeded for groq/llama-3.3-70b-versatile
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 190, in _make_common_sync_call
+    response = sync_httpx_client.post(❌ Crew: crew
+└── 📋 Task: 6c5cbae1-91b1-4a5b-940a-3988d3387cbb
+    Assigned to: Character Development Specialist
+    Status: ❌ Failed
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Get Character Details (1)
+    └── ❌ LLM Failed
+   ╭──────────────────────────────── Crew Failure ────────────────────────────────╮
+│                                                                              │
+│  Crew Execution Failed                                                       │
+│  Name: crew                                                                  │
+│  ID: 6b912d86-81b6-4bd9-8d64-d742d1ff569c                                    │
+│  Tool Args:                                                                  │
+│  Final Output:                                                               │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   ╭───────────────────────────────── LLM Error ──────────────────────────────────╮
+│                                                                              │
+│  ❌ LLM Call Failed                                                          │
+│  Error: litellm.RateLimitError: RateLimitError: GroqException -              │
+│  {"error":{"message":"Rate limit reached for model                           │
+│  `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6`  │
+│  service tier `on_demand` on tokens per day (TPD): Limit 100000, Used        │
+│  99905, Requested 1443. Please try again in 19m24.672s. Need more tokens?    │
+│  Upgrade to Dev Tier today at                                                │
+│  https://console.groq.com/settings/billing","type":"tokens","code":"rate_li  │
+│  mit_exceeded"}}                                                             │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   
+   ╭──────────────────────────────── Task Failure ────────────────────────────────╮
+│                                                                              │
+│  Task Failed                                                                 │
+│  Name: 6c5cbae1-91b1-4a5b-940a-3988d3387cbb                                  │
+│  Agent: Character Development Specialist                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   
+^^^
+^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 898, in post
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 880, in post
+    response.raise_for_status()
+  File "/usr/local/lib/python3.11/dist-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://api.groq.com/openai/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 1940, in completion
+    response = base_llm_http_handler.completion(
+2025-11-07 15:25:00,053 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7eb064194fd0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 493, in completion
+    response = self._make_common_sync_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 215, in _make_common_sync_call
+    raise self._handle_error(e=e, provider_config=provider_config)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 3517, in _handle_error
+    raise provider_config.get_error_class(
+litellm.llms.openai.common_utils.OpenAIError: {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99905, Requested 1443. Please try again in 19m24.672s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/AiBookWriter4/test_complete_workflow.py", line 697, in <module>
+    test_complete_workflow()
+  File "/home/user/AiBookWriter4/test_complete_workflow.py", line 193, in test_complete_workflow
+    char_result = char_crew.kickoff()
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 707, in kickoff
+    result = self._run_sequential_process()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 821, in _run_sequential_process
+    return self._execute_tasks(self.tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 927, in _execute_tasks
+    task_output = task.execute_sync(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 458, in execute_sync
+    return self._execute_core(agent, context, tools)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 585, in _execute_core
+    raise e  # Re-raise the exception after emitting the event
+    ^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 522, in _execute_core
+    result = agent.execute_task(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 502, in execute_task
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 478, in execute_task
+    result = self._execute_without_timeout(task_prompt, task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 577, in _execute_without_timeout
+    return self.agent_executor.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 180, in invoke
+    formatted_answer = self._invoke_loop()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 276, in _invoke_loop
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 220, in _invoke_loop
+    answer = get_llm_response(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 259, in get_llm_response
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 251, in get_llm_response
+    answer = llm.call(
+             ^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 1201, in call
+    return self._handle_non_streaming_response(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 961, in _handle_non_streaming_response
+    response = litellm.completion(**params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/AiBookWriter4/config/llm_wrapper.py", line 227, in wrapped_completion
+    return rate_limited_completion(model, messages, **other_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/AiBookWriter4/config/llm_wrapper.py", line 125, in rate_limited_completion
+    response = completion(model=model, messages=messages, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1376, in wrapper
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1245, in wrapper
+    result = original_function(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 3767, in completion
+    raise exception_type(
+          ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 2274, in exception_type
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 331, in exception_type
+    raise RateLimitError(
+litellm.exceptions.RateLimitError: litellm.RateLimitError: RateLimitError: GroqException - {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99905, Requested 1443. Please try again in 19m24.672s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
