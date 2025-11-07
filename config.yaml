@@ -1,8 +1,144 @@
-model_list:
-  - model_name: ollama/qwen2.5:1.5b
-    litellm_params:
-      base_url: http://10.1.1.47:11434
+# =============================================================================
+# AI Book Writer - Application Configuration
+# =============================================================================
+# Note: LLM provider credentials and models are configured in .env file
+# This file contains application-level settings
 
-genre: literary_fiction # Default genre selection
-prompts_file: config/prompts.yaml # Path to the prompts configuration file
-num_chapters: 4 # Default number of chapters for the project
+# -----------------------------------------------------------------------------
+# Project Defaults
+# -----------------------------------------------------------------------------
+genre: literary_fiction  # Default genre for new projects
+num_chapters: 12         # Default number of chapters
+prompts_dir: config/prompts  # Directory containing agent prompt templates
+
+# -----------------------------------------------------------------------------
+# Agent Configuration
+# -----------------------------------------------------------------------------
+# Each agent can have customized parameters
+# Provider and model are set via .env file, but you can override here
+
+agents:
+  story_planner:
+    role: "Story Architect & Narrative Designer"
+    goal: "Create compelling story arcs with well-defined plot points, character arcs, and thematic elements"
+    backstory: "Expert in narrative structure, story theory, and genre conventions with years of experience analyzing successful novels"
+    temperature: 0.7
+    max_tokens: 4096
+    # provider: "anthropic"  # Optional: override DEFAULT_LLM_PROVIDER from .env
+    # model: "claude-3-5-sonnet-20241022"  # Optional: override provider default
+
+  setting_builder:
+    role: "World Builder & Setting Designer"
+    goal: "Develop rich, immersive settings with detailed locations, atmosphere, and cultural context"
+    backstory: "Master of environmental storytelling and world-building who creates vivid, believable settings that enhance the narrative"
+    temperature: 0.7
+    max_tokens: 3500
+
+  outline_creator:
+    role: "Chapter & Scene Architect"
+    goal: "Design detailed chapter-by-chapter outlines with scene breakdowns and narrative flow"
+    backstory: "Structural expert who excels at breaking down complex narratives into manageable, well-paced chapters and scenes"
+    temperature: 0.7
+    max_tokens: 4096
+
+  writer:
+    role: "Prose Writer & Storyteller"
+    goal: "Write engaging, polished prose that brings the story to life with vivid descriptions and compelling dialogue"
+    backstory: "Accomplished author with mastery of language, style, and voice across multiple genres"
+    temperature: 0.8
+    max_tokens: 4096
+
+  editor:
+    role: "Editorial Specialist"
+    goal: "Refine and polish written content for clarity, consistency, pacing, and style"
+    backstory: "Experienced editor with a keen eye for narrative flow, character consistency, and prose quality"
+    temperature: 0.5
+    max_tokens: 3500
+
+  critic:
+    role: "Literary Critic & Quality Analyst"
+    goal: "Provide constructive feedback on story elements, identify weaknesses, and suggest improvements"
+    backstory: "Critical reader with deep understanding of storytelling techniques and reader expectations"
+    temperature: 0.6
+    max_tokens: 3000
+
+  character_creator:
+    role: "Character Development Specialist"
+    goal: "Create deep, multidimensional characters with compelling backstories, motivations, and arcs"
+    backstory: "Expert in psychology and character development who brings fictional people to life"
+    temperature: 0.7
+    max_tokens: 3500
+
+  relationship_architect:
+    role: "Character Relationship Designer"
+    goal: "Design complex, dynamic relationships between characters that drive conflict and growth"
+    backstory: "Specialist in interpersonal dynamics and character interactions that create compelling drama"
+    temperature: 0.7
+    max_tokens: 3000
+
+  lore_builder:
+    role: "Lore & Mythology Expert"
+    goal: "Develop rich backstory, history, and cultural lore that adds depth to the world"
+    backstory: "Master of creating intricate mythologies, histories, and cultural frameworks that enhance worldbuilding"
+    temperature: 0.7
+    max_tokens: 3500
+
+# -----------------------------------------------------------------------------
+# Workflow Configuration
+# -----------------------------------------------------------------------------
+# Define how agents work together in crews
+
+workflows:
+  # Story Planning Workflow
+  story_planning:
+    description: "Initial story development phase"
+    process: "sequential"  # Options: sequential, parallel, hierarchical
+    agents:
+      - story_planner
+      - setting_builder
+      - outline_creator
+
+  # Character Development Workflow
+  character_development:
+    description: "Character creation and relationship mapping"
+    process: "sequential"
+    agents:
+      - character_creator
+      - relationship_architect
+
+  # Writing & Editing Workflow
+  writing_process:
+    description: "Chapter writing and refinement"
+    process: "sequential"
+    agents:
+      - writer
+      - editor
+      - critic
+
+# -----------------------------------------------------------------------------
+# yWriter7 Integration
+# -----------------------------------------------------------------------------
+ywriter:
+  auto_save: true           # Automatically save to .yw7 file after each major step
+  backup_enabled: true      # Create backups before modifying .yw7 files
+  output_format: "yw7"      # Output format (yw7 is yWriter 7 format)
+
+# -----------------------------------------------------------------------------
+# Output Settings
+# -----------------------------------------------------------------------------
+output:
+  directory: "output"
+  save_intermediate: true   # Save intermediate outputs (story arc, outlines, etc.)
+  formats:
+    - "yw7"                 # yWriter 7 project file
+    - "txt"                 # Plain text backups
+    # Future: "docx", "pdf", "markdown"
+
+# -----------------------------------------------------------------------------
+# UI Settings (for Streamlit app)
+# -----------------------------------------------------------------------------
+ui:
+  theme: "dark"
+  show_agent_thoughts: true  # Display agent reasoning/thinking
+  enable_streaming: true     # Stream agent outputs in real-time
+  default_tab: "Project Setup"
