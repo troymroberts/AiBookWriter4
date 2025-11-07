@@ -83,6 +83,13 @@ agents:
     temperature: 0.7
     max_tokens: 3500
 
+  memory_keeper:
+    role: "Memory Keeper & Continuity Guardian"
+    goal: "Track and maintain story continuity, character development, and world-building consistency using semantic search to verify facts and ensure narrative coherence"
+    backstory: "Guardian of story continuity with perfect recall of all story elements through a comprehensive knowledge base. Expert at identifying inconsistencies and ensuring coherent narratives"
+    temperature: 0.6
+    max_tokens: 3000
+
 # -----------------------------------------------------------------------------
 # Workflow Configuration
 # -----------------------------------------------------------------------------
@@ -116,12 +123,36 @@ workflows:
       - critic
 
 # -----------------------------------------------------------------------------
+# RAG (Retrieval-Augmented Generation) Configuration
+# -----------------------------------------------------------------------------
+rag:
+  enabled: true                           # Enable RAG for semantic search and memory
+  vector_db_path: "knowledge_base"        # Directory for ChromaDB storage
+  embedding_model: "all-MiniLM-L6-v2"     # Sentence transformer model for embeddings
+  collection_prefix: "aibook"             # Prefix for ChromaDB collections
+  chunk_size: 1000                        # Max characters per chunk for long content
+  chunk_overlap: 200                      # Overlap between chunks
+  top_k: 5                                # Number of results to return for semantic queries
+  similarity_threshold: 0.7               # Minimum similarity score for results
+  auto_sync: true                         # Auto-sync RAG when yWriter7 changes
+
+  # Collections to create
+  collections:
+    - characters                          # Character profiles and development
+    - locations                           # Location descriptions and details
+    - items                               # Item descriptions and significance
+    - plot_events                         # Key plot events and chapter summaries
+    - relationships                       # Character relationships and dynamics
+    - lore                                # World-building and background lore
+
+# -----------------------------------------------------------------------------
 # yWriter7 Integration
 # -----------------------------------------------------------------------------
 ywriter:
   auto_save: true           # Automatically save to .yw7 file after each major step
   backup_enabled: true      # Create backups before modifying .yw7 files
   output_format: "yw7"      # Output format (yw7 is yWriter 7 format)
+  sync_to_rag: true         # Automatically sync changes to RAG system
 
 # -----------------------------------------------------------------------------
 # Output Settings

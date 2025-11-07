@@ -22,3 +22,9 @@ rich>=13.7.0
 
 # Optional: For yWriter7 XML handling improvements
 lxml>=5.0.0
+
+# Vector database for RAG and semantic search
+chromadb>=0.5.0
+
+# Embedding models for ChromaDB
+sentence-transformers>=2.7.0
