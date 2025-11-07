@@ -11,54 +11,257 @@
         .agent-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
-<body class="bg-gray-50" x-data="appState()">
+<body class="bg-gray-50" x-data="appState()" x-init="init()">
     <header class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <h1 class="text-2xl font-bold text-gray-900">📚 AI Book Writer Studio</h1>
         </div>
     </header>
 
-    <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-3 gap-6">
-        <div class="col-span-2 space-y-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">📝 Project Setup</h2>
-                <div class="space-y-4">
-                    <input type="text" x-model="project.name" placeholder="Project Name"
-                           class="w-full px-3 py-2 border rounded">
-                    <button @click="startWorkflow()"
-                            class="w-full bg-blue-600 text-white py-2 px-4 rounded">
-                        🚀 Start Workflow
-                    </button>
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <!-- Tab Navigation -->
+        <div class="mb-6 border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8">
+                <button @click="currentTab = 'project'"
+                        :class="currentTab === 'project' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'"
+                        class="border-b-2 py-3 px-1 font-medium">
+                    📝 Project
+                </button>
+                <button @click="currentTab = 'config'"
+                        :class="currentTab === 'config' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'"
+                        class="border-b-2 py-3 px-1 font-medium">
+                    ⚙️ Configuration
+                </button>
+                <button @click="currentTab = 'rag'"
+                        :class="currentTab === 'rag' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'"
+                        class="border-b-2 py-3 px-1 font-medium">
+                    🧠 Knowledge Base
+                </button>
+                <button @click="currentTab = 'projects'"
+                        :class="currentTab === 'projects' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'"
+                        class="border-b-2 py-3 px-1 font-medium">
+                    📁 Projects
+                </button>
+            </nav>
+        </div>
+
+        <!-- Project Tab -->
+        <div x-show="currentTab === 'project'" class="grid grid-cols-3 gap-6">
+            <div class="col-span-2 space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">📝 Project Setup</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Project Name</label>
+                            <input type="text" x-model="project.name" placeholder="My Novel"
+                                   class="w-full px-3 py-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Genre</label>
+                            <select x-model="project.genre" class="w-full px-3 py-2 border rounded">
+                                <option value="literary_fiction">Literary Fiction</option>
+                                <option value="science_fiction">Science Fiction</option>
+                                <option value="fantasy">Fantasy</option>
+                                <option value="mystery">Mystery</option>
+                                <option value="thriller">Thriller</option>
+                                <option value="romance">Romance</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Number of Chapters</label>
+                            <input type="number" x-model="project.chapters" min="1" max="50"
+                                   class="w-full px-3 py-2 border rounded">
+                        </div>
+                        <button @click="startWorkflow()"
+                                :disabled="workflow.status === 'running'"
+                                class="w-full bg-blue-600 text-white py-2 px-4 rounded disabled:bg-gray-400">
+                            🚀 Start Workflow
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">⚙️ Progress</h2>
+                        <button @click="showLLMConsole = !showLLMConsole"
+                                class="text-sm bg-gray-100 py-1 px-3 rounded">
+                            <span x-text="showLLMConsole ? '🔽 Hide Console' : '▶️ Show Console'"></span>
+                        </button>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium" x-text="workflow.current_agent || 'Idle'"></span>
+                            <span class="text-sm font-medium" x-text="`${workflow.progress}%`"></span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full transition-all"
+                                 :style="`width: ${workflow.progress}%`"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <template x-for="msg in workflow.output">
+                            <div class="text-sm p-2 rounded"
+                                 :class="{
+                                     'bg-blue-50': msg.type === 'info',
+                                     'bg-green-50': msg.type === 'complete' || msg.type === 'success',
+                                     'bg-yellow-50': msg.type === 'progress',
+                                     'bg-red-50': msg.type === 'error'
+                                 }"
+                                 x-text="msg.message"></div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- LLM Console Viewer -->
+                <div x-show="showLLMConsole" class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">💬 LLM Output Console</h2>
+                    <div class="bg-gray-900 text-green-400 font-mono text-xs p-4 rounded max-h-96 overflow-y-auto"
+                         x-ref="llmConsole">
+                        <template x-for="line in llmOutput">
+                            <div x-text="line" class="mb-1"></div>
+                        </template>
+                        <div x-show="llmOutput.length === 0" class="text-gray-500">
+                            Waiting for LLM output...
+                        </div>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                        <button @click="llmOutput = []" class="text-sm bg-gray-100 py-1 px-3 rounded">
+                            Clear Console
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">⚙️ Progress</h2>
-                <div class="mb-4">
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-blue-600 h-2 rounded-full"
-                             :style="`width: ${workflow.progress}%`"></div>
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-lg font-semibold mb-4">🧠 Knowledge Base</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between p-3 bg-purple-50 rounded">
+                            <span>Characters</span>
+                            <span class="font-bold" x-text="ragStats.characters || 0"></span>
+                        </div>
+                        <div class="flex justify-between p-3 bg-blue-50 rounded">
+                            <span>Locations</span>
+                            <span class="font-bold" x-text="ragStats.locations || 0"></span>
+                        </div>
+                        <div class="flex justify-between p-3 bg-green-50 rounded">
+                            <span>Plot Events</span>
+                            <span class="font-bold" x-text="ragStats.plot_events || 0"></span>
+                        </div>
                     </div>
-                </div>
-                <div class="space-y-2 max-h-64 overflow-y-auto">
-                    <template x-for="msg in workflow.output">
-                        <div class="text-sm p-2 bg-gray-50 rounded" x-text="msg.message"></div>
-                    </template>
+                    <button @click="loadRagStats()" class="mt-4 w-full bg-gray-100 py-2 px-4 rounded text-sm">
+                        🔄 Refresh Stats
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="space-y-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-lg font-semibold mb-4">🧠 Knowledge Base</h2>
-                <div class="space-y-3">
-                    <div class="flex justify-between p-3 bg-purple-50 rounded">
-                        <span>Characters</span>
-                        <span class="font-bold" x-text="ragStats.characters"></span>
+        <!-- Configuration Tab -->
+        <div x-show="currentTab === 'config'" class="space-y-6">
+            <template x-for="(agent, agentName) in agentConfigs" :key="agentName">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4 capitalize" x-text="agentName.replace('_', ' ')"></h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Temperature -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Temperature</label>
+                            <input type="number" x-model.number="agent.temperature"
+                                   min="0" max="1" step="0.1"
+                                   class="w-full px-3 py-2 border rounded">
+                            <span class="text-xs text-gray-500">Creativity level (0-1)</span>
+                        </div>
+                        <!-- Max Tokens -->
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Max Tokens</label>
+                            <input type="number" x-model.number="agent.max_tokens"
+                                   min="1000" max="32000" step="1000"
+                                   class="w-full px-3 py-2 border rounded">
+                            <span class="text-xs text-gray-500">Maximum output length</span>
+                        </div>
                     </div>
-                    <div class="flex justify-between p-3 bg-blue-50 rounded">
-                        <span>Locations</span>
-                        <span class="font-bold" x-text="ragStats.locations"></span>
+                    <button @click="saveAgentConfig(agentName)"
+                            class="mt-4 bg-blue-600 text-white py-2 px-4 rounded text-sm">
+                        💾 Save Configuration
+                    </button>
+                </div>
+            </template>
+        </div>
+
+        <!-- RAG/Knowledge Base Tab -->
+        <div x-show="currentTab === 'rag'" class="space-y-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-lg font-semibold mb-4">🔍 Search Knowledge Base</h2>
+                <div class="space-y-4">
+                    <input type="text" x-model="ragSearch.query" placeholder="Search characters, locations, events..."
+                           class="w-full px-3 py-2 border rounded">
+                    <button @click="searchRag()" class="bg-blue-600 text-white py-2 px-4 rounded">
+                        Search
+                    </button>
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <template x-for="result in ragSearch.results">
+                            <div class="p-3 bg-gray-50 rounded">
+                                <div class="font-medium" x-text="result.name"></div>
+                                <div class="text-sm text-gray-600" x-text="result.collection"></div>
+                                <div class="text-xs text-gray-500 mt-1" x-text="result.preview"></div>
+                                <div class="text-xs text-blue-600 mt-1" x-text="`Similarity: ${result.similarity}%`"></div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-lg font-semibold mb-4">📊 Collection Statistics</h2>
+                <template x-for="(stats, collection) in ragStats" :key="collection">
+                    <div class="mb-4 p-4 border rounded">
+                        <div class="font-medium capitalize mb-2" x-text="collection.replace('_', ' ')"></div>
+                        <div class="text-2xl font-bold text-blue-600" x-text="stats.count || 0"></div>
+                        <div class="text-sm text-gray-500">items</div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div x-show="currentTab === 'projects'" class="space-y-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">📁 yWriter7 Projects</h2>
+                    <button @click="loadProjects()" class="bg-gray-100 py-2 px-4 rounded text-sm">
+                        🔄 Refresh
+                    </button>
+                </div>
+
+                <div class="space-y-3">
+                    <template x-for="project in projects" :key="project.filename">
+                        <div class="p-4 border rounded hover:bg-gray-50">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h3 class="font-medium text-lg" x-text="project.name"></h3>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        <span x-text="project.filename"></span>
+                                    </div>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Modified: <span x-text="new Date(project.modified).toLocaleString()"></span>
+                                        | Size: <span x-text="(project.size / 1024).toFixed(1)"></span> KB
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 ml-4">
+                                    <a :href="project.download_url"
+                                       class="bg-blue-600 text-white py-2 px-4 rounded text-sm hover:bg-blue-700"
+                                       download>
+                                        ⬇️ Download
+                                    </a>
+                                    <button @click="deleteProject(project.filename)"
+                                            class="bg-red-600 text-white py-2 px-4 rounded text-sm hover:bg-red-700">
+                                        🗑️ Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div x-show="projects.length === 0" class="text-center py-8 text-gray-500">
+                        No projects found. Create one using the Project tab!
                     </div>
                 </div>
             </div>
@@ -68,25 +271,188 @@
     <script>
         function appState() {
             return {
-                project: { name: 'My Novel' },
-                workflow: { status: 'idle', progress: 0, output: [] },
+                currentTab: 'project',
+                project: {
+                    name: 'My Novel',
+                    genre: 'literary_fiction',
+                    chapters: 12
+                },
+                workflow: {
+                    status: 'idle',
+                    progress: 0,
+                    output: [],
+                    current_agent: null
+                },
                 ragStats: {{ rag_stats | tojson }},
+                agentConfigs: {},
+                ragSearch: {
+                    query: '',
+                    results: []
+                },
+                projects: [],
+                showLLMConsole: false,
+                llmOutput: [],
+
+                async init() {
+                    // Load agent configurations
+                    await this.loadConfigs();
+                    await this.loadRagStats();
+                    await this.loadProjects();
+                },
+
+                async loadConfigs() {
+                    try {
+                        const response = await fetch('/api/config');
+                        const data = await response.json();
+                        this.agentConfigs = data.agents || {};
+                    } catch (error) {
+                        console.error('Failed to load configs:', error);
+                    }
+                },
+
+                async loadRagStats() {
+                    try {
+                        const response = await fetch('/api/rag/stats');
+                        const data = await response.json();
+                        this.ragStats = data;
+                    } catch (error) {
+                        console.error('Failed to load RAG stats:', error);
+                    }
+                },
+
+                async saveAgentConfig(agentName) {
+                    try {
+                        const updates = this.agentConfigs[agentName];
+                        const response = await fetch(`/api/config/agent/${agentName}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(updates)
+                        });
+                        if (response.ok) {
+                            alert(`Configuration saved for ${agentName.replace('_', ' ')}`);
+                        }
+                    } catch (error) {
+                        console.error('Failed to save config:', error);
+                        alert('Failed to save configuration');
+                    }
+                },
+
+                async searchRag() {
+                    try {
+                        const response = await fetch(`/api/rag/search?query=${encodeURIComponent(this.ragSearch.query)}&limit=10`);
+                        const data = await response.json();
+                        this.ragSearch.results = data.results || [];
+                    } catch (error) {
+                        console.error('Failed to search RAG:', error);
+                    }
+                },
+
+                async loadProjects() {
+                    try {
+                        const response = await fetch('/api/projects');
+                        const data = await response.json();
+                        this.projects = data.projects || [];
+                    } catch (error) {
+                        console.error('Failed to load projects:', error);
+                    }
+                },
+
+                async deleteProject(filename) {
+                    if (!confirm(`Are you sure you want to delete ${filename}?`)) {
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`/api/projects/${filename}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            await this.loadProjects();
+                            alert('Project deleted successfully');
+                        } else {
+                            const data = await response.json();
+                            alert('Failed to delete project: ' + (data.detail || 'Unknown error'));
+                        }
+                    } catch (error) {
+                        console.error('Failed to delete project:', error);
+                        alert('Failed to delete project: ' + error.message);
+                    }
+                },
 
                 async startWorkflow() {
-                    await fetch('/api/workflow/start', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ project: this.project })
-                    });
+                    this.workflow.status = 'running';
+                    this.workflow.output = [];
+                    this.workflow.progress = 0;
 
-                    const es = new EventSource('/api/workflow/stream');
-                    es.addEventListener('status', (e) => {
-                        const data = JSON.parse(e.data);
-                        this.workflow.progress = data.progress;
-                    });
-                    es.addEventListener('progress', (e) => {
-                        this.workflow.output.push(JSON.parse(e.data));
-                    });
+                    try {
+                        await fetch('/api/workflow/start', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ project: this.project })
+                        });
+
+                        const es = new EventSource('/api/workflow/stream');
+
+                        es.addEventListener('status', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.progress = data.progress;
+                            this.workflow.status = data.status;
+                            this.workflow.current_agent = data.current_agent;
+                        });
+
+                        es.addEventListener('progress', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.output.push(data);
+                        });
+
+                        es.addEventListener('info', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.output.push(data);
+                        });
+
+                        es.addEventListener('complete', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.output.push(data);
+                        });
+
+                        es.addEventListener('success', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.output.push(data);
+                        });
+
+                        es.addEventListener('error', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.workflow.output.push(data);
+                            this.workflow.status = 'error';
+                            es.close();
+                        });
+
+                        es.addEventListener('llm_output', (e) => {
+                            const data = JSON.parse(e.data);
+                            this.llmOutput.push(data.message);
+                            // Auto-scroll to bottom
+                            this.$nextTick(() => {
+                                if (this.$refs.llmConsole) {
+                                    this.$refs.llmConsole.scrollTop = this.$refs.llmConsole.scrollHeight;
+                                }
+                            });
+                        });
+
+                        es.addEventListener('complete', (e) => {
+                            this.workflow.status = 'completed';
+                            this.loadRagStats();
+                            es.close();
+                        });
+                    } catch (error) {
+                        console.error('Failed to start workflow:', error);
+                        this.workflow.status = 'error';
+                        this.workflow.output.push({
+                            type: 'error',
+                            message: 'Failed to start workflow: ' + error.message,
+                            timestamp: new Date().toISOString()
+                        });
+                    }
                 }
             }
         }
