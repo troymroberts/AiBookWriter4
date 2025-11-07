@@ -289,6 +289,15 @@ class LLMConfig:
                 temperature=config.get('temperature'),
             )
 
+        elif provider == "groq":
+            # Groq configuration (OpenAI-compatible)
+            return LLM(
+                model=config['model'],
+                api_key=config.get('api_key'),
+                temperature=config.get('temperature'),
+                max_tokens=config.get('max_tokens'),
+            )
+
         else:
             raise ValueError(f"Unsupported provider: {provider}")
 
