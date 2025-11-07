@@ -43,3 +43,6 @@ Thumbs.db
 output/*.yw7
 output/*.txt
 !output/placeholder.txt
+
+# RAG/ChromaDB vector database storage
+knowledge_base/

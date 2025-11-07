@@ -1,0 +1,418 @@
+================================================================================
+                    AIBOOKS4 ARCHITECTURE OVERVIEW
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          APPLICATION LAYER (Interfaces)                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌───────────────────┐         ┌──────────────────┐                        │
+│  │   Streamlit UI    │         │   CLI Interface  │                        │
+│  │   (app.py)        │         │   (main.py)      │                        │
+│  └─────────┬─────────┘         └────────┬─────────┘                        │
+│            │                             │                                  │
+└────────────┼─────────────────────────────┼──────────────────────────────────┘
+             │                             │
+             └─────────────┬───────────────┘
+                           │
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                       AGENT ORCHESTRATION LAYER (CrewAI)                      │
+├───────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                    MAIN WORKFLOW AGENTS                             │   │
+│  │                                                                     │   │
+│  │  StoryPlanner (LangChain)                                          │   │
+│  │      ↓                                                              │   │
+│  │  OutlineCreator (CrewAI) ← PlotAgent (CrewAI)                     │   │
+│  │      ↓                                                              │   │
+│  │  Writer (LangChain)                                                │   │
+│  │      ↓                                                              │   │
+│  │  Editor (CrewAI) ← Critic (CrewAI)                                │   │
+│  │      ↓                                                              │   │
+│  │  MemoryKeeper (CrewAI - STUB - NEEDS RAG)                         │   │
+│  │                                                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                               │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │                  SUPPORTING/OPTIONAL AGENTS                         │   │
+│  │                                                                     │   │
+│  │  CharacterCreator (CrewAI) → RelationshipArchitect (CrewAI)       │   │
+│  │  SettingBuilder (LangChain) → LoreBuilder (LangChain)             │   │
+│  │  ItemDeveloper (CrewAI)                                           │   │
+│  │  Researcher (CrewAI - NO TOOLS)                                   │   │
+│  │  Reviser (CrewAI)                                                 │   │
+│  │                                                                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+│                                                                               │
+└───────────────────────────────────┬──────────────────────────────────────────┘
+                                    │
+        ┌───────────────────────────┼───────────────────────────┐
+        │                           │                           │
+        ↓                           ↓                           ↓
+┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
+│   LLM Layer      │       │   Tools Layer    │       │  Storage Layer   │
+├──────────────────┤       ├──────────────────┤       ├──────────────────┤
+│                  │       │                  │       │                  │
+│ • Ollama         │       │ • ywriter_tools  │       │ • yWriter7 XML   │
+│ • Anthropic      │       │ • RAG Tools      │       │ • ChromaDB       │
+│ • Groq           │       │ • Research Tools │       │ • Project Notes  │
+│ • Google Gemini  │       │ • Custom Tools   │       │ • Embeddings     │
+│                  │       │ (in progress)    │       │ (TODO)           │
+│                  │       │                  │       │                  │
+└──────────────────┘       └──────────────────┘       └──────────────────┘
+
+
+================================================================================
+                         DATA FLOW DIAGRAM
+================================================================================
+
+USER INPUT
+    │
+    ↓
+┌─────────────────────────────────────────────┐
+│  Configuration Layer                        │
+│  ├── .env (LLM credentials)                 │
+│  ├── config.yaml (app settings)             │
+│  └── config/genres/*.py (genre-specific)    │
+│  └── config/llm_config.py (provider mgmt)   │
+└────────────┬────────────────────────────────┘
+             │
+             ↓
+┌─────────────────────────────────────────────┐
+│  Agent Workflow Execution                   │
+│  ┌─────────────────────────────────────┐   │
+│  │ 1. StoryPlanner generates story arc │   │
+│  │    Output: Story outline            │   │
+│  └─────────────┬───────────────────────┘   │
+│                ↓                            │
+│  ┌─────────────────────────────────────┐   │
+│  │ 2. OutlineCreator chapter outlines  │   │
+│  │    Input: Story arc                 │   │
+│  │    Output: Chapter-by-chapter plan  │   │
+│  └─────────────┬───────────────────────┘   │
+│                ↓                            │
+│  ┌─────────────────────────────────────┐   │
+│  │ 3. Writer writes chapter prose      │   │
+│  │    Input: Chapter outline           │   │
+│  │    Output: Chapter prose            │   │
+│  └─────────────┬───────────────────────┘   │
+│                ↓                            │
+│  ┌─────────────────────────────────────┐   │
+│  │ 4. Editor reviews & refines         │   │
+│  │    Input: Written chapter           │   │
+│  │    Critic checks for consistency    │   │
+│  │    Output: Polished chapter         │   │
+│  └─────────────┬───────────────────────┘   │
+│                ↓                            │
+│  ┌─────────────────────────────────────┐   │
+│  │ 5. MemoryKeeper updates context     │   │
+│  │    TODO: Add RAG integration        │   │
+│  │    Output: Updated context/memory   │   │
+│  └─────────────┬───────────────────────┘   │
+└────────────────┼────────────────────────────┘
+                 ↓
+        ┌────────────────────┐
+        │  yWriter7 Storage  │
+        │  ├── Scene content │
+        │  ├── Characters    │
+        │  ├── Locations     │
+        │  ├── Items         │
+        │  └── Project Notes │
+        └────────────────────┘
+                 ↓
+            FINAL OUTPUT
+        (yWriter7 .yw7 file)
+
+
+================================================================================
+                      CONFIGURATION HIERARCHY
+================================================================================
+
+Priority Level (Highest to Lowest):
+┌────────────────────────────────────────┐
+│ 1. Runtime Arguments (Highest Priority) │  python main.py --temp 0.5
+├────────────────────────────────────────┤
+│ 2. Environment Variables                │  DEFAULT_LLM_PROVIDER=groq
+│    (.env file)                          │  GROQ_MODEL=llama-3.3-70b
+├────────────────────────────────────────┤
+│ 3. config.yaml Settings                 │  agents:
+│                                          │    story_planner:
+│                                          │      temperature: 0.7
+├────────────────────────────────────────┤
+│ 4. Agent Defaults                       │  LLMConfig.default_provider
+│    (In source code)                     │  "ollama" / "anthropic" / etc
+└────────────────────────────────────────┘
+
+
+================================================================================
+                     LLM PROVIDER CONFIGURATION
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          LLM Provider Options                                │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  OLLAMA (Local Models)                                                       │
+│  ├── Endpoint: http://localhost:11434                                       │
+│  ├── Default Model: llama3.2                                                │
+│  ├── Setup: ollama pull <model>                                             │
+│  └── Cost: Free (runs locally)                                              │
+│                                                                              │
+│  ANTHROPIC (Claude)                                                          │
+│  ├── Default Model: claude-3-5-sonnet-20241022                             │
+│  ├── API Key Required: Yes                                                  │
+│  ├── Website: console.anthropic.com                                         │
+│  └── Cost: Paid API (per token)                                             │
+│                                                                              │
+│  GROQ (Fast & Free)                                                          │
+│  ├── Default Model: llama-3.3-70b-versatile                                │
+│  ├── API Key Required: Yes                                                  │
+│  ├── Website: console.groq.com                                              │
+│  └── Cost: Free with rate limits                                            │
+│                                                                              │
+│  GOOGLE GEMINI                                                               │
+│  ├── Default Model: gemini-2.0-flash-exp                                   │
+│  ├── API Key Required: Yes                                                  │
+│  ├── Website: aistudio.google.com                                           │
+│  └── Cost: Freemium model                                                   │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                      YWRITER7 DATA STRUCTURE
+================================================================================
+
+Novel (Root)
+├── Metadata
+│   ├── title, authorName, description
+│   ├── languageCode, countryCode
+│   └── authorBio
+│
+├── Characters (ID → Character)
+│   ├── title (short name)
+│   ├── fullName, bio, notes
+│   ├── goals, isMajor flag
+│   └── traits, statistics
+│
+├── Locations (ID → Location/WorldElement)
+│   ├── title, description, aka
+│   ├── tags, image
+│   └── geographic/cultural info
+│
+├── Items (ID → Item/WorldElement)
+│   ├── title, description, aka
+│   ├── tags, image
+│   └── significance/symbolic meaning
+│
+├── Project Notes (ID → ProjectNote)
+│   ├── title, desc (content)
+│   └── metadata (story arc, outlines, etc.)
+│
+├── Chapters (ID → Chapter)
+│   ├── title, description
+│   ├── chLevel (0=chapter, 1=part)
+│   ├── chType (0=normal, 1=notes, 2=todo, 3=unused)
+│   ├── srtScenes (ordered list of scene IDs)
+│   └── status flags
+│
+└── Scenes (ID → Scene)
+    ├── title, description
+    ├── sceneContent (actual prose)
+    ├── wordCount, letterCount (auto-calculated)
+    ├── status, tags, notes
+    ├── characters[], locations[], items[] (cross-references)
+    ├── goal, conflict, outcome (narrative structure)
+    ├── date, time, duration
+    └── mood, mode of discourse
+
+
+================================================================================
+                         TOOLS ARCHITECTURE
+================================================================================
+
+CrewAI Tools (ywriter_tools.py)
+├── Read Tools (5)
+│   ├── ReadProjectNotesTool
+│   │   Input: yw7_path
+│   │   Output: Formatted notes text
+│   │   Use: Retrieve story arc, outlines
+│   │
+│   ├── ReadCharactersTool
+│   │   Input: yw7_path
+│   │   Output: JSON character data
+│   │   Use: Get character profiles for context
+│   │
+│   ├── ReadLocationsTool
+│   │   Input: yw7_path
+│   │   Output: JSON location data
+│   │   Use: Get world details
+│   │
+│   ├── ReadOutlineTool
+│   │   Input: yw7_path, chapter_id (optional)
+│   │   Output: Formatted outline
+│   │   Use: Get chapter structure
+│   │
+│   └── ReadSceneTool
+│       Input: yw7_path, scene_id
+│       Output: JSON scene with content
+│       Use: Read specific scene
+│
+└── Write Tools (3)
+    ├── WriteProjectNoteTool
+    │   Input: yw7_path, title, content
+    │   Output: Success + note ID
+    │   Use: Store story arcs, outlines
+    │
+    ├── CreateChapterTool
+    │   Input: yw7_path, title, description
+    │   Output: Success + chapter ID
+    │   Use: Create new chapters
+    │
+    └── WriteSceneContentTool
+        Input: yw7_path, scene_id, content
+        Output: Success message
+        Use: Update scene prose
+
+
+================================================================================
+                      AGENT IMPLEMENTATION STATUS
+================================================================================
+
+ACTIVE & WORKING:
+✅ StoryPlanner (LangChain) - Generates story arcs with streaming
+✅ Writer (LangChain) - Writes chapter prose with streaming
+✅ SettingBuilder (LangChain) - Creates world settings
+✅ LoreBuilder (LangChain) - Builds story lore
+✅ ywriter_tools (8 tools) - All read/write operations functional
+
+IMPLEMENTED BUT NEED INTEGRATION:
+⚠️  CharacterCreator (CrewAI) - Skeleton ready, needs tools
+⚠️  OutlineCreator (CrewAI) - Skeleton ready, placeholder tools
+⚠️  Editor (CrewAI) - Skeleton ready, needs tools
+⚠️  Critic (CrewAI) - Skeleton ready, needs tools
+⚠️  RelationshipArchitect (CrewAI) - Skeleton ready, needs tools
+⚠️  ItemDeveloper (CrewAI) - Skeleton ready, needs tools
+⚠️  PlotAgent (CrewAI) - Skeleton ready, needs tools
+⚠️  Reviser (CrewAI) - Skeleton ready, needs tools
+
+STUBS - NEED IMPLEMENTATION:
+❌ MemoryKeeper (CrewAI) - No storage, no query interface
+❌ Researcher (CrewAI) - No tools, cannot research
+
+
+================================================================================
+                    IMPLEMENTATION ROADMAP
+================================================================================
+
+PHASE 1: FOUNDATION (Critical)
+├── [1] Implement MemoryKeeper Storage
+│   ├── Add ChromaDB to requirements.txt
+│   ├── Create vector storage backend
+│   ├── Implement query interface
+│   └── Add semantic search methods
+│
+├── [2] Fix Variable Interpolation
+│   ├── Runtime template resolution for agent goals
+│   ├── Context variable injection
+│   └── Test with actual story generation
+│
+└── [3] Add Vector Database
+    ├── ChromaDB integration
+    ├── Embed all yWriter7 content
+    └── Create query interface
+
+PHASE 2: INTEGRATION (RAG System)
+├── [4] Extend ywriter_tools.py
+│   ├── Add SemanticSearchTool
+│   ├── Add RAGQueryTool
+│   └── Add ContinuityCheckTool
+│
+├── [5] Implement RAG Query Interface
+│   ├── Character knowledge base queries
+│   ├── Location/setting queries
+│   ├── Item significance queries
+│   ├── Continuity checking queries
+│   └── Timeline-based queries
+│
+└── [6] Bidirectional Sync
+    ├── Auto-update RAG on yWriter7 changes
+    ├── Auto-update yWriter7 from RAG updates
+    └── Maintain consistency
+
+PHASE 3: ENHANCEMENT (Optional)
+├── [7] Consolidate Agents
+│   ├── Merge Critic → Editor
+│   ├── Merge RelationshipArchitect → CharacterCreator
+│   └── Merge PlotAgent → OutlineCreator
+│
+├── [8] Implement Missing Tools
+│   ├── Researcher web search tools
+│   ├── Character consistency checker
+│   ├── Location consistency checker
+│   └── Word count validator
+│
+└── [9] Create Crew Workflows
+    ├── Planning Crew
+    ├── Outlining Crew
+    ├── Writing Crew
+    └── Editing Crew
+
+
+================================================================================
+                         FILE STATISTICS
+================================================================================
+
+PROJECT METRICS:
+├── Total Python Files: 80+
+├── Total Lines of Code: ~10,000+
+├── Agent Implementations: 14
+├── CrewAI Tools: 8
+├── Supported Genres: 18+
+├── LLM Providers: 4
+├── Configuration Files: 5+
+└── Test Files: 3+
+
+DIRECTORY BREAKDOWN:
+├── agents/ - 14 agent files
+├── config/ - Config manager + 18+ genre templates
+├── ywriter7/ - 50+ files for XML I/O and models
+├── tools/ - ywriter_tools.py (500+ lines) + utilities
+├── test/ - Unit and integration tests
+└── output/ - Generated files
+
+SIZE BY LANGUAGE:
+├── Python: ~9,000 lines
+├── YAML: ~500 lines
+├── Markdown: ~1,000 lines
+└── XML: Varies (yWriter7 files)
+
+
+================================================================================
+                           CONCLUSION
+================================================================================
+
+CURRENT STATE:
+✅ Solid foundation with working yWriter7 integration
+✅ Multiple LLM providers fully configured
+✅ 14 agent skeleton definitions ready
+✅ 8 CrewAI tools for yWriter7 operations
+❌ No RAG system or vector database
+❌ MemoryKeeper not functional
+❌ Inconsistent agent patterns (CrewAI + LangChain mix)
+
+NEXT STEPS:
+1. Implement MemoryKeeper with ChromaDB
+2. Create RAG query interface for agents
+3. Establish bidirectional sync
+4. Test comprehensive agent workflows
+5. Consolidate redundant agents (optional)
+
+ARCHITECTURE QUALITY:
+Configuration System: A+
+yWriter7 Integration: A+
+LLM Provider Support: A+
+Agent Framework: B (needs tools and RAG)
+Overall Readiness: B+ (ready for RAG implementation)
+
