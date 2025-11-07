@@ -20,6 +20,8 @@ from ..model.scene import Scene
 from ..model.character import Character
 from ..model.world_element import WorldElement
 from ..model.project_note import ProjectNote
+from ..model.basic_element import BasicElement
+from .xml_indent import indent
 
 
 class Yw7File(File):
@@ -128,10 +130,13 @@ class Yw7File(File):
 
     def read(self):
         """Parse the yWriter xml file and get the instance variables.
-        
-        Raise the "Error" exception in case of error. 
+
+        Raise the "Error" exception in case of error.
         Overrides the superclass method.
         """
+        # Initialize novel object if not already created
+        if self.novel is None:
+            self.novel = Novel()
 
         for field in self.PRJ_KWVAR:
             self.novel.kwVar[field] = None
