@@ -1,0 +1,1230 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+REDUCED SCOPE WORKFLOW TEST (5 Chapters + Rate Limit Handling)
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Five_Chapter_Test_Novel
+Genre: science fiction
+Chapters: 5
+Output: output/five_chapter_test_novel.yw7
+Rate limit handling: Enabled with exponential backoff
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: f5c32bed-49fa-4a40-b599-de52166b289c                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:20:03,355 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ed97450e5d0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m13:20:03 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:03,375 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 6a5dd903-888f-4c65-a522-f12ea88e0c37
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 5-chapter novel.  │
+│                                                                              │
+│              Requirements:                                                   │
+│              - Complete three-act structure                                  │
+│              - Clear beginning, middle, and end                              │
+│              - Protagonist with clear goal                                   │
+│              - Antagonist with believable motivation                         │
+│              - Rising tension throughout                                     │
+│              - Satisfying conclusion                                         │
+│                                                                              │
+│              Include:                                                        │
+│              - Overall story premise and themes                              │
+│              - Character arcs (protagonist, antagonist, 1-2 supporting)      │
+│              - Key plot points                                               │
+│              - Chapter-by-chapter progression                                │
+│                                                                              │
+│              Ensure complete narrative arc from chapter 1 through 5.         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+2025-11-07 13:20:03,491 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 1.31s... (1/5)
+[92m13:20:04 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:04,800 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:04,864 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 2.77s... (2/5)
+[92m13:20:07 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:07,631 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:20:11 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:20:11,271 - INFO - Wrapper: Completed Call, calling success_handler
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Final Answer:                                                               │
+│  In the realm of science fiction, a compelling story arc can be crafted by   │
+│  intertwining complex themes, character arcs, and plot points. The novel,    │
+│  titled "Echoes of Tomorrow," is set in a dystopian future where humanity    │
+│  has colonized other planets, but at the cost of losing touch with its past  │
+│  and its sense of unity. The story follows the journey of its protagonist,   │
+│  Maya, a brilliant archaeologist who seeks to unravel the mysteries of the   │
+│  forgotten Earth.                                                            │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  "Echoes of Tomorrow" explores the themes of identity, unity, and the        │
+│  consequences of playing with forces beyond human control. In a future       │
+│  where interplanetary travel and colonization have become the norm,          │
+│  humanity has begun to lose its connection to its heritage and the planet    │
+│  that nurtured it. The story delves into the importance of preserving        │
+│  history and the dangers of unchecked technological advancement.             │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Maya):** Maya begins as a determined but somewhat         │
+│  isolated individual, driven by her passion for archaeology and her desire   │
+│  to understand the forgotten past of Earth. As she delves deeper into her    │
+│  research and faces numerous challenges, she evolves into a leader who not   │
+│  only uncovers the secrets of the past but also becomes a beacon of hope     │
+│  for a unified future. Her journey is one of self-discovery and growth, as   │
+│  she learns to balance her personal ambitions with the greater good of       │
+│  humanity.                                                                   │
+│                                                                              │
+│  2. **Antagonist (Senator Orion):** Senator Orion is a charismatic and       │
+│  powerful figure who believes in the advancement of humanity through any     │
+│  means necessary, including the exploitation of Earth's remaining            │
+│  resources. He is driven by a vision of a future where humanity has          │
+│  transcended its earthly bounds, but his methods are ruthless and disregard  │
+│  the well-being of the planet and its inhabitants. Throughout the story,     │
+│  his motivations are revealed to be rooted in a personal tragedy, making     │
+│  him a complex and believable antagonist.                                    │
+│                                                                              │
+│  3. **Supporting Character (Dr. Zhang):** Dr. Zhang is a colleague and       │
+│  friend of Maya's, who provides both intellectual support and comic relief.  │
+│  Initially, Dr. Zhang is portrayed as somewhat of a skeptic, questioning     │
+│  Maya's obsession with the past. However, as the story progresses, Dr.       │
+│  Zhang becomes increasingly involved in Maya's quest, offering crucial       │
+│  insights and assistance. This character's arc is one of transformation      │
+│  from a detached observer to an active participant in Maya's journey.        │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  - **Inciting Incident:** Maya discovers an ancient artifact on Earth that   │
+│  hints at a long-lost technology capable of solving the energy crisis        │
+│  plaguing the colonies.                                                      │
+│  - **Plot Point 1:** Maya's findings are dismissed by the scientific         │
+│  community, leading her to seek out clandestine funding for her research,    │
+│  which attracts the attention of Senator Orion.                              │
+│  - **Midpoint:** Maya and her team successfully reactivate the ancient       │
+│  technology, but it has unforeseen consequences, threatening the stability   │
+│  of the planet.                                                              │
+│  - **Plot Point 2:** Senator Orion reveals his true intentions: to use the   │
+│  technology to propel humanity into a new era, regardless of the cost to     │
+│  Earth.                                                                      │
+│  - **Climax:** Maya and her allies must stop Senator Orion and find a way    │
+│  to safely harness the technology before it's too late.                      │
+│  - **Resolution:** The technology is successfully contained, but not before  │
+│  it reveals a hidden message from the past, a blueprint for a sustainable    │
+│  future that respects both progress and preservation of the planet.          │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  **Chapter 1: Awakening**                                                    │
+│  - Introduce Maya, her passion for archaeology, and her latest discovery on  │
+│  Earth.                                                                      │
+│  - Establish the setting: a future where Earth is a shadow of its former     │
+│  self, and humanity has spread across the stars.                             │
+│  - Inciting Incident: Maya finds the artifact that sets her journey in       │
+│  motion.                                                                     │
+│                                                                              │
+│  **Chapter 2: The Quest Begins**                                             │
+│  - Maya faces skepticism and dismissal from her peers and superiors.         │
+│  - She decides to seek out alternative funding, marking the beginning of     │
+│  her clandestine research.                                                   │
+│  - Introduction of Dr. Zhang, who is initially hesitant to join Maya's       │
+│  quest.                                                                      │
+│                                                                              │
+│  **Chapter 3: Discovery**                                                    │
+│  - Maya and her team make a breakthrough in understanding the artifact and   │
+│  the lost technology.                                                        │
+│  - They successfully reactivate the technology, but it has unexpected and    │
+│  dangerous side effects.                                                     │
+│  - Introduction of Senator Orion, who reveals his interest in Maya's work.   │
+│                                                                              │
+│  **Chapter 4: Confrontation**                                                │
+│  - Senator Orion's true intentions are revealed, and Maya realizes she must  │
+│  stop him.                                                                   │
+│  - The stakes are raised as the technology threatens to destabilize the      │
+│  planet.                                                                     │
+│  - Maya, Dr. Zhang, and their allies devise a plan to confront Senator       │
+│  Orion and save Earth.                                                       │
+│                                                                              │
+│  **Chapter 5: Legacy**                                                       │
+│  - The climax of the story: Maya and her team face off against Senator       │
+│  Orion.                                                                      │
+│  - The technology is harnessed, and the message from the past is revealed,   │
+│  offering a path to a unified and sustainable future.                        │
+│  - Conclusion: Maya's journey comes full circle as she reflects on what has  │
+│  been learned and the new beginnings for humanity.                           │
+│                                                                              │
+│  "Echoes of Tomorrow" is a story that weaves together elements of science    │
+│  fiction, adventure, and self-discovery, creating a compelling narrative     │
+│  arc that explores the depths of human ambition, the importance of           │
+│  preserving our past, and the quest for a harmonious future. Through its     │
+│  characters and plot points, the novel delves into the consequences of our   │
+│  actions and the power of unity and determination in the face of adversity.  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+🚀 Crew: crew
+└── 📋 Task: 6a5dd903-888f-4c65-a522-f12ea88e0c37
+    Assigned to: Story Architect & Narrative Designer
+    Status: ✅ Completed╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 6a5dd903-888f-4c65-a522-f12ea88e0c37                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+✓ Story arc created (5494 characters)
+
+Story Preview:
+In the realm of science fiction, a compelling story arc can be crafted by intertwining complex themes, character arcs, and plot points. The novel, titled "Echoes of Tomorrow," is set in a dystopian future where humanity has colonized other planets, but at the cost of losing touch with its past and its sense of unity. The story follows the journey of its protagonist, Maya, a brilliant archaeologist who seeks to unravel the mysteries of the forgotten Earth.
+
+**Overall Story Premise and Themes:**
+"...
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: f5c32bed-49fa-4a40-b599-de52166b289c                                    │
+│  Tool Args:                                                                  │
+│  Final Output: In the realm of science fiction, a compelling story arc can   │
+│  be crafted by intertwining complex themes, character arcs, and plot         │
+│  points. The novel, titled "Echoes of Tomorrow," is set in a dystopian       │
+│  future where humanity has colonized other planets, but at the cost of       │
+│  losing touch with its past and its sense of unity. The story follows the    │
+│  journey of its protagonist, Maya, a brilliant archaeologist who seeks to    │
+│  unravel the mysteries of the forgotten Earth.                               │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  "Echoes of Tomorrow" explores the themes of identity, unity, and the        │
+│  consequences of playing with forces beyond human control. In a future       │
+│  where interplanetary travel and colonization have become the norm,          │
+│  humanity has begun to lose its connection to its heritage and the planet    │
+│  that nurtured it. The story delves into the importance of preserving        │
+│  history and the dangers of unchecked technological advancement.             │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Maya):** Maya begins as a determined but somewhat         │
+│  isolated individual, driven by her passion for archaeology and her desire   │
+│  to understand the forgotten past of Earth. As she delves deeper into her    │
+│  research and faces numerous challenges, she evolves into a leader who not   │
+│  only uncovers the secrets of the past but also becomes a beacon of hope     │
+│  for a unified future. Her journey is one of self-discovery and growth, as   │
+│  she learns to balance her personal ambitions with the greater good of       │
+│  humanity.                                                                   │
+│                                                                              │
+│  2. **Antagonist (Senator Orion):** Senator Orion is a charismatic and       │
+│  powerful figure who believes in the advancement of humanity through any     │
+│  means necessary, including the exploitation of Earth's remaining            │
+│  resources. He is driven by a vision of a future where humanity has          │
+│  transcended its earthly bounds, but his methods are ruthless and disregard  │
+│  the well-being of the planet and its inhabitants. Throughout the story,     │
+│  his motivations are revealed to be rooted in a personal tragedy, making     │
+│  him a complex and believable antagonist.                                    │
+│                                                                              │
+│  3. **Supporting Character (Dr. Zhang):** Dr. Zhang is a colleague and       │
+│  friend of Maya's, who provides both intellectual support and comic relief.  │
+│  Initially, Dr. Zhang is portrayed as somewhat of a skeptic, questioning     │
+│  Maya's obsession with the past. However, as the story progresses, Dr.       │
+│  Zhang becomes increasingly involved in Maya's quest, offering crucial       │
+│  insights and assistance. This character's arc is one of transformation      │
+│  from a detached observer to an active participant in Maya's journey.        │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  - **Inciting Incident:** Maya discovers an ancient artifact on Earth that   │
+│  hints at a long-lost technology capable of solving the energy crisis        │
+│  plaguing the colonies.                                                      │
+│  - **Plot Point 1:** Maya's findings are dismissed by the scientific         │
+│  community, leading her to seek out clandestine funding for her research,    │
+│  which attracts the attention of Senator Orion.                              │
+│  - **Midpoint:** Maya and her team successfully reactivate the ancient       │
+│  technology, but it has unforeseen consequences, threatening the stability   │
+│  of the planet.                                                              │
+│  - **Plot Point 2:** Senator Orion reveals his true intentions: to use the   │
+│  technology to propel humanity into a new era, regardless of the cost to     │
+│  Earth.                                                                      │
+│  - **Climax:** Maya and her allies must stop Senator Orion and find a way    │
+│  to safely harness the technology before it's too late.                      │
+│  - **Resolution:** The technology is successfully contained, but not before  │
+│  it reveals a hidden message from the past, a blueprint for a sustainable    │
+│  future that respects both progress and preservation of the planet.          │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  **Chapter 1: Awakening**                                                    │
+│  - Introduce Maya, her passion for archaeology, and her latest discovery on  │
+│  Earth.                                                                      │
+│  - Establish the setting: a future where Earth is a shadow of its former     │
+│  self, and humanity has spread across the stars.                             │
+│  - Inciting Incident: Maya finds the artifact that sets her journey in       │
+│  motion.                                                                     │
+│                                                                              │
+│  **Chapter 2: The Quest Begins**                                             │
+│  - Maya faces skepticism and dismissal from her peers and superiors.         │
+│  - She decides to seek out alternative funding, marking the beginning of     │
+│  her clandestine research.                                                   │
+│  - Introduction of Dr. Zhang, who is initially hesitant to join Maya's       │
+│  quest.                                                                      │
+│                                                                              │
+│  **Chapter 3: Discovery**                                                    │
+│  - Maya and her team make a breakthrough in understanding the artifact and   │
+│  the lost technology.                                                        │
+│  - They successfully reactivate the technology, but it has unexpected and    │
+│  dangerous side effects.                                                     │
+│  - Introduction of Senator Orion, who reveals his interest in Maya's work.   │
+│                                                                              │
+│  **Chapter 4: Confrontation**                                                │
+│  - Senator Orion's true intentions are revealed, and Maya realizes she must  │
+│  stop him.                                                                   │
+│  - The stakes are raised as the technology threatens to destabilize the      │
+│  planet.                                                                     │
+│  - Maya, Dr. Zhang, and their allies devise a plan to confront Senator       │
+│  Orion and save Earth.                                                       │
+│                                                                              │
+│  **Chapter 5: Legacy**                                                       │
+│  - The climax of the story: Maya and her team face off against Senator       │
+│  Orion.                                                                      │
+│  - The technology is harnessed, and the message from the past is revealed,   │
+│  offering a path to a unified and sustainable future.                        │
+│  - Conclusion: Maya's journey comes full circle as she reflects on what has  │
+│  been learned and the new beginnings for humanity.                           │
+│                                                                              │
+│  "Echoes of Tomorrow" is a story that weaves together elements of science    │
+│  fiction, adventure, and self-discovery, creating a compelling narrative     │
+│  arc that explores the depths of human ambition, the importance of           │
+│  preserving our past, and the quest for a harmonious future. Through its     │
+│  characters and plot points, the novel delves into the consequences of our   │
+│  actions and the power of unity and determination in the face of adversity.  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:20:26,200 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 13:20:27,302 - INFO - Initialized 6 collections
+2025-11-07 13:20:27,302 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 13:20:27,302 - INFO - RAGSyncManager initialized
+2025-11-07 13:20:27,302 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+2025-11-07 13:20:27,305 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 13:20:27,305 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 13:20:27,305 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+2025-11-07 13:20:27,306 - INFO - Sync completed: {'characters': 0, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 13:20:27,306 - INFO - RAG sync completed: 0 items synced
+
+================================================================================
+STEP 2: Character Creation
+================================================================================
+Running Character Creator...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 206e7d9e-b910-4564-a339-745bd5981819                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:20:29,330 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ed7bc2a0390>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m13:20:29 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:29,338 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 3-4 detailed character profiles:       │
+│                                                                              │
+│              Story Context:                                                  │
+│              In the realm of science fiction, a compelling story arc can be  │
+│  crafted by intertwining complex themes, character arcs, and plot points.    │
+│  The novel, titled "Echoes of Tomorrow," is set in a dystopian future where  │
+│  humanity has colonized other planets, but at the cost of losing touch with  │
+│  its past and its sense of unity. The story follows the journey of its       │
+│  protagonist, Maya, a brilliant archaeologist who seeks to unravel the       │
+│  mysteries of the forgotten Earth.                                           │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  "Echoes of Tomorrow" explores the themes of identity, unity, and the        │
+│  consequences of playing with forces beyond human control. In a future       │
+│  where interplanetary travel and colonization have become the norm,          │
+│  humanity has begun to lose its connection to its heritage and the planet    │
+│  that nurtured it. The story delves into the importance of preserving        │
+│  history and the dangers of unchecked technological advancement.             │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Maya):** Maya begins as a determined but somewhat         │
+│                                                                              │
+│              Create characters with complete profiles including:             │
+│              full names, nicknames (AKA), descriptions, biographies,         │
+│              development notes, goals, and major/minor designation.          │
+│                                                                              │
+│              Format as structured data:                                      │
+│              CHARACTER: [name]                                               │
+│              FULLNAME: [full name]                                           │
+│              AKA: [nicknames]                                                │
+│              DESC: [brief description]                                       │
+│              BIO: [biography]                                                │
+│              NOTES: [development notes]                                      │
+│              GOALS: [story goals]                                            │
+│              MAJOR: [YES or NO]                                              │
+│              ---                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m13:20:33 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:20:33,701 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:20:33,737 - INFO - Initialized 6 collections
+2025-11-07 13:20:33,737 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.03it/s]
+[92m13:20:33 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:20:33,809 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: To create detailed character profiles, I need to start    │
+│  by understanding the main characters in the story, particularly the         │
+│  protagonist, Maya, and other key characters that may influence her journey  │
+│  or embody the themes of the story.                                          │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main protagonist",                                              │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.418,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:20:37 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:20:37,778 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 70.62it/s]
+2025-11-07 13:20:37,811 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 34.54s...
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: However, this result does not match our story. Let's try again.    │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "protagonist in Echoes of Tomorrow",                             │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.332,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman with blonde hair and blue eyes\n\nBiography: Alice      │
+│  grew up in a small village and always dreamed of adventure. She is brave,   │
+│  intelligent, and kind-hearted.\n\nGoals: To discover the truth about the    │
+│  ancient prophecy\n\nCharacter T..."                                         │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:21:12 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:21:12,353 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:21:15 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:21:15,250 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 71.56it/s]
+2025-11-07 13:21:15,281 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 19.42s...
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: However, this also doesn't match. Let's try one more time.         │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "archaeologist in Echoes of Tomorrow",                           │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Eve",                                                            │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.241,                                                 │
+│    "details": "Name: Eve\n\nFull Name: Eve the Enchantress\n\nDescription:   │
+│  A mysterious sorceress with silver hair\n\nBiography: Eve knows ancient     │
+│  magic and guards dangerous secrets. She is enigmatic and                    │
+│  powerful.\n\nGoals: To prevent the prophecy from being                      │
+│  fulfilled\n\nCharacter Type: Minor Character"                               │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships). Use this for general quest...              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:21:34 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:21:34,707 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:21:38 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:21:38,328 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 88.36it/s]
+2025-11-07 13:21:38,355 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 37.17s...
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Semantic Character Search (4)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: It seems like the previous searches did not yield the     │
+│  desired results. Let me try searching for the main character again.         │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "Maya in Echoes of Tomorrow",                                    │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.242,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman with blonde hair and blue eyes\n\nBiography: Alice      │
+│  grew up in a small village and always dreamed of adventure. She is brave,   │
+│  intelligent, and kind-hearted.\n\nGoals: To discover the truth about the    │
+│  ancient prophecy\n\nCharacter T..."                                         │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:22:15 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:22:15,530 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:22:18 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:22:18,191 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 68.79it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 98.96it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 93.12it/s]
+2025-11-07 13:22:18,291 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 20.95s...
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: The previous search results still do not match the        │
+│  story. Let's try a General Story Knowledge Search to get more information   │
+│  about the story.                                                            │
+│                                                                              │
+│  Using Tool: General Story Knowledge Search                                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "Echoes of Tomorrow story",                                      │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  [Locations] The Hidden Glade:                                               │
+│  Location: The Hidden Glade                                                  │
+│                                                                              │
+│  Description: A secret clearing deep in the forest                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:22:39 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:22:39,244 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:22:42 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:22:42,512 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 70.38it/s]
+2025-11-07 13:22:42,543 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 37.72s...
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    ├── 🔧 Used Semantic Character Search (5)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: where the ancient trees whisper secrets to those who listen.       │
+│  Inhabitants: The guardians of the forest, ancient beings who have watched   │
+│  over the land for centuries.                                                │
+│  Importance: The Hidden Glade holds the key to unlocking the secrets of the  │
+│  ancient prophecy and the fate of the world.                                 │
+│  Thought: The General Story Knowledge Search results do not seem to match    │
+│  our story either. Let me try searching for the main character again.        │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main character in Echoes of Tomorrow",                          │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.283,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman with blonde hair and blue eyes\n\nBiography: Alice      │
+│  grew up in a small village and always dreamed of adventure. She is brave,   │
+│  intelligent, and kind-hearted.\n\nGoals: To discover the truth about the    │
+│  ancient prophecy\n\nCharacter T..."                                         │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships)....                                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m13:23:20 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:23:20,261 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:23:23 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:23:23,031 - INFO - Wrapper: Completed Call, calling success_handler
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Final Answer:                                                               │
+│  CHARACTER: Maya                                                             │
+│  FULLNAME: Maya Blackwood                                                    │
+│  AKA: The Archaeologist                                                      │
+│  DESC: A brilliant and determined archaeologist who seeks to uncover the     │
+│  secrets of the forgotten Earth.                                             │
+│  BIO: Maya was born on a distant planet, but she has always been fascinated  │
+│  by the history of Earth. She spent most of her life studying the ancient    │
+│  civilizations that once thrived on the planet and has become an expert in   │
+│  the field.                                                                  │
+│  NOTES: Maya is a complex character with a strong sense of curiosity and     │
+│  determination. She is driven by a desire to understand the past and to      │
+│  uncover the secrets that have been lost to time.                            │
+│  GOALS: To uncover the secrets of the forgotten Earth and to understand the  │
+│  history of the planet.                                                      │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Dr. Zhang                                                        │
+│  FULLNAME: Dr. Sophia Zhang                                                  │
+│  AKA: The Scientist                                                          │
+│  DESC: A brilliant scientist who has dedicated her life to studying the      │
+│  effects of interplanetary travel on the human body.                         │
+│  BIO: Dr. Zhang was born on Earth, but she has spent most of her life        │
+│  traveling to other planets and studying the effects of space travel on the  │
+│  human body. She is a leading expert in her field and has made several       │
+│  groundbreaking discoveries.                                                 │
+│  NOTES: Dr. Zhang is a supporting character who plays an important role in   │
+│  Maya's journey. She is a brilliant scientist, but she is also a complex     │
+│  person with her own motivations and desires.                                │
+│  GOALS: To understand the effects of interplanetary travel on the human      │
+│  body and to find a way to mitigate its negative effects.                    │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Captain Lewis                                                    │
+│  FULLNAME: Captain James Lewis                                               │
+│  AKA: The Captain                                                            │
+│  DESC: A seasoned space traveler who has dedicated his life to exploring     │
+│  the galaxy and uncovering its secrets.                                      │
+│  BIO: Captain Lewis was born on a distant planet, but he has spent most of   │
+│  his life traveling to other planets and exploring the unknown. He is a      │
+│  skilled pilot and a natural leader.                                         │
+│  NOTES: Captain Lewis is a supporting character who plays an important role  │
+│  in Maya's journey. He is a skilled pilot and a natural leader, but he is    │
+│  also a complex person with his own motivations and desires.                 │
+│  GOALS: To explore the galaxy and to uncover its secrets.                    │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: The AI                                                           │
+│  FULLNAME: Echo                                                              │
+│  AKA: The AI                                                                 │
+│  DESC: An artificial intelligence that has been created to assist humans in  │
+│  their daily lives.                                                          │
+│  BIO: Echo was created by a team of scientists who wanted to create an       │
+│  artificial intelligence that could assist humans in their daily lives. It   │
+│  is a highly advanced AI that is capable of learning and adapting to new     │
+│  situations.                                                                 │
+│  NOTES: Echo is a supporting character who plays an important role in        │
+│  Maya's journey. It is a highly advanced AI that is capable of learning and  │
+│  adapting to new situations, but it is also a complex character with its     │
+│  own motivations and desires.                                                │
+│  GOALS: To assist humans in their daily lives and to learn and adapt to new  │
+│  situations.                                                                 │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+🚀 Crew: crew
+└── 📋 Task: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b
+    Assigned to: Character Development Specialist
+    Status: ✅ Completed
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    └── 🔧 Used Semantic Character Search (5)╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 1e41b4ff-f654-4c5e-8018-0c509b7ca17b                                  │
+│  Agent: Character Development Specialist                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 206e7d9e-b910-4564-a339-745bd5981819                                    │
+│  Tool Args:                                                                  │
+│  Final Output: CHARACTER: Maya                                               │
+│  FULLNAME: Maya Blackwood                                                    │
+│  AKA: The Archaeologist                                                      │
+│  DESC: A brilliant and determined archaeologist who seeks to uncover the     │
+│  secrets of the forgotten Earth.                                             │
+│  BIO: Maya was born on a distant planet, but she has always been fascinated  │
+│  by the history of Earth. She spent most of her life studying the ancient    │
+│  civilizations that once thrived on the planet and has become an expert in   │
+│  the field.                                                                  │
+│  NOTES: Maya is a complex character with a strong sense of curiosity and     │
+│  determination. She is driven by a desire to understand the past and to      │
+│  uncover the secrets that have been lost to time.                            │
+│  GOALS: To uncover the secrets of the forgotten Earth and to understand the  │
+│  history of the planet.                                                      │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Dr. Zhang                                                        │
+│  FULLNAME: Dr. Sophia Zhang                                                  │
+│  AKA: The Scientist                                                          │
+│  DESC: A brilliant scientist who has dedicated her life to studying the      │
+│  effects of interplanetary travel on the human body.                         │
+│  BIO: Dr. Zhang was born on Earth, but she has spent most of her life        │
+│  traveling to other planets and studying the effects of space travel on the  │
+│  human body. She is a leading expert in her field and has made several       │
+│  groundbreaking discoveries.                                                 │
+│  NOTES: Dr. Zhang is a supporting character who plays an important role in   │
+│  Maya's journey. She is a brilliant scientist, but she is also a complex     │
+│  person with her own motivations and desires.                                │
+│  GOALS: To understand the effects of interplanetary travel on the human      │
+│  body and to find a way to mitigate its negative effects.                    │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Captain Lewis                                                    │
+│  FULLNAME: Captain James Lewis                                               │
+│  AKA: The Captain                                                            │
+│  DESC: A seasoned space traveler who has dedicated his life to exploring     │
+│  the galaxy and uncovering its secrets.                                      │
+│  BIO: Captain Lewis was born on a distant planet, but he has spent most of   │
+│  his life traveling to other planets and exploring the unknown. He is a      │
+│  skilled pilot and a natural leader.                                         │
+│  NOTES: Captain Lewis is a supporting character who plays an important role  │
+│  in Maya's journey. He is a skilled pilot and a natural leader, but he is    │
+│  also a complex person with his own motivations and desires.                 │
+│  GOALS: To explore the galaxy and to uncover its secrets.                    │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: The AI                                                           │
+│  FULLNAME: Echo                                                              │
+│  AKA: The AI                                                                 │
+│  DESC: An artificial intelligence that has been created to assist humans in  │
+│  their daily lives.                                                          │
+│  BIO: Echo was created by a team of scientists who wanted to create an       │
+│  artificial intelligence that could assist humans in their daily lives. It   │
+│  is a highly advanced AI that is capable of learning and adapting to new     │
+│  situations.                                                                 │
+│  NOTES: Echo is a supporting character who plays an important role in        │
+│  Maya's journey. It is a highly advanced AI that is capable of learning and  │
+│  adapting to new situations, but it is also a complex character with its     │
+│  own motivations and desires.                                                │
+│  GOALS: To assist humans in their daily lives and to learn and adapt to new  │
+│  situations.                                                                 │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:23:23,095 - INFO - Initialized 6 collections
+2025-11-07 13:23:23,095 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 13:23:23,095 - INFO - RAGSyncManager initialized
+2025-11-07 13:23:23,095 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+  ✓ Created: Maya
+  ✓ Created: Dr. Zhang
+  ✓ Created: Captain Lewis
+  ✓ Created: The AI
+2025-11-07 13:23:23,099 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 13:23:23,099 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 13:23:23,099 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 32.68it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 29.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 54.40it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 29.80it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 47.27it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 51.64it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 54.03it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.00it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.00it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 64.51it/s]
+2025-11-07 13:23:23,677 - INFO - Sync completed: {'characters': 4, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 6}
+2025-11-07 13:23:23,678 - INFO - RAG sync completed: 10 items synced
+✓ Created 4 characters
+
+================================================================================
+STEP 3: Location Creation
+================================================================================
+Running Setting Builder...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 4acbc68b-ff8c-4684-ad06-c0c2197d7319                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:23:25,701 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ed7bc2aca10>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+2025-11-07 13:23:25,709 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 16.98s...
+🚀 Crew: crew
+└── 📋 Task: 23cbf623-714f-4e1a-908d-f86057163edf
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: World Builder & Setting Designer                                     │
+│                                                                              │
+│  Task: Create 3-4 key locations with vivid descriptions and alternate        │
+│  names.                                                                      │
+│                                                                              │
+│              Story Context:                                                  │
+│              In the realm of science fiction, a compelling story arc can be  │
+│  crafted by intertwining complex themes, character arcs, and plot points.    │
+│  The novel, titled "Echoes of Tomorrow," is set in a dystopian future where  │
+│  humanity has colonized other planets, but at the cost of losing touch with  │
+│  its past and its sense of unity. The story follows the journey of its       │
+│  protagonist, Maya, a brilliant archaeologist who seeks to unravel the       │
+│  mysteries of the forgotten Earth.                                           │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  "Echoes of Tomorrow" explores the themes of identity, unity, and the        │
+│  consequences of playing with forces beyond human control. In a future       │
+│  where interplanetary travel and colonization have become the norm,          │
+│  humanity has begun to lose its connection to its heritage and the planet    │
+│  that nurtured it. The story delves into the importance of preserving        │
+│  history and the dangers of unchecked technological advancement.             │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Maya):** Maya begins as a determined but somewhat         │
+│                                                                              │
+│              Format as structured data:                                      │
+│              LOCATION: [name]                                                │
+│              AKA: [alternate names]                                          │
+│              DESC: [description]                                             │
+│              ---                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m13:23:42 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 13:23:42,693 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m13:23:44 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 13:23:44,730 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: 23cbf623-714f-4e1a-908d-f86057163edf
+    Assigned to: World Builder & Setting Designer
+    Status: ✅ Completed╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: World Builder & Setting Designer                                     │
+│                                                                              │
+│  Final Answer:                                                               │
+│  LOCATION: New Eden                                                          │
+│  AKA: Nova Terra, Earth-2, The Colony                                        │
+│  DESC: New Eden is a sprawling metropolis on one of the distant planets      │
+│  colonized by humanity. It serves as the capital of the interplanetary       │
+│  government and is a marvel of modern technology, with towering skyscrapers  │
+│  and advanced artificial intelligence integrated into every aspect of life.  │
+│  Despite its beauty and efficiency, New Eden feels sterile and lacks the     │
+│  soul of the old Earth, symbolizing the disconnect between humanity's past   │
+│  and its futuristic ambitions.                                               │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Archives of Old Earth                                         │
+│  AKA: The Vault, Earth's Memory, The Historical Repository                   │
+│  DESC: Deep within the ruins of old Earth, hidden beneath the layers of      │
+│  time and neglect, lies The Archives of Old Earth. This ancient facility     │
+│  holds the remnants of human history, from dusty tomes and faded             │
+│  manuscripts to holographic records and artifacts of a bygone era. The       │
+│  Archives are a treasure trove for archaeologists like Maya, seeking to      │
+│  understand and preserve the past. However, the harsh environment and the    │
+│  remnants of old conflicts make it a perilous journey for those who dare to  │
+│  venture into its depths.                                                    │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Aurora Space Station                                          │
+│  AKA: The Gateway, Orbital Haven, The Crossroads                             │
+│  DESC: The Aurora Space Station is a massive, orbiting platform that serves  │
+│  as a hub for interplanetary travel and commerce. It is a place of bustling  │
+│  activity, where people from all corners of the colonized universe come to   │
+│  trade, seek opportunities, or flee their pasts. The station is a marvel of  │
+│  engineering, equipped with state-of-the-art facilities and defenses. Yet,   │
+│  beneath its gleaming surface, the Aurora hides secrets and dangers, from    │
+│  smuggling operations to clandestine meetings that could change the course   │
+│  of human history.                                                           │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Wastes of Arkeia                                              │
+│  AKA: The Forgotten Planet, Arkeia-IV, The Barren World                      │
+│  DESC: Arkeia, one of the earliest planets to be colonized, has become a     │
+│  desolate wasteland due to humanity's reckless exploitation of its           │
+│  resources. The once-thriving colonies now lie in ruins, a testament to the  │
+│  devastating consequences of unchecked technological advancement and the     │
+│  disregard for the environmental balance of the planet. The Wastes of        │
+│  Arkeia are treacherous, with toxic sandstorms, mutated creatures, and       │
+│  remnants of failed technologies. Despite the dangers, Arkeia holds secrets  │
+│  of the past and serves as a stark reminder of the price of progress         │
+│  without responsibility.                                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 23cbf623-714f-4e1a-908d-f86057163edf                                  │
+│  Agent: World Builder & Setting Designer                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 4acbc68b-ff8c-4684-ad06-c0c2197d7319                                    │
+│  Tool Args:                                                                  │
+│  Final Output: LOCATION: New Eden                                            │
+│  AKA: Nova Terra, Earth-2, The Colony                                        │
+│  DESC: New Eden is a sprawling metropolis on one of the distant planets      │
+│  colonized by humanity. It serves as the capital of the interplanetary       │
+│  government and is a marvel of modern technology, with towering skyscrapers  │
+│  and advanced artificial intelligence integrated into every aspect of life.  │
+│  Despite its beauty and efficiency, New Eden feels sterile and lacks the     │
+│  soul of the old Earth, symbolizing the disconnect between humanity's past   │
+│  and its futuristic ambitions.                                               │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Archives of Old Earth                                         │
+│  AKA: The Vault, Earth's Memory, The Historical Repository                   │
+│  DESC: Deep within the ruins of old Earth, hidden beneath the layers of      │
+│  time and neglect, lies The Archives of Old Earth. This ancient facility     │
+│  holds the remnants of human history, from dusty tomes and faded             │
+│  manuscripts to holographic records and artifacts of a bygone era. The       │
+│  Archives are a treasure trove for archaeologists like Maya, seeking to      │
+│  understand and preserve the past. However, the harsh environment and the    │
+│  remnants of old conflicts make it a perilous journey for those who dare to  │
+│  venture into its depths.                                                    │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Aurora Space Station                                          │
+│  AKA: The Gateway, Orbital Haven, The Crossroads                             │
+│  DESC: The Aurora Space Station is a massive, orbiting platform that serves  │
+│  as a hub for interplanetary travel and commerce. It is a place of bustling  │
+│  activity, where people from all corners of the colonized universe come to   │
+│  trade, seek opportunities, or flee their pasts. The station is a marvel of  │
+│  engineering, equipped with state-of-the-art facilities and defenses. Yet,   │
+│  beneath its gleaming surface, the Aurora hides secrets and dangers, from    │
+│  smuggling operations to clandestine meetings that could change the course   │
+│  of human history.                                                           │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: The Wastes of Arkeia                                              │
+│  AKA: The Forgotten Planet, Arkeia-IV, The Barren World                      │
+│  DESC: Arkeia, one of the earliest planets to be colonized, has become a     │
+│  desolate wasteland due to humanity's reckless exploitation of its           │
+│  resources. The once-thriving colonies now lie in ruins, a testament to the  │
+│  devastating consequences of unchecked technological advancement and the     │
+│  disregard for the environmental balance of the planet. The Wastes of        │
+│  Arkeia are treacherous, with toxic sandstorms, mutated creatures, and       │
+│  remnants of failed technologies. Despite the dangers, Arkeia holds secrets  │
+│  of the past and serves as a stark reminder of the price of progress         │
+│  without responsibility.                                                     │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 13:23:44,782 - INFO - Initialized 6 collections
+2025-11-07 13:23:44,782 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 13:23:44,782 - INFO - RAGSyncManager initialized
+2025-11-07 13:23:44,782 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+  ✓ Created: New Eden
+  ✓ Created: The Archives of Old Earth
+  ✓ Created: The Aurora Space Station
+  ✓ Created: The Wastes of Arkeia
+2025-11-07 13:23:44,787 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 13:23:44,787 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 13:23:44,787 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.32it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 57.69it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.32it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.96it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 68.42it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.06it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 52.40it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 51.18it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 69.19it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.72it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 65.70it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.13it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 74.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.75it/s]
+2025-11-07 13:23:45,481 - INFO - Sync completed: {'characters': 4, 'locations': 4, 'items': 0, 'plot_events': 0, 'relationships': 6}
+2025-11-07 13:23:45,481 - INFO - RAG sync completed: 14 items synced
+✓ Created 4 locations
+
+================================================================================
+STEP 4: Creating Minimal Chapter Structure
+================================================================================
+2025-11-07 13:23:47,513 - INFO - Initialized 6 collections
+2025-11-07 13:23:47,513 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 13:23:47,513 - INFO - RAGSyncManager initialized
+2025-11-07 13:23:47,513 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+  ✓ Created: Chapter 1 with 1 placeholder scene
+  ✓ Created: Chapter 2 with 1 placeholder scene
+  ✓ Created: Chapter 3 with 1 placeholder scene
+  ✓ Created: Chapter 4 with 1 placeholder scene
+  ✓ Created: Chapter 5 with 1 placeholder scene
+2025-11-07 13:23:47,523 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 13:23:47,523 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 13:23:47,523 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 47.04it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 53.55it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 66.33it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 69.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 81.19it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 77.19it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 69.90it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 38.66it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 105.92it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 131.47it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 82.82it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 81.24it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 118.13it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 69.06it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.82it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 68.90it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 46.06it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 73.08it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 57.08it/s]
+2025-11-07 13:23:48,440 - INFO - Sync completed: {'characters': 4, 'locations': 4, 'items': 0, 'plot_events': 5, 'relationships': 6}
+2025-11-07 13:23:48,440 - INFO - RAG sync completed: 19 items synced
+✓ Created 5 chapters with placeholder scenes
+
+================================================================================
+✅ WORKFLOW TEST COMPLETE (Partial - Steps 1-4)
+================================================================================
+Duration: 0:03:45.124709
+Output file: output/five_chapter_test_novel.yw7
+
+Statistics:
+  Characters: 4
+  Locations: 4
+  Chapters: 5
+  Scenes: 5
+
+Note: Chapters created with placeholder scenes for yWriter7 validity.
+Full scene content generation would require Steps 5-7 (Writing/Editing).
+This file should now open successfully in yWriter7.

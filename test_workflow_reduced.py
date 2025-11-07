@@ -367,21 +367,58 @@ def test_reduced_workflow():
     print(f"✓ Created {len(yw7.novel.locations)} locations")
     time.sleep(2)
 
+    # ============================================================
+    # STEP 4: Create Minimal Chapter Structure (for yWriter7 validity)
+    # ============================================================
+    print_step(4, "Creating Minimal Chapter Structure")
+
+    # yWriter7 requires at least one chapter to open the file
+    # Create placeholder chapters without full content
+    with AutoSyncYw7File(project_path) as yw7:
+        for i in range(1, num_chapters + 1):
+            # Create empty chapter
+            chapter_id = create_id(yw7.novel.chapters)
+            chapter = Chapter()
+            chapter.title = f"Chapter {i}"
+            chapter.desc = f"Chapter {i} placeholder (content to be generated)"
+            chapter.chType = 0  # Normal chapter
+
+            yw7.novel.chapters[chapter_id] = chapter
+            yw7.novel.srtChapters.append(chapter_id)
+
+            # Create one empty scene per chapter so chapters aren't empty
+            scene_id = create_id(yw7.novel.scenes)
+            scene = Scene()
+            scene.title = f"Scene {i}.1"
+            scene.desc = f"Scene placeholder for Chapter {i}"
+            scene.scType = 0  # Action scene
+            scene.status = 1  # Outline
+            scene.sceneContent = ""  # Empty content
+
+            yw7.novel.scenes[scene_id] = scene
+            yw7.novel.chapters[chapter_id].srtScenes.append(scene_id)
+
+            print(f"  ✓ Created: {chapter.title} with 1 placeholder scene")
+
+    print(f"✓ Created {len(yw7.novel.chapters)} chapters with placeholder scenes")
+
     # Summary
     end_time = datetime.now()
     duration = end_time - start_time
 
     print("\n" + "="*80)
-    print("✅ WORKFLOW TEST COMPLETE (Partial - Steps 1-3)")
+    print("✅ WORKFLOW TEST COMPLETE (Partial - Steps 1-4)")
     print("="*80)
     print(f"Duration: {duration}")
     print(f"Output file: {project_path}")
     print(f"\nStatistics:")
     print(f"  Characters: {len(yw7.novel.characters)}")
     print(f"  Locations: {len(yw7.novel.locations)}")
-    print(f"\nNote: Full workflow with scenes/writing would require Steps 4-7.")
-    print(f"This test demonstrates the enhanced character/location creation with")
-    print(f"all yWriter7 fields (bio, notes, goals, aka, isMajor).")
+    print(f"  Chapters: {len(yw7.novel.chapters)}")
+    print(f"  Scenes: {len(yw7.novel.scenes)}")
+    print(f"\nNote: Chapters created with placeholder scenes for yWriter7 validity.")
+    print(f"Full scene content generation would require Steps 5-7 (Writing/Editing).")
+    print(f"This file should now open successfully in yWriter7.")
 
 
 if __name__ == "__main__":
