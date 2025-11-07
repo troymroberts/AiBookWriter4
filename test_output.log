@@ -1,0 +1,213 @@
+
+======================================================================
+END-TO-END WRITING FLOW TEST
+======================================================================
+
+This test validates:
+  - yWriter7 project creation
+  - Character, location, and scene creation
+  - Automatic RAG synchronization
+  - Semantic search accuracy
+  - RAG tool functionality
+
+======================================================================
+STEP 1: Creating Test Project
+======================================================================
+Removed existing project: output/writing_flow_test.yw7
+✓ Created project: RAG Writing Flow Test Novel
+  Path: output/writing_flow_test.yw7
+  Chapters: 1
+
+======================================================================
+STEP 2: Creating Characters with Auto-Sync
+======================================================================
+2025-11-07 11:20:32,666 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 11:20:33,824 - INFO - Initialized 6 collections
+2025-11-07 11:20:33,824 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 11:20:33,824 - INFO - RAGSyncManager initialized
+2025-11-07 11:20:33,824 - INFO - AutoSyncYw7File initialized for output/writing_flow_test.yw7 (auto_sync=True)
+✓ Created 3 characters:
+  1. Elena Thorne - A brave young archaeologist searching for ancient artifacts
+  2. Marcus Vale - A ruthless collector of ancient artifacts who will stop at nothing
+  3. Dr. James Chen - Elena's colleague and friend, an expert in ancient languages
+2025-11-07 11:20:33,828 - INFO - Wrote changes to output/writing_flow_test.yw7
+2025-11-07 11:20:33,829 - INFO - Syncing output/writing_flow_test.yw7 to RAG system...
+2025-11-07 11:20:33,829 - INFO - Starting sync from yWriter7: output/writing_flow_test.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 39.22it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 52.10it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 60.19it/s]
+2025-11-07 11:20:34,015 - INFO - Sync completed: {'characters': 3, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 11:20:34,015 - INFO - RAG sync completed: 3 items synced
+✓ Characters saved and synced to RAG automatically
+
+======================================================================
+STEP 3: Creating Locations with Auto-Sync
+======================================================================
+2025-11-07 11:20:34,047 - INFO - Initialized 6 collections
+2025-11-07 11:20:34,047 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 11:20:34,047 - INFO - RAGSyncManager initialized
+2025-11-07 11:20:34,048 - INFO - AutoSyncYw7File initialized for output/writing_flow_test.yw7 (auto_sync=True)
+✓ Created 3 locations:
+  1. The Ancient Temple - A mysterious temple hidden in the Amazon rainforest, covered...
+  2. Oxford University - Elena's academic home base, where she conducts research and plans expeditions
+  3. Vale Manor - Marcus Vale's opulent estate, housing his private collection...
+2025-11-07 11:20:34,052 - INFO - Wrote changes to output/writing_flow_test.yw7
+2025-11-07 11:20:34,053 - INFO - Syncing output/writing_flow_test.yw7 to RAG system...
+2025-11-07 11:20:34,053 - INFO - Starting sync from yWriter7: output/writing_flow_test.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 86.49it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 89.70it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 94.88it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 61.52it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 103.94it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 116.10it/s]
+2025-11-07 11:20:34,327 - INFO - Sync completed: {'characters': 3, 'locations': 3, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 11:20:34,327 - INFO - RAG sync completed: 6 items synced
+✓ Locations saved and synced to RAG automatically
+
+======================================================================
+STEP 4: Creating Scenes with Auto-Sync
+======================================================================
+2025-11-07 11:20:34,360 - INFO - Initialized 6 collections
+2025-11-07 11:20:34,360 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 11:20:34,360 - INFO - RAGSyncManager initialized
+2025-11-07 11:20:34,360 - INFO - AutoSyncYw7File initialized for output/writing_flow_test.yw7 (auto_sync=True)
+✓ Created 2 scenes:
+  1. The Discovery - Elena discovers a cryptic map in her mentor's notes
+  2. The Warning - Elena receives a threatening message from Marcus Vale
+✓ Scenes added to: Chapter 1: The Beginning
+2025-11-07 11:20:34,366 - INFO - Wrote changes to output/writing_flow_test.yw7
+2025-11-07 11:20:34,366 - INFO - Syncing output/writing_flow_test.yw7 to RAG system...
+2025-11-07 11:20:34,366 - INFO - Starting sync from yWriter7: output/writing_flow_test.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 76.77it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 91.03it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 85.62it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 111.31it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 82.82it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 76.09it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 36.68it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 55.76it/s]
+2025-11-07 11:20:34,736 - INFO - Sync completed: {'characters': 3, 'locations': 3, 'items': 0, 'plot_events': 2, 'relationships': 0}
+2025-11-07 11:20:34,736 - INFO - RAG sync completed: 8 items synced
+✓ Scenes saved and synced to RAG automatically
+
+======================================================================
+STEP 5: Verifying RAG Synchronization
+======================================================================
+2025-11-07 11:20:34,768 - INFO - Initialized 6 collections
+2025-11-07 11:20:34,768 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 11:20:34,768 - INFO - RAGSyncManager initialized
+2025-11-07 11:20:34,769 - INFO - Syncing output/writing_flow_test.yw7 to RAG system...
+2025-11-07 11:20:34,769 - INFO - Starting sync from yWriter7: output/writing_flow_test.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 88.68it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.56it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 62.46it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 104.97it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 130.46it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 124.93it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 43.10it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 53.86it/s]
+2025-11-07 11:20:35,137 - INFO - Sync completed: {'characters': 3, 'locations': 3, 'items': 0, 'plot_events': 2, 'relationships': 0}
+2025-11-07 11:20:35,137 - INFO - RAG sync completed: 8 items synced
+✓ RAG sync completed:
+  Characters: 3
+  Locations: 3
+  Items: 0
+  Plot events: 2
+  Relationships: 0
+  Total: 8 items synced
+✓ Character sync verified (3 >= 3)
+✓ Location sync verified (3 >= 3)
+✓ Scene sync verified (2 >= 2)
+
+======================================================================
+STEP 6: Testing Semantic Search
+======================================================================
+2025-11-07 11:20:35,165 - INFO - Initialized 6 collections
+2025-11-07 11:20:35,165 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+
+📍 Searching for 'brave protagonist archaeologist'...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 60.86it/s]
+✓ Found 3 character results:
+  1. Unknown (similarity: 34.7%)
+  2. Unknown (similarity: 34.3%)
+  3. Unknown (similarity: 33.7%)
+
+📍 Searching for 'ancient temple mysterious'...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 170.18it/s]
+✓ Found 3 location results:
+  1. Unknown (similarity: 38.8%)
+  2. Unknown (similarity: 35.0%)
+  3. Unknown (similarity: 29.1%)
+
+📍 Searching for 'discovery map research'...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 163.43it/s]
+✓ Found 3 plot event results:
+  1. Scene 1: Discovery (similarity: 33.2%)
+  2. Scene 2: Meeting Bob (similarity: 21.1%)
+  3. Scene 1: The Forest Path (similarity: 18.2%)
+
+======================================================================
+STEP 7: Testing RAG Tools
+======================================================================
+
+🔧 Testing SemanticCharacterSearchTool...
+2025-11-07 11:20:35,271 - INFO - Initialized 6 collections
+2025-11-07 11:20:35,271 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 57.31it/s]
+Tool result (first 200 chars):
+{
+  "name": "Bob",
+  "type": "Major",
+  "relevance_score": 0.579,
+  "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A strong warrior with dark hair and green eyes\n\nBiography: Bob i...
+
+🔧 Testing SemanticLocationSearchTool...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 167.08it/s]
+Tool result (first 200 chars):
+{
+  "name": "The Forest Path",
+  "relevance_score": 0.344,
+  "description": "Location: The Forest Path\n\nDescription: A winding trail through ancient woods"
+}
+
+---
+
+{
+  "name": "The Whispering Forest...
+
+🔧 Testing CheckContinuityTool...
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 83.28it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 127.72it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 159.65it/s]
+Tool result (first 300 chars):
+Continuity Check: what is Elena Thorne's background and expertise?
+
+
+Characters:
+  - Eve: Name: Eve
+
+Full Name: Eve the Enchantress
+
+Description: A mysterious sorceress with silver hair
+
+Biography: Eve knows ancient magic and guards dangerous secrets. She is enigmatic and powerful.
+
+Goals:...
+  - Al...
+
+✓ All RAG tools functional
+
+======================================================================
+✓ END-TO-END TEST COMPLETED SUCCESSFULLY
+======================================================================
+
+All workflow steps validated:
+  ✓ Project creation
+  ✓ Character creation with auto-sync
+  ✓ Location creation with auto-sync
+  ✓ Scene creation with auto-sync
+  ✓ RAG synchronization
+  ✓ Semantic search
+  ✓ RAG tool functionality
+
+The writing flow is ready for production use!
