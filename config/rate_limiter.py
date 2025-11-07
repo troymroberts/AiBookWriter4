@@ -100,9 +100,49 @@ RATE_LIMITS = {
         },
     },
     "gemini": {
+        # Legacy models
         "gemini-pro": {
-            "tpm": 32000,
-            "rpm": 2,
+            "tpm": 32000,    # 32K TPM on free tier
+            "rpm": 2,         # 2 RPM on free tier
+            "rpd": 50,        # 50 RPD on free tier
+        },
+        # Gemini 1.5 Flash models (Fast & efficient)
+        "gemini-1.5-flash": {
+            "tpm": 1000000,  # 1M TPM on free tier
+            "rpm": 15,        # 15 RPM on free tier
+            "rpd": 1500,      # 1500 RPD on free tier
+        },
+        "gemini-1.5-flash-8b": {
+            "tpm": 4000000,  # 4M TPM on free tier
+            "rpm": 15,        # 15 RPM on free tier
+            "rpd": 1500,      # 1500 RPD on free tier
+        },
+        "gemini-1.5-flash-latest": {
+            "tpm": 1000000,  # 1M TPM on free tier
+            "rpm": 15,        # 15 RPM on free tier
+            "rpd": 1500,      # 1500 RPD on free tier
+        },
+        # Gemini 1.5 Pro models (More capable)
+        "gemini-1.5-pro": {
+            "tpm": 360000,   # 360K TPM on free tier (2M paid)
+            "rpm": 2,         # 2 RPM on free tier (1000 paid)
+            "rpd": 50,        # 50 RPD on free tier
+        },
+        "gemini-1.5-pro-latest": {
+            "tpm": 360000,   # 360K TPM on free tier
+            "rpm": 2,         # 2 RPM on free tier
+            "rpd": 50,        # 50 RPD on free tier
+        },
+        # Gemini 2.0 models (Experimental)
+        "gemini-2.0-flash-exp": {
+            "tpm": 4000000,  # 4M TPM on free tier
+            "rpm": 10,        # 10 RPM on free tier
+            "rpd": 1500,      # 1500 RPD on free tier
+        },
+        "gemini-exp-1206": {
+            "tpm": 4000000,  # 4M TPM experimental
+            "rpm": 10,        # 10 RPM experimental
+            "rpd": 1500,      # 1500 RPD experimental
         },
     },
 }
