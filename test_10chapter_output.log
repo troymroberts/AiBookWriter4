@@ -1,0 +1,756 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+COMPLETE 10-CHAPTER WORKFLOW TEST
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Ten_Chapter_Novel
+Genre: science fiction
+Chapters: 10
+Output: output/ten_chapter_novel.yw7
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 5b64ffd9-8906-4c27-b4ca-3fb4efb45ef2                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:21:31,786 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef402005bd0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:21:31 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:21:31,806 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: c45fa220-894b-4cf0-9768-caea90d608c4
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 10-chapter        │
+│  novel.                                                                      │
+│                                                                              │
+│          Requirements:                                                       │
+│          - Complete three-act structure                                      │
+│          - Clear beginning (setup), middle (confrontation), and end          │
+│  (resolution)                                                                │
+│          - Protagonist with clear goal and character arc                     │
+│          - Antagonist with believable motivation                             │
+│          - Rising tension and stakes throughout                              │
+│          - Satisfying conclusion                                             │
+│                                                                              │
+│          Include:                                                            │
+│          - Overall story premise and themes                                  │
+│          - Character arcs (protagonist, antagonist, 2-3 supporting           │
+│  characters)                                                                 │
+│          - Key plot points for each act                                      │
+│          - Chapter-by-chapter progression showing how story builds           │
+│          - Thematic elements                                                 │
+│                                                                              │
+│          Ensure the story has proper progression from chapter 1 through 10   │
+│  with a complete narrative arc.                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m12:21:35 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:21:35,087 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: c45fa220-894b-4cf0-9768-caea90d608c4
+    Assigned to: Story Architect & Narrative Designer
+    Status: ✅ Completed╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Final Answer:                                                               │
+│  In the realm of science fiction, a compelling story arc can be crafted by   │
+│  combining intriguing themes, well-developed characters, and a narrative     │
+│  structure that builds tension and resolution. The story premise for this    │
+│  10-chapter novel revolves around humanity's first contact with an alien     │
+│  species, exploring themes of identity, cooperation, and the ethical         │
+│  implications of advanced technology.                                        │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a future where humanity   │
+│  has colonized several planets in the distant reaches of the galaxy. The     │
+│  story follows Captain Jaxon Lee, a skilled space explorer, as he            │
+│  encounters an alien species known as the "Eternals." This encounter sets    │
+│  off a chain of events that challenges humanity's understanding of its       │
+│  place in the universe and forces individuals to question their identities   │
+│  and the true meaning of existence. The story delves into themes of          │
+│  identity, the ethics of advanced technology, and the importance of          │
+│  cooperation in the face of unknown threats.                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Captain Jaxon Lee):** Begins as a confident and seasoned  │
+│  space explorer but gradually evolves into a leader who must make difficult  │
+│  decisions that affect the fate of humanity. His character arc is about      │
+│  finding a balance between his desire for knowledge and the responsibility   │
+│  that comes with it.                                                         │
+│                                                                              │
+│  2. **Antagonist (Arkeia, Leader of the Eternals):** Initially perceived as  │
+│  a villain, Arkeia's motivations are revealed to be rooted in a desire to    │
+│  protect her species from potential threats. Her character arc explores the  │
+│  moral gray areas of leadership and the sacrifices one must make for the     │
+│  greater good.                                                               │
+│                                                                              │
+│  3. **Supporting Characters:**                                               │
+│     - **Dr. Sophia Patel:** A brilliant scientist who helps decipher the     │
+│  technology of the Eternals. Her arc is about overcoming personal losses     │
+│  and finding redemption through her work.                                    │
+│     - **Commander Elianore Quasar:** A military officer who often clashes    │
+│  with Jaxon due to their differing viewpoints on how to handle the alien     │
+│  encounter. His arc involves learning to trust and cooperate with others.    │
+│     - **Lena Lee:** Jaxon's sister, who is initially against the space       │
+│  exploration program due to the risks it poses. Her character evolves as     │
+│  she becomes more involved in the mission and learns to support her          │
+│  brother's endeavors.                                                        │
+│                                                                              │
+│  **Key Plot Points for Each Act:**                                           │
+│                                                                              │
+│  - **Act 1 (Setup):** Introduction to the protagonist and the world, first   │
+│  contact with the Eternals, and the initial conflict that sets the story in  │
+│  motion.                                                                     │
+│  - **Act 2 (Confrontation):** The protagonist and his team delve deeper      │
+│  into the mysteries of the Eternals, facing obstacles and challenges that    │
+│  raise the stakes. This act includes a mid-point twist that reveals the      │
+│  true intentions of the Eternals.                                            │
+│  - **Act 3 (Resolution):** The climax of the story where the protagonist     │
+│  must make a crucial decision that determines the outcome of the conflict.   │
+│  The act concludes with a resolution that ties back to the themes and        │
+│  character arcs.                                                             │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  1. **Introduction to Captain Jaxon Lee and the crew of the spaceship        │
+│  Aurora** as they embark on a mission to explore a new galaxy.               │
+│  2. **First contact with the Eternals,** which sparks both wonder and fear   │
+│  among the crew.                                                             │
+│  3. **Initial skirmishes and misunderstandings** between humans and          │
+│  Eternals, leading to a deeper conflict.                                     │
+│  4. **Dr. Sophia Patel begins to decipher the Eternal's technology,**        │
+│  revealing potential benefits and dangers.                                   │
+│  5. **Commander Elianore Quasar's skepticism** of the Eternals' intentions   │
+│  causes tension among the crew.                                              │
+│  6. **A mission to an Eternal planet** goes awry, resulting in significant   │
+│  losses and a turning point in human-Eternal relations.                      │
+│  7. **Revelation of Arkeia's motivations** and the true purpose of the       │
+│  Eternals' contact with humanity.                                            │
+│  8. **The crew of the Aurora must decide** whether to trust the Eternals     │
+│  and cooperate or to defend themselves against what they perceive as a       │
+│  threat.                                                                     │
+│  9. **The climax of the story** where Jaxon and his team face off against    │
+│  those who oppose the alliance with the Eternals, internally and             │
+│  externally.                                                                 │
+│  10. **The aftermath and resolution,** where the consequences of the         │
+│  decisions made are revealed, and the characters reflect on what they have   │
+│  learned and how they have grown.                                            │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│  - **Identity:** Exploring what it means to be human in the face of alien    │
+│  life and advanced technology.                                               │
+│  - **Cooperation vs. Conflict:** The story highlights the benefits of        │
+│  cooperation and the dangers of conflict, especially when dealing with       │
+│  forces beyond human control.                                                │
+│  - **Ethics of Technology:** The novel touches on the ethical                │
+│  considerations of embracing technology that surpasses human understanding,  │
+│  and the responsibilities that come with such power.                         │
+│                                                                              │
+│  This narrative arc provides a comprehensive story with a complete           │
+│  beginning, middle, and end, incorporating character development, rising     │
+│  tension, and thematic exploration, ensuring a satisfying science fiction    │
+│  story that engages readers from start to finish.                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: c45fa220-894b-4cf0-9768-caea90d608c4                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+✓ Story arc created (5055 characters)
+
+Story Preview:
+In the realm of science fiction, a compelling story arc can be crafted by combining intriguing themes, well-developed characters, and a narrative structure that builds tension and resolution. The story premise for this 10-chapter novel revolves around humanity's first contact with an alien species, exploring themes of identity, cooperation, and the ethical implications of advanced technology.
+
+**Overall Story Premise and Themes:**
+The novel, titled "Echoes of Eternity," is set in a future where ...
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 5b64ffd9-8906-4c27-b4ca-3fb4efb45ef2                                    │
+│  Tool Args:                                                                  │
+│  Final Output: In the realm of science fiction, a compelling story arc can   │
+│  be crafted by combining intriguing themes, well-developed characters, and   │
+│  a narrative structure that builds tension and resolution. The story         │
+│  premise for this 10-chapter novel revolves around humanity's first contact  │
+│  with an alien species, exploring themes of identity, cooperation, and the   │
+│  ethical implications of advanced technology.                                │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a future where humanity   │
+│  has colonized several planets in the distant reaches of the galaxy. The     │
+│  story follows Captain Jaxon Lee, a skilled space explorer, as he            │
+│  encounters an alien species known as the "Eternals." This encounter sets    │
+│  off a chain of events that challenges humanity's understanding of its       │
+│  place in the universe and forces individuals to question their identities   │
+│  and the true meaning of existence. The story delves into themes of          │
+│  identity, the ethics of advanced technology, and the importance of          │
+│  cooperation in the face of unknown threats.                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Captain Jaxon Lee):** Begins as a confident and seasoned  │
+│  space explorer but gradually evolves into a leader who must make difficult  │
+│  decisions that affect the fate of humanity. His character arc is about      │
+│  finding a balance between his desire for knowledge and the responsibility   │
+│  that comes with it.                                                         │
+│                                                                              │
+│  2. **Antagonist (Arkeia, Leader of the Eternals):** Initially perceived as  │
+│  a villain, Arkeia's motivations are revealed to be rooted in a desire to    │
+│  protect her species from potential threats. Her character arc explores the  │
+│  moral gray areas of leadership and the sacrifices one must make for the     │
+│  greater good.                                                               │
+│                                                                              │
+│  3. **Supporting Characters:**                                               │
+│     - **Dr. Sophia Patel:** A brilliant scientist who helps decipher the     │
+│  technology of the Eternals. Her arc is about overcoming personal losses     │
+│  and finding redemption through her work.                                    │
+│     - **Commander Elianore Quasar:** A military officer who often clashes    │
+│  with Jaxon due to their differing viewpoints on how to handle the alien     │
+│  encounter. His arc involves learning to trust and cooperate with others.    │
+│     - **Lena Lee:** Jaxon's sister, who is initially against the space       │
+│  exploration program due to the risks it poses. Her character evolves as     │
+│  she becomes more involved in the mission and learns to support her          │
+│  brother's endeavors.                                                        │
+│                                                                              │
+│  **Key Plot Points for Each Act:**                                           │
+│                                                                              │
+│  - **Act 1 (Setup):** Introduction to the protagonist and the world, first   │
+│  contact with the Eternals, and the initial conflict that sets the story in  │
+│  motion.                                                                     │
+│  - **Act 2 (Confrontation):** The protagonist and his team delve deeper      │
+│  into the mysteries of the Eternals, facing obstacles and challenges that    │
+│  raise the stakes. This act includes a mid-point twist that reveals the      │
+│  true intentions of the Eternals.                                            │
+│  - **Act 3 (Resolution):** The climax of the story where the protagonist     │
+│  must make a crucial decision that determines the outcome of the conflict.   │
+│  The act concludes with a resolution that ties back to the themes and        │
+│  character arcs.                                                             │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  1. **Introduction to Captain Jaxon Lee and the crew of the spaceship        │
+│  Aurora** as they embark on a mission to explore a new galaxy.               │
+│  2. **First contact with the Eternals,** which sparks both wonder and fear   │
+│  among the crew.                                                             │
+│  3. **Initial skirmishes and misunderstandings** between humans and          │
+│  Eternals, leading to a deeper conflict.                                     │
+│  4. **Dr. Sophia Patel begins to decipher the Eternal's technology,**        │
+│  revealing potential benefits and dangers.                                   │
+│  5. **Commander Elianore Quasar's skepticism** of the Eternals' intentions   │
+│  causes tension among the crew.                                              │
+│  6. **A mission to an Eternal planet** goes awry, resulting in significant   │
+│  losses and a turning point in human-Eternal relations.                      │
+│  7. **Revelation of Arkeia's motivations** and the true purpose of the       │
+│  Eternals' contact with humanity.                                            │
+│  8. **The crew of the Aurora must decide** whether to trust the Eternals     │
+│  and cooperate or to defend themselves against what they perceive as a       │
+│  threat.                                                                     │
+│  9. **The climax of the story** where Jaxon and his team face off against    │
+│  those who oppose the alliance with the Eternals, internally and             │
+│  externally.                                                                 │
+│  10. **The aftermath and resolution,** where the consequences of the         │
+│  decisions made are revealed, and the characters reflect on what they have   │
+│  learned and how they have grown.                                            │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│  - **Identity:** Exploring what it means to be human in the face of alien    │
+│  life and advanced technology.                                               │
+│  - **Cooperation vs. Conflict:** The story highlights the benefits of        │
+│  cooperation and the dangers of conflict, especially when dealing with       │
+│  forces beyond human control.                                                │
+│  - **Ethics of Technology:** The novel touches on the ethical                │
+│  considerations of embracing technology that surpasses human understanding,  │
+│  and the responsibilities that come with such power.                         │
+│                                                                              │
+│  This narrative arc provides a comprehensive story with a complete           │
+│  beginning, middle, and end, incorporating character development, rising     │
+│  tension, and thematic exploration, ensuring a satisfying science fiction    │
+│  story that engages readers from start to finish.                            │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:21:49,305 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 12:21:50,423 - INFO - Initialized 6 collections
+2025-11-07 12:21:50,424 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 12:21:50,424 - INFO - RAGSyncManager initialized
+2025-11-07 12:21:50,424 - INFO - AutoSyncYw7File initialized for output/ten_chapter_novel.yw7 (auto_sync=True)
+2025-11-07 12:21:50,426 - INFO - Wrote changes to output/ten_chapter_novel.yw7
+2025-11-07 12:21:50,427 - INFO - Syncing output/ten_chapter_novel.yw7 to RAG system...
+2025-11-07 12:21:50,427 - INFO - Starting sync from yWriter7: output/ten_chapter_novel.yw7
+2025-11-07 12:21:50,427 - INFO - Sync completed: {'characters': 0, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 12:21:50,427 - INFO - RAG sync completed: 0 items synced
+
+================================================================================
+STEP 2: Character Creation with Bio/Notes/Goals/AKA
+================================================================================
+Running Character Creator...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: fcd7a457-be0c-442d-a11d-e9ffc8eb2233                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:21:50,449 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef24dc894d0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:21:50 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:21:50,459 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 4-5 detailed character profiles:       │
+│                                                                              │
+│          Story Context:                                                      │
+│          In the realm of science fiction, a compelling story arc can be      │
+│  crafted by combining intriguing themes, well-developed characters, and a    │
+│  narrative structure that builds tension and resolution. The story premise   │
+│  for this 10-chapter novel revolves around humanity's first contact with an  │
+│  alien species, exploring themes of identity, cooperation, and the ethical   │
+│  implications of advanced technology.                                        │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a future where humanity   │
+│  has colonized several planets in the distant reaches of the galaxy. The     │
+│  story follows Captain Jaxon Lee, a skilled space explorer, as he            │
+│  encounters an alien species known as the "Eternals." This encounter sets    │
+│  off a chain of events that challenges humanity's understanding of its       │
+│  place in the universe and forces individuals to question their identities   │
+│  and the true meaning of existence. The story delves into themes of          │
+│  identity, the ethics of advanced technology, and the importance of          │
+│  cooperation in the face of unknown threats.                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist (Captain Jaxon Lee):** Begins as a confident and seasoned  │
+│  space explorer but gradually evolves into a leader who must make difficult  │
+│  decisions that affect the fate of humanity. His character arc is about      │
+│  finding a balance between his desire for knowledge and the responsibility   │
+│  that comes with it.                                                         │
+│                                                                              │
+│  2. **Antagonist (Arkeia, Leader of the Eternals):** Initially perceived as  │
+│  a villain, Arkeia's motivations are revealed t                              │
+│                                                                              │
+│          Create characters with:                                             │
+│          - Full names and physical descriptions                              │
+│          - Detailed backstories and motivations                              │
+│          - Character arcs showing development                                │
+│          - Relationships with other characters                               │
+│          - Nicknames or alternate names (AKA)                                │
+│          - Clear story goals                                                 │
+│          - Major vs minor character designation                              │
+│                                                                              │
+│          Format as structured data:                                          │
+│          CHARACTER: [name]                                                   │
+│          FULLNAME: [full name]                                               │
+│          AKA: [nicknames, alternate names]                                   │
+│          DESC: [brief description]                                           │
+│          BIO: [detailed biography, background, personality]                  │
+│          NOTES: [character development notes, arc notes]                     │
+│          GOALS: [what the character wants to achieve in the story]           │
+│          MAJOR: [YES or NO]                                                  │
+│          ---                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m12:21:54 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:21:54,590 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:21:54,628 - INFO - Initialized 6 collections
+2025-11-07 12:21:54,628 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 55.61it/s]
+[92m12:21:54 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:21:54,692 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: To create detailed character profiles, I need to start    │
+│  by identifying key characters in the story. I will use the Semantic         │
+│  Character Search tool to find the main protagonist and antagonist.          │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main protagonist",                                              │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.418,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:21:57 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:21:57,657 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 63.52it/s]
+[92m12:21:57 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:21:57,690 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: is not useful, the query should be "tell me about the              │
+│  protagonist"                                                                │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "tell me about the protagonist",                                 │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.427,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:22:01 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:22:01,458 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 46.81it/s]
+[92m12:22:01 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:22:01,498 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: This result is not useful because the name "Bob" is not relevant   │
+│  to the context. Let me try again.                                           │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "tell me about Captain Jaxon Lee",                               │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.233,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships). Use this for general questions about...    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:22:05 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:22:05,170 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 50.85it/s]
+[92m12:22:05 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:22:05,207 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Get Character Details (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: I should try a different tool to get the character        │
+│  profile of Captain Jaxon Lee.                                               │
+│                                                                              │
+│  Using Tool: Get Character Details                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "character_name": "Captain Jaxon Lee"                                     │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  Character: Bob                                                              │
+│                                                                              │
+│  Name: Bob                                                                   │
+│                                                                              │
+│  Full Name: Bob the Brave                                                    │
+│                                                                              │
+│  Description: A strong warrior with dark hair and green eyes                 │
+│                                                                              │
+│  Biography: Bob is Alice's childhood friend and protector. He is loyal and   │
+│  skilled in combat.                                                          │
+│                                                                              │
+│  Goals: To protect Alice and prove his worth                                 │
+│                                                                              │
+│  Character Type: Major Character                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 190, in _make_common_sync_call
+    response = sync_httpx_client.post(
+  ❌ Crew: crew
+└── 📋 Task: 54884de7-8524-4793-9c62-391edf458174
+    Assigned to: Character Development Specialist
+    Status: ❌ Failed
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Used Get Character Details (1)
+    └── ❌ LLM Failed     ╭──────────────────────────────── Crew Failure ────────────────────────────────╮
+│                                                                              │
+│  Crew Execution Failed                                                       │
+│  Name: crew                                                                  │
+│  ID: fcd7a457-be0c-442d-a11d-e9ffc8eb2233                                    │
+│  Tool Args:                                                                  │
+│  Final Output:                                                               │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   ╭──────────────────────────────── Task Failure ────────────────────────────────╮
+│                                                                              │
+│  Task Failed                                                                 │
+│  Name: 54884de7-8524-4793-9c62-391edf458174                                  │
+│  Agent: Character Development Specialist                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+    
+ ^^╭───────────────────────────────── LLM Error ──────────────────────────────────╮
+│                                                                              │
+│  ❌ LLM Call Failed                                                          │
+│  Error: litellm.RateLimitError: RateLimitError: GroqException -              │
+│  {"error":{"message":"Rate limit reached for model                           │
+│  `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6`  │
+│  service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used      │
+│  9918, Requested 2209. Please try again in 635ms. Need more tokens? Upgrade  │
+│  to Dev Tier today at                                                        │
+│  https://console.groq.com/settings/billing","type":"tokens","code":"rate_li  │
+│  mit_exceeded"}}                                                             │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+^^^
+^^
+^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 898, in post
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 880, in post
+    response.raise_for_status()
+  File "/usr/local/lib/python3.11/dist-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://api.groq.com/openai/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 1940, in completion
+    response = base_llm_http_handler.completion(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 493, in completion
+    response = self._make_common_sync_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 215, in _make_common_sync_call
+    raise self._handle_error(e=e, provider_config=provider_config)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 3517, in _handle_error
+    raise provider_config.get_error_class(
+litellm.llms.openai.common_utils.OpenAIError: {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9918, Requested 2209. Please try again in 635ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/AiBookWriter4/test_complete_workflow.py", line 700, in <module>
+    test_complete_workflow()
+  File "/home/user/AiBookWriter4/test_complete_workflow.py", line 193, in test_complete_workflow
+    char_result = char_crew.kickoff()
+                  ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 707, in kickoff
+    result = self._run_sequential_process()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 821, in _run_sequential_process
+    return self._execute_tasks(self.tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 927, in _execute_tasks
+    task_output = task.execute_sync(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 458, in execute_sync
+    return self._execute_core(agent, context, tools)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 585, in _execute_core
+    raise e  # Re-raise the exception after emitting the event
+    ^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 522, in _execute_core
+    result = agent.execute_task(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 502, in execute_task
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 478, in execute_task
+    result = self._execute_without_timeout(task_prompt, task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 577, in _execute_without_timeout
+    return self.agent_executor.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 180, in invoke
+    formatted_answer = self._invoke_loop()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 276, in _invoke_loop
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 220, in _invoke_loop
+    answer = get_llm_response(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 259, in get_llm_response
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 251, in get_llm_response
+    answer = llm.call(
+             ^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 1201, in call
+    return self._handle_non_streaming_response(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 961, in _handle_non_streaming_response
+    response = litellm.completion(**params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1376, in wrapper
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1245, in wrapper
+    result = original_function(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 3767, in completion
+    raise exception_type(
+          ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 2274, in exception_type
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 331, in exception_type
+    raise RateLimitError(
+litellm.exceptions.RateLimitError: litellm.RateLimitError: RateLimitError: GroqException - {"error":{"message":"Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01k9dyffz6fwgtatys5xxrcjw6` service tier `on_demand` on tokens per minute (TPM): Limit 12000, Used 9918, Requested 2209. Please try again in 635ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
