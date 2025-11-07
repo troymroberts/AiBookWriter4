@@ -173,5 +173,19 @@ The compass needle suddenly shifted, pointing to a barely visible trail branchin
       <Type>0</Type>
       <ChapterType>0</ChapterType>
     </CHAPTER>
+    <CHAPTER>
+      <ID>4</ID>
+      <Title><![CDATA[Chapter 4: Test Chapter]]></Title>
+      <Desc><![CDATA[A test chapter created by the automated test suite]]></Desc>
+      <Type>0</Type>
+      <ChapterType>0</ChapterType>
+    </CHAPTER>
+    <CHAPTER>
+      <ID>5</ID>
+      <Title><![CDATA[Chapter 5: Test Chapter]]></Title>
+      <Desc><![CDATA[A test chapter created by the automated test suite]]></Desc>
+      <Type>0</Type>
+      <ChapterType>0</ChapterType>
+    </CHAPTER>
   </CHAPTERS>
 </YWRITER7>
