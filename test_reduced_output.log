@@ -1,0 +1,196 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+REDUCED SCOPE WORKFLOW TEST (5 Chapters + Rate Limit Handling)
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Five_Chapter_Test_Novel
+Genre: science fiction
+Chapters: 5
+Output: output/five_chapter_test_novel.yw7
+Rate limit handling: Enabled with exponential backoff
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 524663e1-7559-4077-b40a-df5f7d56e39a                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:32:43,326 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7eeaf1a1cb90>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:32:43 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:32:43,346 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 417d3135-a0cc-4da0-8967-7edf085fb572
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 5-chapter novel.  │
+│                                                                              │
+│              Requirements:                                                   │
+│              - Complete three-act structure                                  │
+│              - Clear beginning, middle, and end                              │
+│              - Protagonist with clear goal                                   │
+│              - Antagonist with believable motivation                         │
+│              - Rising tension throughout                                     │
+│              - Satisfying conclusion                                         │
+│                                                                              │
+│              Include:                                                        │
+│              - Overall story premise and themes                              │
+│              - Character arcs (protagonist, antagonist, 1-2 supporting)      │
+│              - Key plot points                                               │
+│              - Chapter-by-chapter progression                                │
+│                                                                              │
+│              Ensure complete narrative arc from chapter 1 through 5.         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 190, in _make_common_sync_call
+❌ Crew: crew
+└── 📋 Task: 417d3135-a0cc-4da0-8967-7edf085fb572
+    Assigned to: Story Architect & Narrative Designer
+    Status: ❌ Failed
+    └── ❌ LLM Failed    response = sync_httpx_client.post(
+  ╭──────────────────────────────── Crew Failure ────────────────────────────────╮
+│                                                                              │
+│  Crew Execution Failed                                                       │
+│  Name: crew                                                                  │
+│  ID: 524663e1-7559-4077-b40a-df5f7d56e39a                                    │
+│  Tool Args:                                                                  │
+│  Final Output:                                                               │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   ╭───────────────────────────────── LLM Error ──────────────────────────────────╮
+│                                                                              │
+│  ❌ LLM Call Failed                                                          │
+│  Error: litellm.ServiceUnavailableError: ServiceUnavailableError:            │
+│  GroqException - upstream connect error or disconnect/reset before headers.  │
+│  reset reason: remote connection failure, transport failure reason:          │
+│  TLS_error:|268435581:SSL                                                    │
+│  routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED:TLS_error_end           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+    
+   ╭──────────────────────────────── Task Failure ────────────────────────────────╮
+│                                                                              │
+│  Task Failed                                                                 │
+│  Name: 417d3135-a0cc-4da0-8967-7edf085fb572                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   
+^^
+^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 898, in post
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/http_handler.py", line 880, in post
+    response.raise_for_status()
+  File "/usr/local/lib/python3.11/dist-packages/httpx/_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Server error '503 Service Unavailable' for url 'https://api.groq.com/openai/v1/chat/completions'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 1940, in completion
+    response = base_llm_http_handler.completion(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 493, in completion
+    response = self._make_common_sync_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 215, in _make_common_sync_call
+    raise self._handle_error(e=e, provider_config=provider_config)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/llms/custom_httpx/llm_http_handler.py", line 3517, in _handle_error
+    raise provider_config.get_error_class(
+litellm.llms.openai.common_utils.OpenAIError: upstream connect error or disconnect/reset before headers. reset reason: remote connection failure, transport failure reason: TLS_error:|268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED:TLS_error_end
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/AiBookWriter4/test_workflow_reduced.py", line 388, in <module>
+    test_reduced_workflow()
+  File "/home/user/AiBookWriter4/test_workflow_reduced.py", line 163, in test_reduced_workflow
+    story_result = run_with_retry(plan_story)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/AiBookWriter4/test_workflow_reduced.py", line 71, in run_with_retry
+    return func()
+           ^^^^^^
+  File "/home/user/AiBookWriter4/test_workflow_reduced.py", line 161, in plan_story
+    return story_crew.kickoff()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 707, in kickoff
+    result = self._run_sequential_process()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 821, in _run_sequential_process
+    return self._execute_tasks(self.tasks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/crew.py", line 927, in _execute_tasks
+    task_output = task.execute_sync(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 458, in execute_sync
+    return self._execute_core(agent, context, tools)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 585, in _execute_core
+    raise e  # Re-raise the exception after emitting the event
+    ^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/task.py", line 522, in _execute_core
+    result = agent.execute_task(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 502, in execute_task
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 478, in execute_task
+    result = self._execute_without_timeout(task_prompt, task)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agent/core.py", line 577, in _execute_without_timeout
+    return self.agent_executor.invoke(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 180, in invoke
+    formatted_answer = self._invoke_loop()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 276, in _invoke_loop
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/agents/crew_agent_executor.py", line 220, in _invoke_loop
+    answer = get_llm_response(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 259, in get_llm_response
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/crewai/utilities/agent_utils.py", line 251, in get_llm_response
+    answer = llm.call(
+             ^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 1201, in call
+    return self._handle_non_streaming_response(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/crewai/llm.py", line 961, in _handle_non_streaming_response
+    response = litellm.completion(**params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1376, in wrapper
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/utils.py", line 1245, in wrapper
+    result = original_function(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/main.py", line 3767, in completion
+    raise exception_type(
+          ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 2274, in exception_type
+    raise e
+  File "/usr/local/lib/python3.11/dist-packages/litellm/litellm_core_utils/exception_mapping_utils.py", line 512, in exception_type
+    raise ServiceUnavailableError(
+litellm.exceptions.ServiceUnavailableError: litellm.ServiceUnavailableError: ServiceUnavailableError: GroqException - upstream connect error or disconnect/reset before headers. reset reason: remote connection failure, transport failure reason: TLS_error:|268435581:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED:TLS_error_end
