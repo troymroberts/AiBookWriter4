@@ -1,5 +1,6 @@
 import json
 import os
+import yaml
 from typing import Optional
 from uuid import uuid4
 
@@ -16,16 +17,33 @@ from ywriter7.model.item import Item
 from ywriter7.model.id_generator import create_id
 from ywriter7.yw.yw7_file import Yw7File
 
+# Import RAG auto-sync wrapper
+from rag.auto_sync import AutoSyncYw7File, enable_auto_sync
+
+
+# Check if RAG auto-sync is enabled in config
+def _is_rag_auto_sync_enabled() -> bool:
+    """Check if RAG auto-sync is enabled in config.yaml."""
+    try:
+        with open("config.yaml", "r") as f:
+            config = yaml.safe_load(f)
+            return config.get("ywriter", {}).get("sync_to_rag", False)
+    except Exception:
+        return False
+
+
 # Helper function to load a yWriter 7 project
-def load_yw7_file(file_path: str) -> Yw7File:
+def load_yw7_file(file_path: str, auto_sync: Optional[bool] = None) -> Yw7File:
     """
-    Loads a yWriter 7 project file.
+    Loads a yWriter 7 project file with optional automatic RAG synchronization.
 
     Args:
         file_path (str): The path to the .yw7 file.
+        auto_sync (Optional[bool]): Enable automatic RAG sync after write operations.
+            If None, uses value from config.yaml (ywriter.sync_to_rag).
 
     Returns:
-        Yw7File: The loaded yWriter 7 project.
+        Yw7File: The loaded yWriter 7 project (with auto-sync if enabled).
 
     Raises:
         FileNotFoundError: If the file does not exist.
@@ -37,8 +55,18 @@ def load_yw7_file(file_path: str) -> Yw7File:
     if not file_path.lower().endswith(".yw7"):
         raise ValueError("Invalid file type. Expected a .yw7 file.")
 
-    yw7_file = Yw7File(file_path)
-    yw7_file.read()
+    # Determine if auto-sync should be enabled
+    if auto_sync is None:
+        auto_sync = _is_rag_auto_sync_enabled()
+
+    # Use AutoSyncYw7File if auto-sync is enabled
+    if auto_sync:
+        yw7_file = AutoSyncYw7File(file_path, auto_sync=True)
+        yw7_file.read()
+    else:
+        yw7_file = Yw7File(file_path)
+        yw7_file.read()
+
     return yw7_file
 
 # --- Tools for reading data ---
