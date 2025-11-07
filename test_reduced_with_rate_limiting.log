@@ -1,0 +1,1450 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+REDUCED SCOPE WORKFLOW TEST (5 Chapters + Rate Limit Handling)
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Five_Chapter_Test_Novel
+Genre: science fiction
+Chapters: 5
+Output: output/five_chapter_test_novel.yw7
+Rate limit handling: Enabled with exponential backoff
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: ca924307-1394-47d1-aa08-c5f1eacb8478                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:52:46,962 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ede909265d0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:52:46 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:46,977 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 5d17cc9c-c7ad-4eb5-b3b2-ffa5bab8dfac
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 5-chapter novel.  │
+│                                                                              │
+│              Requirements:                                                   │
+│              - Complete three-act structure                                  │
+│              - Clear beginning, middle, and end                              │
+│              - Protagonist with clear goal                                   │
+│              - Antagonist with believable motivation                         │
+│              - Rising tension throughout                                     │
+│              - Satisfying conclusion                                         │
+│                                                                              │
+│              Include:                                                        │
+│              - Overall story premise and themes                              │
+│              - Character arcs (protagonist, antagonist, 1-2 supporting)      │
+│              - Key plot points                                               │
+│              - Chapter-by-chapter progression                                │
+│                                                                              │
+│              Ensure complete narrative arc from chapter 1 through 5.         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+2025-11-07 12:52:47,090 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 1.50s... (1/5)
+[92m12:52:48 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:48,594 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:48,654 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 2.10s... (2/5)
+[92m12:52:50 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:50,759 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:50,824 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 4.32s... (3/5)
+[92m12:52:55 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:55,146 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:52:55,209 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 8.02s... (4/5)
+[92m12:53:03 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:53:03,226 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:53:06 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:53:06,486 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: 5d17cc9c-c7ad-4eb5-b3b2-ffa5bab8dfac
+    Assigned to: Story Architect & Narrative Designer
+    Status: ✅ Completed╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Final Answer:                                                               │
+│  In the depths of space, humanity has colonized several planets, but at a    │
+│  steep cost. The United Galactic Coalition (UGC) has become a tyrannical     │
+│  government, exploiting resources and enslaving entire planets. Amidst this  │
+│  chaos, a young and brilliant scientist, Maya, discovers a way to harness    │
+│  the power of a newly found energy source, known as "The Nexus." This        │
+│  energy has the potential to free humanity from the UGC's grasp, but it      │
+│  also poses a significant threat to the balance of power in the galaxy.      │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│  The story follows Maya's journey as she navigates the complexities of       │
+│  rebellion, power, and the true cost of freedom. The narrative explores      │
+│  themes of oppression, resistance, and the responsibility that comes with    │
+│  great power. As Maya delves deeper into the mysteries of The Nexus, she     │
+│  must confront the darkness within herself and the true nature of the UGC.   │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  * **Protagonist (Maya):** At the beginning of the story, Maya is a naive    │
+│  and idealistic scientist who believes that her discovery can change the     │
+│  galaxy for the better. As she faces numerous challenges and setbacks, she   │
+│  becomes more determined and resilient. However, she also begins to realize  │
+│  the weight of her responsibility and the moral implications of her          │
+│  actions. By the end of the story, Maya has transformed into a confident     │
+│  and selfless leader, willing to make difficult choices to protect the       │
+│  people she cares about.                                                     │
+│  * **Antagonist (Arcturus):** Arcturus is a high-ranking officer in the      │
+│  UGC, driven by a desire for power and control. He believes that the UGC is  │
+│  the only force capable of maintaining order in the galaxy and that any      │
+│  opposition must be crushed. As the story progresses, it becomes clear that  │
+│  Arcturus has a personal stake in maintaining the status quo, having risen   │
+│  through the ranks through ruthless ambition. Despite his cold exterior,     │
+│  Arcturus has a deep sense of vulnerability and insecurity, which motivates  │
+│  his actions throughout the narrative.                                       │
+│  * **Supporting Character 1 (Lena):** Lena is a skilled engineer and Maya's  │
+│  closest friend. She is initially hesitant to join the rebellion, but        │
+│  eventually becomes a key player in the fight against the UGC. Lena's        │
+│  character arc revolves around her growing confidence in her abilities and   │
+│  her willingness to take risks to protect those she cares about.             │
+│  * **Supporting Character 2 (Kael):** Kael is a former UGC soldier who       │
+│  defects to the rebellion. He is haunted by his past actions and struggles   │
+│  to find redemption. Throughout the story, Kael grapples with his own        │
+│  morality and the true meaning of loyalty, ultimately finding a sense of     │
+│  purpose in the rebellion.                                                   │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  * **Inciting Incident:** Maya discovers The Nexus and realizes its          │
+│  potential to change the course of human history.                            │
+│  * **Plot Point 1:** Maya is forced to flee her home planet after the UGC    │
+│  discovers her research and attempts to capture her.                         │
+│  * **Midpoint:** Maya and her allies launch a successful attack on a UGC     │
+│  outpost, gaining momentum for the rebellion.                                │
+│  * **Plot Point 2:** Arcturus reveals his true intentions and launches a     │
+│  devastating counterattack against the rebellion.                            │
+│  * **Climax:** Maya and her allies launch a final assault on the UGC's       │
+│  central headquarters, with the fate of the galaxy hanging in the balance.   │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  **Chapter 1: Discovery**                                                    │
+│  The story begins with Maya's discovery of The Nexus, a powerful energy      │
+│  source that could change the course of human history. As she delves deeper  │
+│  into her research, she realizes the potential implications of her           │
+│  discovery and the danger it poses to the UGC. The chapter ends with Maya's  │
+│  laboratory being raided by UGC agents, forcing her to flee for her life.    │
+│                                                                              │
+│  **Chapter 2: Escape**                                                       │
+│  Maya finds herself on the run, pursued by the UGC and forced to navigate    │
+│  the underworld of the galaxy. She meets Lena, who helps her evade capture   │
+│  and escape to a rebel base. The chapter introduces Kael, a former UGC       │
+│  soldier who is haunted by his past actions. As Maya settles into the rebel  │
+│  base, she begins to realize the true extent of the UGC's oppression and     │
+│  the stakes of the rebellion.                                                │
+│                                                                              │
+│  **Chapter 3: Rebellion**                                                    │
+│  The rebellion launches a series of attacks against UGC outposts, with Maya  │
+│  playing a key role in the planning and execution. The chapter culminates    │
+│  in a successful assault on a major UGC facility, giving the rebellion a     │
+│  much-needed boost in momentum. As the rebels celebrate their victory, Maya  │
+│  begins to realize the weight of her responsibility and the moral            │
+│  implications of her actions.                                                │
+│                                                                              │
+│  **Chapter 4: Confrontation**                                                │
+│  Arcturus reveals his true intentions and launches a devastating             │
+│  counterattack against the rebellion. Maya and her allies are forced to      │
+│  flee, and the rebellion is pushed to the brink of collapse. The chapter     │
+│  ends with Maya facing a difficult choice: risk everything to launch a       │
+│  final assault on the UGC's central headquarters, or abandon the rebellion   │
+│  and flee to safety.                                                         │
+│                                                                              │
+│  **Chapter 5: Revolution**                                                   │
+│  The final chapter sees Maya and her allies launch a desperate assault on    │
+│  the UGC's central headquarters. The battle is intense, with both sides      │
+│  suffering heavy losses. In the end, Maya and her allies emerge victorious,  │
+│  having successfully harnessed the power of The Nexus to defeat the UGC. As  │
+│  the dust settles, Maya reflects on the true cost of their victory and the   │
+│  challenges that lie ahead. The story concludes with a sense of hope and     │
+│  possibility, as Maya looks out upon a galaxy forever changed by her         │
+│  discovery.                                                                  │
+│                                                                              │
+│  The narrative arc is complete, with a clear beginning, middle, and end.     │
+│  The protagonist and antagonist have undergone significant character         │
+│  development, and the themes of oppression, resistance, and power have been  │
+│  fully explored. The story has risen to a satisfying conclusion, with a      │
+│  sense of closure and new beginnings.                                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 5d17cc9c-c7ad-4eb5-b3b2-ffa5bab8dfac                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+✓ Story arc created (5827 characters)
+
+Story Preview:
+In the depths of space, humanity has colonized several planets, but at a steep cost. The United Galactic Coalition (UGC) has become a tyrannical government, exploiting resources and enslaving entire planets. Amidst this chaos, a young and brilliant scientist, Maya, discovers a way to harness the power of a newly found energy source, known as "The Nexus." This energy has the potential to free humanity from the UGC's grasp, but it also poses a significant threat to the balance of power in the gala...
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: ca924307-1394-47d1-aa08-c5f1eacb8478                                    │
+│  Tool Args:                                                                  │
+│  Final Output: In the depths of space, humanity has colonized several        │
+│  planets, but at a steep cost. The United Galactic Coalition (UGC) has       │
+│  become a tyrannical government, exploiting resources and enslaving entire   │
+│  planets. Amidst this chaos, a young and brilliant scientist, Maya,          │
+│  discovers a way to harness the power of a newly found energy source, known  │
+│  as "The Nexus." This energy has the potential to free humanity from the     │
+│  UGC's grasp, but it also poses a significant threat to the balance of       │
+│  power in the galaxy.                                                        │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│  The story follows Maya's journey as she navigates the complexities of       │
+│  rebellion, power, and the true cost of freedom. The narrative explores      │
+│  themes of oppression, resistance, and the responsibility that comes with    │
+│  great power. As Maya delves deeper into the mysteries of The Nexus, she     │
+│  must confront the darkness within herself and the true nature of the UGC.   │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  * **Protagonist (Maya):** At the beginning of the story, Maya is a naive    │
+│  and idealistic scientist who believes that her discovery can change the     │
+│  galaxy for the better. As she faces numerous challenges and setbacks, she   │
+│  becomes more determined and resilient. However, she also begins to realize  │
+│  the weight of her responsibility and the moral implications of her          │
+│  actions. By the end of the story, Maya has transformed into a confident     │
+│  and selfless leader, willing to make difficult choices to protect the       │
+│  people she cares about.                                                     │
+│  * **Antagonist (Arcturus):** Arcturus is a high-ranking officer in the      │
+│  UGC, driven by a desire for power and control. He believes that the UGC is  │
+│  the only force capable of maintaining order in the galaxy and that any      │
+│  opposition must be crushed. As the story progresses, it becomes clear that  │
+│  Arcturus has a personal stake in maintaining the status quo, having risen   │
+│  through the ranks through ruthless ambition. Despite his cold exterior,     │
+│  Arcturus has a deep sense of vulnerability and insecurity, which motivates  │
+│  his actions throughout the narrative.                                       │
+│  * **Supporting Character 1 (Lena):** Lena is a skilled engineer and Maya's  │
+│  closest friend. She is initially hesitant to join the rebellion, but        │
+│  eventually becomes a key player in the fight against the UGC. Lena's        │
+│  character arc revolves around her growing confidence in her abilities and   │
+│  her willingness to take risks to protect those she cares about.             │
+│  * **Supporting Character 2 (Kael):** Kael is a former UGC soldier who       │
+│  defects to the rebellion. He is haunted by his past actions and struggles   │
+│  to find redemption. Throughout the story, Kael grapples with his own        │
+│  morality and the true meaning of loyalty, ultimately finding a sense of     │
+│  purpose in the rebellion.                                                   │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  * **Inciting Incident:** Maya discovers The Nexus and realizes its          │
+│  potential to change the course of human history.                            │
+│  * **Plot Point 1:** Maya is forced to flee her home planet after the UGC    │
+│  discovers her research and attempts to capture her.                         │
+│  * **Midpoint:** Maya and her allies launch a successful attack on a UGC     │
+│  outpost, gaining momentum for the rebellion.                                │
+│  * **Plot Point 2:** Arcturus reveals his true intentions and launches a     │
+│  devastating counterattack against the rebellion.                            │
+│  * **Climax:** Maya and her allies launch a final assault on the UGC's       │
+│  central headquarters, with the fate of the galaxy hanging in the balance.   │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  **Chapter 1: Discovery**                                                    │
+│  The story begins with Maya's discovery of The Nexus, a powerful energy      │
+│  source that could change the course of human history. As she delves deeper  │
+│  into her research, she realizes the potential implications of her           │
+│  discovery and the danger it poses to the UGC. The chapter ends with Maya's  │
+│  laboratory being raided by UGC agents, forcing her to flee for her life.    │
+│                                                                              │
+│  **Chapter 2: Escape**                                                       │
+│  Maya finds herself on the run, pursued by the UGC and forced to navigate    │
+│  the underworld of the galaxy. She meets Lena, who helps her evade capture   │
+│  and escape to a rebel base. The chapter introduces Kael, a former UGC       │
+│  soldier who is haunted by his past actions. As Maya settles into the rebel  │
+│  base, she begins to realize the true extent of the UGC's oppression and     │
+│  the stakes of the rebellion.                                                │
+│                                                                              │
+│  **Chapter 3: Rebellion**                                                    │
+│  The rebellion launches a series of attacks against UGC outposts, with Maya  │
+│  playing a key role in the planning and execution. The chapter culminates    │
+│  in a successful assault on a major UGC facility, giving the rebellion a     │
+│  much-needed boost in momentum. As the rebels celebrate their victory, Maya  │
+│  begins to realize the weight of her responsibility and the moral            │
+│  implications of her actions.                                                │
+│                                                                              │
+│  **Chapter 4: Confrontation**                                                │
+│  Arcturus reveals his true intentions and launches a devastating             │
+│  counterattack against the rebellion. Maya and her allies are forced to      │
+│  flee, and the rebellion is pushed to the brink of collapse. The chapter     │
+│  ends with Maya facing a difficult choice: risk everything to launch a       │
+│  final assault on the UGC's central headquarters, or abandon the rebellion   │
+│  and flee to safety.                                                         │
+│                                                                              │
+│  **Chapter 5: Revolution**                                                   │
+│  The final chapter sees Maya and her allies launch a desperate assault on    │
+│  the UGC's central headquarters. The battle is intense, with both sides      │
+│  suffering heavy losses. In the end, Maya and her allies emerge victorious,  │
+│  having successfully harnessed the power of The Nexus to defeat the UGC. As  │
+│  the dust settles, Maya reflects on the true cost of their victory and the   │
+│  challenges that lie ahead. The story concludes with a sense of hope and     │
+│  possibility, as Maya looks out upon a galaxy forever changed by her         │
+│  discovery.                                                                  │
+│                                                                              │
+│  The narrative arc is complete, with a clear beginning, middle, and end.     │
+│  The protagonist and antagonist have undergone significant character         │
+│  development, and the themes of oppression, resistance, and power have been  │
+│  fully explored. The story has risen to a satisfying conclusion, with a      │
+│  sense of closure and new beginnings.                                        │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:53:20,608 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 12:53:21,828 - INFO - Initialized 6 collections
+2025-11-07 12:53:21,829 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 12:53:21,829 - INFO - RAGSyncManager initialized
+2025-11-07 12:53:21,829 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+2025-11-07 12:53:21,831 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 12:53:21,831 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 12:53:21,831 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+2025-11-07 12:53:21,832 - INFO - Sync completed: {'characters': 0, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 12:53:21,832 - INFO - RAG sync completed: 0 items synced
+
+================================================================================
+STEP 2: Character Creation
+================================================================================
+Running Character Creator...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 54918aff-3f5a-4faf-80a9-3e045adb9d90                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:53:23,856 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7edcd869d850>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:53:23 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:53:23,864 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 3-4 detailed character profiles:       │
+│                                                                              │
+│              Story Context:                                                  │
+│              In the depths of space, humanity has colonized several          │
+│  planets, but at a steep cost. The United Galactic Coalition (UGC) has       │
+│  become a tyrannical government, exploiting resources and enslaving entire   │
+│  planets. Amidst this chaos, a young and brilliant scientist, Maya,          │
+│  discovers a way to harness the power of a newly found energy source, known  │
+│  as "The Nexus." This energy has the potential to free humanity from the     │
+│  UGC's grasp, but it also poses a significant threat to the balance of       │
+│  power in the galaxy.                                                        │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│  The story follows Maya's journey as she navigates the complexities of       │
+│  rebellion, power, and the true cost of freedom. The narrative explores      │
+│  themes of oppression, resistance, and the responsibility that comes with    │
+│  great power. As Maya delves deeper into the mysteries of The Nexus, she     │
+│  must confront the darkness within herself and the true nature of the UGC.   │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  * **Protagonist (Maya):** At the beginning of the story, Maya is a naive    │
+│  and ideali                                                                  │
+│                                                                              │
+│              Create characters with complete profiles including:             │
+│              full names, nicknames (AKA), descriptions, biographies,         │
+│              development notes, goals, and major/minor designation.          │
+│                                                                              │
+│              Format as structured data:                                      │
+│              CHARACTER: [name]                                               │
+│              FULLNAME: [full name]                                           │
+│              AKA: [nicknames]                                                │
+│              DESC: [brief description]                                       │
+│              BIO: [biography]                                                │
+│              NOTES: [development notes]                                      │
+│              GOALS: [story goals]                                            │
+│              MAJOR: [YES or NO]                                              │
+│              ---                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m12:53:27 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:53:27,216 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:53:27,258 - INFO - Initialized 6 collections
+2025-11-07 12:53:27,258 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 64.27it/s]
+[92m12:53:27 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:53:27,325 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: To create detailed character profiles, I should first     │
+│  identify the main characters in the story and gather information about      │
+│  them. Since the story premise mentions Maya, a young scientist, as the      │
+│  protagonist, I'll start by searching for information about her.             │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main protagonist",                                              │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.418,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:53:31 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:53:31,140 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 74.89it/s]
+2025-11-07 12:53:31,169 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 36.92s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: is not the character I am looking for, lets try again              │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "young scientist",                                               │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.186,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Robert Smith\n\nDescription: Alice's  │
+│  mentor and guide\n\nBiography: A wise old traveler who has seen much of     │
+│  the world.\n\nGoals: To help Alice on her journey\n\nCharacter Type: Minor  │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:54:08 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:54:08,086 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:54:11 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:54:11,681 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 70.92it/s]
+2025-11-07 12:54:11,714 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 15.95s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: This is not the character I am looking for, lets try again         │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "Maya",                                                          │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.234,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman seeking adventure\n\nBiography: Alice grew up in a      │
+│  small town and always dreamed of exploring the world.\n\nGoals: To find     │
+│  her place in the world\n\nCharacter Type: Major Character"                  │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships). Use this for general questions about the   │
+│  story that...                                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:54:27 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:54:27,669 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:54:30 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:54:30,218 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 110.55it/s]
+2025-11-07 12:54:30,243 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 0.95s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    └── 🔧 Used Get Character Details (1)╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: To create detailed character profiles, I should first     │
+│  identify the main characters in the story and gather information about      │
+│  them. Since the story premise mentions Maya, a young scientist, as the      │
+│  protagonist, I'll start by searching for information about her.             │
+│                                                                              │
+│  Using Tool: Get Character Details                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "character_name": "Maya"                                                  │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  Character: Alice                                                            │
+│                                                                              │
+│  Name: Alice                                                                 │
+│                                                                              │
+│  Full Name: Alice Wonderland                                                 │
+│                                                                              │
+│  Description: A curious young woman seeking adventure                        │
+│                                                                              │
+│  Biography: Alice grew up in a small town and always dreamed of exploring    │
+│  the world.                                                                  │
+│                                                                              │
+│  Goals: To find her place in the world                                       │
+│                                                                              │
+│  Character Type: Major Character                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:54:31 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:54:31,194 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:54:33 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:54:33,751 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 53.06it/s]
+2025-11-07 12:54:33,786 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 41.02s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Since this is not the character I am looking for, I will use a     │
+│  different approach                                                          │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main protagonist of the story",                                 │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.383,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:55:14 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:55:14,808 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:55:17 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:55:17,581 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:55:17,588 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 13.77s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    └── 🔧 Used Semantic Character Search (5)╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: This is not the character I am looking for, lets try again         │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "young scientist",                                               │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.186,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Robert Smith\n\nDescription: Alice's  │
+│  mentor and guide\n\nBiography: A wise old traveler who has seen much of     │
+│  the world.\n\nGoals: To help Alice on her journey\n\nCharacter Type: Minor  │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships). Use this for general questions about the   │
+│  story that might span multiple elements. Examples: 'what...                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:55:31 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:55:31,356 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:55:34 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:55:34,946 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 80.72it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 136.67it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 90.67it/s]
+2025-11-07 12:55:35,042 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 44.52s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Using Tool: General Story Knowledge Search                                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main character of the story",                                   │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  [Characters] Charlie:                                                       │
+│  Name: Charlie                                                               │
+│                                                                              │
+│  Full Name: Charles Explorer                                                 │
+│                                                                              │
+│  Description: A fellow adventurer Alice meets on the path                    │
+│                                                                              │
+│  Character Type: Minor Character                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:56:19 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:19,568 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:19,650 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 1.27s... (1/5)
+[92m12:56:20 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:20,919 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:20,983 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 2.40s... (2/5)
+[92m12:56:23 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:23,384 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:23,447 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 4.09s... (3/5)
+[92m12:56:27 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:27,541 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:27,610 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 8.73s... (4/5)
+[92m12:56:36 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:36,336 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:56:38 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:56:38,248 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 134.99it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 136.36it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 91.89it/s]
+[92m12:56:38 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:56:38,308 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    ├── 🔧 Using General Story Knowledge Search (2)
+    └── 🔧 Used General Story Knowledge Search (2)╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Using Tool: General Story Knowledge Search                                  │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "story protagonist",                                             │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  [Characters] Bob:                                                           │
+│  Name: Bob                                                                   │
+│                                                                              │
+│  Full Name: Bob the Brave                                                    │
+│                                                                              │
+│  Description: A strong warrior with dark hair and green eyes                 │
+│                                                                              │
+│  Biography: Bob is Alice's childhood friend and protector. He is loyal and   │
+│  skilled in combat.                                                          │
+│                                                                              │
+│  Goals: To protect Alice and prove his worth                                 │
+│                                                                              │
+│  Character Type: Major Character                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:56:41 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:56:41,834 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:56:41,841 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 58.16s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    ├── 🔧 Using General Story Knowledge Search (2)
+    ├── 🔧 Used Semantic Character Search (6)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: Since the character I am looking for is not in the        │
+│  observations, I will try to find her                                        │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "Maya",                                                          │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.234,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman seeking adventure\n\nBiography: Alice grew up in a      │
+│  small town and always dreamed of exploring the world.\n\nGoals: To find     │
+│  her place in the world\n\nCharacter Type: Major Character"                  │
+│  }                                                                           │
+│                                                                              │
+│                                                                              │
+│  You ONLY have access to the following tools, and should NEVER make up       │
+│  tools that are not listed here:                                             │
+│                                                                              │
+│  Tool Name: Semantic Character Search                                        │
+│  Tool Arguments: {'query': {'description': "Natural language query about     │
+│  characters (e.g., 'tell me about the protagonist' or 'who is the            │
+│  villain?')", 'type': 'str'}, 'top_k': {'description': 'Number of results    │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search for characters using natural language queries.     │
+│  Use this to find characters by description, role, personality, or           │
+│  relationships. Examples: 'the main protagonist', 'characters who are        │
+│  enemies', 'noble knights'                                                   │
+│  Tool Name: Get Character Details                                            │
+│  Tool Arguments: {'character_name': {'description': 'The name of the         │
+│  character to look up', 'type': 'str'}}                                      │
+│  Tool Description: Get detailed information about a specific character by    │
+│  name. Use this when you know the character's name and need their full       │
+│  profile.                                                                    │
+│  Tool Name: Find Character Relationships                                     │
+│  Tool Arguments: {'character_name': {'description': 'Name of the character   │
+│  to find relationships for', 'type': 'str'}, 'top_k': {'description':        │
+│  'Number of relationships to return', 'type': 'int'}}                        │
+│  Tool Description: Find relationships involving a specific character. Use    │
+│  this to understand character dynamics, connections, and social networks.    │
+│  Tool Name: General Story Knowledge Search                                   │
+│  Tool Arguments: {'query': {'description': 'General question about the       │
+│  story', 'type': 'str'}, 'top_k': {'description': 'Number of total results   │
+│  to return', 'type': 'int'}}                                                 │
+│  Tool Description: Search across all story knowledge (characters,            │
+│  locations, plot, relationships). Use this for general questions about the   │
+│  story that...                                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:57:40 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:57:40,001 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:57:42 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:57:42,058 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:57:42,066 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 64.33s...
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    ├── 🔧 Using General Story Knowledge Search (2)
+    ├── 🔧 Used Semantic Character Search (6)
+    ├── 🔧 Used Get Character Details (2)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Using Tool: Get Character Details                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "character_name": "Maya"                                                  │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  Character: Alice                                                            │
+│                                                                              │
+│  Name: Alice                                                                 │
+│                                                                              │
+│  Full Name: Alice Wonderland                                                 │
+│                                                                              │
+│  Description: A curious young woman seeking adventure                        │
+│                                                                              │
+│  Biography: Alice grew up in a small town and always dreamed of exploring    │
+│  the world.                                                                  │
+│                                                                              │
+│  Goals: To find her place in the world                                       │
+│                                                                              │
+│  Character Type: Major Character                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m12:58:46 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:58:46,397 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m12:58:48 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:58:48,309 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: 00ed42d3-744a-4cdb-9061-9772ae922322
+    Assigned to: Character Development Specialist
+    Status: ✅ Completed
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    ├── 🔧 Used Semantic Character Search (3)
+    ├── 🔧 Using Get Character Details (1)
+    ├── 🔧 Used Semantic Character Search (4)
+    ├── 🔧 Using Semantic Character Search (5)
+    ├── 🔧 Used General Story Knowledge Search (1)
+    ├── 🔧 Using General Story Knowledge Search (2)
+    ├── 🔧 Used Semantic Character Search (6)
+    └── 🔧 Used Get Character Details (2)╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Final Answer:                                                               │
+│  CHARACTER: Maya                                                             │
+│  FULLNAME: Maya Black                                                        │
+│  AKA: The Scientist                                                          │
+│  DESC: A young and brilliant scientist who discovers a way to harness the    │
+│  power of The Nexus.                                                         │
+│  BIO: Maya grew up in a world controlled by the United Galactic Coalition,   │
+│  where she witnessed the exploitation of resources and the enslavement of    │
+│  entire planets. She became determined to find a way to free humanity from   │
+│  the UGC's grasp.                                                            │
+│  NOTES: Maya's journey is driven by her desire for freedom and her need to   │
+│  understand the true nature of The Nexus. As she delves deeper into the      │
+│  mysteries of The Nexus, she must confront the darkness within herself and   │
+│  the true nature of the UGC.                                                 │
+│  GOALS: To harness the power of The Nexus and free humanity from the UGC's   │
+│  control.                                                                    │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Admiral Zara                                                     │
+│  FULLNAME: Admiral Zara Orion                                                │
+│  AKA: The Admiral                                                            │
+│  DESC: A high-ranking officer in the United Galactic Coalition who is        │
+│  determined to maintain the UGC's control over the galaxy.                   │
+│  BIO: Admiral Zara rose through the ranks of the UGC, becoming one of its    │
+│  most trusted and feared officers. She is ruthless and cunning, with a       │
+│  strong sense of loyalty to the UGC.                                         │
+│  NOTES: Admiral Zara's character serves as a foil to Maya's, highlighting    │
+│  the contrast between the UGC's oppressive regime and the desire for         │
+│  freedom and autonomy.                                                       │
+│  GOALS: To maintain the UGC's control over the galaxy and crush any          │
+│  opposition.                                                                 │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Dr. Zhang                                                        │
+│  FULLNAME: Dr. Zhang Wei                                                     │
+│  AKA: The Mentor                                                             │
+│  DESC: A wise and experienced scientist who becomes Maya's mentor and        │
+│  guide.                                                                      │
+│  BIO: Dr. Zhang is a renowned expert in the field of energy research, with   │
+│  a deep understanding of The Nexus and its potential.                        │
+│  NOTES: Dr. Zhang's character provides guidance and support to Maya,         │
+│  helping her to navigate the complexities of The Nexus and the UGC's         │
+│  opposition.                                                                 │
+│  GOALS: To help Maya unlock the secrets of The Nexus and bring about a new   │
+│  era of freedom and cooperation.                                             │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Captain Orion                                                    │
+│  FULLNAME: Captain Orion Black                                               │
+│  AKA: The Captain                                                            │
+│  DESC: Maya's brother, a skilled spaceship captain who becomes embroiled in  │
+│  the conflict between the UGC and the rebellion.                             │
+│  BIO: Captain Orion is a charismatic leader with a strong sense of justice,  │
+│  who is driven by a desire to protect his sister and the innocent civilians  │
+│  caught in the crossfire.                                                    │
+│  NOTES: Captain Orion's character adds a personal element to the story,      │
+│  highlighting the emotional stakes and the difficulties of making choices    │
+│  in a complex and uncertain world.                                           │
+│  GOALS: To protect his sister and the rebellion, while navigating the moral  │
+│  complexities of war and leadership.                                         │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 00ed42d3-744a-4cdb-9061-9772ae922322                                  │
+│  Agent: Character Development Specialist                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 54918aff-3f5a-4faf-80a9-3e045adb9d90                                    │
+│  Tool Args:                                                                  │
+│  Final Output: CHARACTER: Maya                                               │
+│  FULLNAME: Maya Black                                                        │
+│  AKA: The Scientist                                                          │
+│  DESC: A young and brilliant scientist who discovers a way to harness the    │
+│  power of The Nexus.                                                         │
+│  BIO: Maya grew up in a world controlled by the United Galactic Coalition,   │
+│  where she witnessed the exploitation of resources and the enslavement of    │
+│  entire planets. She became determined to find a way to free humanity from   │
+│  the UGC's grasp.                                                            │
+│  NOTES: Maya's journey is driven by her desire for freedom and her need to   │
+│  understand the true nature of The Nexus. As she delves deeper into the      │
+│  mysteries of The Nexus, she must confront the darkness within herself and   │
+│  the true nature of the UGC.                                                 │
+│  GOALS: To harness the power of The Nexus and free humanity from the UGC's   │
+│  control.                                                                    │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Admiral Zara                                                     │
+│  FULLNAME: Admiral Zara Orion                                                │
+│  AKA: The Admiral                                                            │
+│  DESC: A high-ranking officer in the United Galactic Coalition who is        │
+│  determined to maintain the UGC's control over the galaxy.                   │
+│  BIO: Admiral Zara rose through the ranks of the UGC, becoming one of its    │
+│  most trusted and feared officers. She is ruthless and cunning, with a       │
+│  strong sense of loyalty to the UGC.                                         │
+│  NOTES: Admiral Zara's character serves as a foil to Maya's, highlighting    │
+│  the contrast between the UGC's oppressive regime and the desire for         │
+│  freedom and autonomy.                                                       │
+│  GOALS: To maintain the UGC's control over the galaxy and crush any          │
+│  opposition.                                                                 │
+│  MAJOR: YES                                                                  │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Dr. Zhang                                                        │
+│  FULLNAME: Dr. Zhang Wei                                                     │
+│  AKA: The Mentor                                                             │
+│  DESC: A wise and experienced scientist who becomes Maya's mentor and        │
+│  guide.                                                                      │
+│  BIO: Dr. Zhang is a renowned expert in the field of energy research, with   │
+│  a deep understanding of The Nexus and its potential.                        │
+│  NOTES: Dr. Zhang's character provides guidance and support to Maya,         │
+│  helping her to navigate the complexities of The Nexus and the UGC's         │
+│  opposition.                                                                 │
+│  GOALS: To help Maya unlock the secrets of The Nexus and bring about a new   │
+│  era of freedom and cooperation.                                             │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  CHARACTER: Captain Orion                                                    │
+│  FULLNAME: Captain Orion Black                                               │
+│  AKA: The Captain                                                            │
+│  DESC: Maya's brother, a skilled spaceship captain who becomes embroiled in  │
+│  the conflict between the UGC and the rebellion.                             │
+│  BIO: Captain Orion is a charismatic leader with a strong sense of justice,  │
+│  who is driven by a desire to protect his sister and the innocent civilians  │
+│  caught in the crossfire.                                                    │
+│  NOTES: Captain Orion's character adds a personal element to the story,      │
+│  highlighting the emotional stakes and the difficulties of making choices    │
+│  in a complex and uncertain world.                                           │
+│  GOALS: To protect his sister and the rebellion, while navigating the moral  │
+│  complexities of war and leadership.                                         │
+│  MAJOR: NO                                                                   │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:58:48,360 - INFO - Initialized 6 collections
+2025-11-07 12:58:48,360 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 12:58:48,360 - INFO - RAGSyncManager initialized
+2025-11-07 12:58:48,360 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+  ✓ Created: Maya
+  ✓ Created: Admiral Zara
+  ✓ Created: Dr. Zhang
+  ✓ Created: Captain Orion
+2025-11-07 12:58:48,364 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 12:58:48,365 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 12:58:48,365 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 37.91it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 47.00it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 45.73it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 42.44it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 44.50it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 64.13it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 40.63it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 57.49it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 49.54it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 48.23it/s]
+2025-11-07 12:58:48,909 - INFO - Sync completed: {'characters': 4, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 6}
+2025-11-07 12:58:48,909 - INFO - RAG sync completed: 10 items synced
+✓ Created 4 characters
+
+================================================================================
+STEP 3: Location Creation
+================================================================================
+Running Setting Builder...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 3a3c88e0-46bc-40da-988a-569e354b3b7c                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:58:50,931 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7edcd8328d50>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m12:58:50 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 12:58:50,939 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: b5b0f105-a184-4ebf-8807-c69d6832b15a
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: World Builder & Setting Designer                                     │
+│                                                                              │
+│  Task: Create 3-4 key locations with vivid descriptions and alternate        │
+│  names.                                                                      │
+│                                                                              │
+│              Story Context:                                                  │
+│              In the depths of space, humanity has colonized several          │
+│  planets, but at a steep cost. The United Galactic Coalition (UGC) has       │
+│  become a tyrannical government, exploiting resources and enslaving entire   │
+│  planets. Amidst this chaos, a young and brilliant scientist, Maya,          │
+│  discovers a way to harness the power of a newly found energy source, known  │
+│  as "The Nexus." This energy has the potential to free humanity from the     │
+│  UGC's grasp, but it also poses a significant threat to the balance of       │
+│  power in the galaxy.                                                        │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│  The story follows Maya's journey as she navigates the complexities of       │
+│  rebellion, power, and the true cost of freedom. The narrative explores      │
+│  themes of oppression, resistance, and the responsibility that comes with    │
+│  great power. As Maya delves deeper into the mysteries of The Nexus, she     │
+│  must confront the darkness within herself and the true nature of the UGC.   │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  * **Protagonist (Maya):** At the beginning of the story, Maya is a naive    │
+│  and ideali                                                                  │
+│                                                                              │
+│              Format as structured data:                                      │
+│              LOCATION: [name]                                                │
+│              AKA: [alternate names]                                          │
+│              DESC: [description]                                             │
+│              ---                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m12:58:52 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 12:58:52,537 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: b5b0f105-a184-4ebf-8807-c69d6832b15a
+    Assigned to: World Builder & Setting Designer
+    Status: ✅ Completed╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: World Builder & Setting Designer                                     │
+│                                                                              │
+│  Final Answer:                                                               │
+│  LOCATION: New Eden                                                          │
+│  AKA: Nova Terra, Paradise Planet                                            │
+│  DESC: New Eden is a distant planet on the outskirts of the galaxy, known    │
+│  for its breathtaking landscapes and diverse wildlife. The planet's          │
+│  atmosphere is teeming with life, from the towering trees that stretch       │
+│  towards the sky to the vast oceans that cover most of its surface. New      │
+│  Eden is home to a small but thriving community of scientists, explorers,    │
+│  and rebels who seek to escape the UGC's tyranny. The planet's unique        │
+│  energy signature, which is believed to be connected to The Nexus, makes it  │
+│  an ideal location for Maya's research.                                      │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Tartarus-4                                                        │
+│  AKA: The Pit, T-4                                                           │
+│  DESC: Tartarus-4 is a maximum-security prison planet controlled by the      │
+│  UGC. The planet's surface is a barren wasteland, scarred by the constant    │
+│  mining and drilling operations that fuel the UGC's war machine. The prison  │
+│  itself is a labyrinthine complex of tunnels, cells, and interrogation       │
+│  chambers, where inmates are subjected to brutal treatment and forced        │
+│  labor. Tartarus-4 is a symbol of the UGC's oppression, and its mere         │
+│  mention strikes fear into the hearts of those who dare to resist.           │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Arkon                                                             │
+│  AKA: The Citadel, UGC HQ                                                    │
+│  DESC: Arkon is the capital planet of the United Galactic Coalition, a       │
+│  heavily fortified world that serves as the seat of the UGC's power. The     │
+│  planet's surface is dominated by the imposing Citadel, a towering           │
+│  structure that houses the UGC's central command, government offices, and    │
+│  elite military units. Arkon is a hub of activity, with constant comings     │
+│  and goings of UGC ships, personnel, and equipment. The planet's atmosphere  │
+│  is thick with tension and surveillance, making it nearly impossible for     │
+│  rebels to operate undetected.                                               │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Kaelin-6                                                          │
+│  AKA: The Abyss, K-6                                                         │
+│  DESC: Kaelin-6 is a remote, icy planet on the edge of the galaxy, known     │
+│  for its treacherous terrain and unpredictable weather patterns. The         │
+│  planet's surface is a maze of crevices, canyons, and glaciers, making it a  │
+│  challenging environment for even the most experienced explorers. Kaelin-6   │
+│  is home to a secretive community of smugglers, black marketeers, and        │
+│  information brokers who operate in the shadows of the UGC's reach. The      │
+│  planet's isolation and lawlessness make it an ideal location for Maya to    │
+│  seek out allies and resources for her rebellion.                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: b5b0f105-a184-4ebf-8807-c69d6832b15a                                  │
+│  Agent: World Builder & Setting Designer                                     │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 3a3c88e0-46bc-40da-988a-569e354b3b7c                                    │
+│  Tool Args:                                                                  │
+│  Final Output: LOCATION: New Eden                                            │
+│  AKA: Nova Terra, Paradise Planet                                            │
+│  DESC: New Eden is a distant planet on the outskirts of the galaxy, known    │
+│  for its breathtaking landscapes and diverse wildlife. The planet's          │
+│  atmosphere is teeming with life, from the towering trees that stretch       │
+│  towards the sky to the vast oceans that cover most of its surface. New      │
+│  Eden is home to a small but thriving community of scientists, explorers,    │
+│  and rebels who seek to escape the UGC's tyranny. The planet's unique        │
+│  energy signature, which is believed to be connected to The Nexus, makes it  │
+│  an ideal location for Maya's research.                                      │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Tartarus-4                                                        │
+│  AKA: The Pit, T-4                                                           │
+│  DESC: Tartarus-4 is a maximum-security prison planet controlled by the      │
+│  UGC. The planet's surface is a barren wasteland, scarred by the constant    │
+│  mining and drilling operations that fuel the UGC's war machine. The prison  │
+│  itself is a labyrinthine complex of tunnels, cells, and interrogation       │
+│  chambers, where inmates are subjected to brutal treatment and forced        │
+│  labor. Tartarus-4 is a symbol of the UGC's oppression, and its mere         │
+│  mention strikes fear into the hearts of those who dare to resist.           │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Arkon                                                             │
+│  AKA: The Citadel, UGC HQ                                                    │
+│  DESC: Arkon is the capital planet of the United Galactic Coalition, a       │
+│  heavily fortified world that serves as the seat of the UGC's power. The     │
+│  planet's surface is dominated by the imposing Citadel, a towering           │
+│  structure that houses the UGC's central command, government offices, and    │
+│  elite military units. Arkon is a hub of activity, with constant comings     │
+│  and goings of UGC ships, personnel, and equipment. The planet's atmosphere  │
+│  is thick with tension and surveillance, making it nearly impossible for     │
+│  rebels to operate undetected.                                               │
+│                                                                              │
+│  ---                                                                         │
+│  LOCATION: Kaelin-6                                                          │
+│  AKA: The Abyss, K-6                                                         │
+│  DESC: Kaelin-6 is a remote, icy planet on the edge of the galaxy, known     │
+│  for its treacherous terrain and unpredictable weather patterns. The         │
+│  planet's surface is a maze of crevices, canyons, and glaciers, making it a  │
+│  challenging environment for even the most experienced explorers. Kaelin-6   │
+│  is home to a secretive community of smugglers, black marketeers, and        │
+│  information brokers who operate in the shadows of the UGC's reach. The      │
+│  planet's isolation and lawlessness make it an ideal location for Maya to    │
+│  seek out allies and resources for her rebellion.                            │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 12:58:52,591 - INFO - Initialized 6 collections
+2025-11-07 12:58:52,591 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 12:58:52,591 - INFO - RAGSyncManager initialized
+2025-11-07 12:58:52,591 - INFO - AutoSyncYw7File initialized for output/five_chapter_test_novel.yw7 (auto_sync=True)
+  ✓ Created: New Eden
+  ✓ Created: Tartarus-4
+  ✓ Created: Arkon
+  ✓ Created: Kaelin-6
+2025-11-07 12:58:52,597 - INFO - Wrote changes to output/five_chapter_test_novel.yw7
+2025-11-07 12:58:52,597 - INFO - Syncing output/five_chapter_test_novel.yw7 to RAG system...
+2025-11-07 12:58:52,597 - INFO - Starting sync from yWriter7: output/five_chapter_test_novel.yw7
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 66.86it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 76.78it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 78.30it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.23it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 46.39it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 68.92it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 54.41it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 52.77it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 72.84it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 71.50it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 58.86it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 64.75it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 55.47it/s]
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 81.57it/s]
+2025-11-07 12:58:53,224 - INFO - Sync completed: {'characters': 4, 'locations': 4, 'items': 0, 'plot_events': 0, 'relationships': 6}
+2025-11-07 12:58:53,224 - INFO - RAG sync completed: 14 items synced
+✓ Created 4 locations
+
+================================================================================
+✅ WORKFLOW TEST COMPLETE (Partial - Steps 1-3)
+================================================================================
+Duration: 0:06:08.301179
+Output file: output/five_chapter_test_novel.yw7
+
+Statistics:
+  Characters: 4
+  Locations: 4
+
+Note: Full workflow with scenes/writing would require Steps 4-7.
+This test demonstrates the enhanced character/location creation with
+all yWriter7 fields (bio, notes, goals, aka, isMajor).
