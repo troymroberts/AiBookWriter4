@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<YWRITER7>
+  <PROJECT>
+    <Ver>7</Ver>
+    <Title><![CDATA[Five Chapter Test Novel]]></Title>
+    <Desc><![CDATA[In the depths of space, humanity has colonized several planets, but at a steep cost. The United Galactic Coalition (UGC) has become a tyrannical government, exploiting resources and enslaving entire planets. Amidst this chaos, a young and brilliant scientist, Maya, discovers a way to harness the power of a newly found energy source, known as "The Nexus." This energy has the potential to free humanity from the UGC's grasp, but it also poses a significant threat to the balance of power in the gala]]></Desc>
+    <AuthorName><![CDATA[AI Book Writer]]></AuthorName>
+  </PROJECT>
+  <LOCATIONS />
+  <ITEMS />
+  <CHARACTERS>
+    <CHARACTER>
+      <ID>1</ID>
+      <Title><![CDATA[Maya]]></Title>
+      <Desc><![CDATA[A young and brilliant scientist who discovers a way to harness the power of The Nexus.]]></Desc>
+      <Notes><![CDATA[Maya's journey is driven by her desire for freedom and her need to understand the true nature of The Nexus. As she delves deeper into the mysteries of The Nexus, she must confront the darkness within herself and the true nature of the UGC.]]></Notes>
+      <AKA><![CDATA[The Scientist]]></AKA>
+      <Bio><![CDATA[Maya grew up in a world controlled by the United Galactic Coalition, where she witnessed the exploitation of resources and the enslavement of entire planets. She became determined to find a way to free humanity from the UGC's grasp.]]></Bio>
+      <Goals><![CDATA[To harness the power of The Nexus and free humanity from the UGC's control.]]></Goals>
+      <FullName><![CDATA[Maya Black]]></FullName>
+      <Major>-1</Major>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>2</ID>
+      <Title><![CDATA[Admiral Zara]]></Title>
+      <Desc><![CDATA[A high-ranking officer in the United Galactic Coalition who is determined to maintain the UGC's control over the galaxy.]]></Desc>
+      <Notes><![CDATA[Admiral Zara's character serves as a foil to Maya's, highlighting the contrast between the UGC's oppressive regime and the desire for freedom and autonomy.]]></Notes>
+      <AKA><![CDATA[The Admiral]]></AKA>
+      <Bio><![CDATA[Admiral Zara rose through the ranks of the UGC, becoming one of its most trusted and feared officers. She is ruthless and cunning, with a strong sense of loyalty to the UGC.]]></Bio>
+      <Goals><![CDATA[To maintain the UGC's control over the galaxy and crush any opposition.]]></Goals>
+      <FullName><![CDATA[Admiral Zara Orion]]></FullName>
+      <Major>-1</Major>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>3</ID>
+      <Title><![CDATA[Dr. Zhang]]></Title>
+      <Desc><![CDATA[A wise and experienced scientist who becomes Maya's mentor and guide.]]></Desc>
+      <Notes><![CDATA[Dr. Zhang's character provides guidance and support to Maya, helping her to navigate the complexities of The Nexus and the UGC's opposition.]]></Notes>
+      <AKA><![CDATA[The Mentor]]></AKA>
+      <Bio><![CDATA[Dr. Zhang is a renowned expert in the field of energy research, with a deep understanding of The Nexus and its potential.]]></Bio>
+      <Goals><![CDATA[To help Maya unlock the secrets of The Nexus and bring about a new era of freedom and cooperation.]]></Goals>
+      <FullName><![CDATA[Dr. Zhang Wei]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>4</ID>
+      <Title><![CDATA[Captain Orion]]></Title>
+      <Desc><![CDATA[Maya's brother, a skilled spaceship captain who becomes embroiled in the conflict between the UGC and the rebellion.]]></Desc>
+      <Notes><![CDATA[Captain Orion's character adds a personal element to the story, highlighting the emotional stakes and the difficulties of making choices in a complex and uncertain world.]]></Notes>
+      <AKA><![CDATA[The Captain]]></AKA>
+      <Bio><![CDATA[Captain Orion is a charismatic leader with a strong sense of justice, who is driven by a desire to protect his sister and the innocent civilians caught in the crossfire.]]></Bio>
+      <Goals><![CDATA[To protect his sister and the rebellion, while navigating the moral complexities of war and leadership.]]></Goals>
+      <FullName><![CDATA[Captain Orion Black]]></FullName>
+    </CHARACTER>
+  </CHARACTERS>
+  <SCENES />
+  <CHAPTERS></CHAPTERS>
+</YWRITER7>
