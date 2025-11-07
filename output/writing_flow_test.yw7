@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<YWRITER7>
+  <PROJECT>
+    <Ver>7</Ver>
+    <Title><![CDATA[RAG Writing Flow Test Novel]]></Title>
+    <Desc><![CDATA[A test novel to validate the complete writing workflow with RAG integration]]></Desc>
+    <AuthorName><![CDATA[AI Book Writer Test]]></AuthorName>
+  </PROJECT>
+  <LOCATIONS>
+    <LOCATION>
+      <ID>1</ID>
+      <Title><![CDATA[The Ancient Temple]]></Title>
+      <Desc><![CDATA[A mysterious temple hidden in the Amazon rainforest, covered in enigmatic symbols and guarded by ancient traps]]></Desc>
+      <AKA><![CDATA[Temple of the Ancients]]></AKA>
+    </LOCATION>
+    <LOCATION>
+      <ID>2</ID>
+      <Title><![CDATA[Oxford University]]></Title>
+      <Desc><![CDATA[Elena's academic home base, where she conducts research and plans expeditions]]></Desc>
+      <AKA><![CDATA[The University]]></AKA>
+    </LOCATION>
+    <LOCATION>
+      <ID>3</ID>
+      <Title><![CDATA[Vale Manor]]></Title>
+      <Desc><![CDATA[Marcus Vale's opulent estate, housing his private collection of stolen artifacts]]></Desc>
+      <AKA><![CDATA[The Manor]]></AKA>
+    </LOCATION>
+  </LOCATIONS>
+  <ITEMS />
+  <CHARACTERS>
+    <CHARACTER>
+      <ID>1</ID>
+      <Title><![CDATA[Elena Thorne]]></Title>
+      <Desc><![CDATA[A brave young archaeologist searching for ancient artifacts]]></Desc>
+      <Notes><![CDATA[Protagonist. PhD in Ancient Civilizations. Lost her mentor in a mysterious accident.]]></Notes>
+      <Bio><![CDATA[Elena grew up fascinated by ancient mysteries. Her determination to uncover the truth drives her forward despite danger.]]></Bio>
+      <FullName><![CDATA[Elena Marie Thorne]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>2</ID>
+      <Title><![CDATA[Marcus Vale]]></Title>
+      <Desc><![CDATA[A ruthless collector of ancient artifacts who will stop at nothing]]></Desc>
+      <Notes><![CDATA[Antagonist. Wealthy, cunning, and dangerous. Seeks power through ancient relics.]]></Notes>
+      <Bio><![CDATA[Marcus believes that ancient knowledge belongs to those strong enough to claim it. He views Elena as both a threat and an opportunity.]]></Bio>
+      <FullName><![CDATA[Marcus Alexander Vale]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>3</ID>
+      <Title><![CDATA[Dr. James Chen]]></Title>
+      <Desc><![CDATA[Elena's colleague and friend, an expert in ancient languages]]></Desc>
+      <Notes><![CDATA[Ally. Brilliant linguist. Provides crucial translations and support.]]></Notes>
+      <Bio><![CDATA[James has known Elena since graduate school. His linguistic expertise often unlocks mysteries that Elena's archaeological knowledge cannot.]]></Bio>
+      <FullName><![CDATA[James Chen]]></FullName>
+    </CHARACTER>
+  </CHARACTERS>
+  <SCENES>
+    <SCENE>
+      <ID>1</ID>
+      <Title><![CDATA[The Discovery]]></Title>
+      <Desc><![CDATA[Elena discovers a cryptic map in her mentor's notes]]></Desc>
+      <SceneContent><![CDATA[Elena sat in her cramped Oxford office, surrounded by stacks of her late mentor's research notes. The late afternoon sun cast long shadows across the desk as she carefully examined a worn leather journal.
+
+"What were you looking for, Professor?" she whispered, tracing her finger over a hand-drawn map tucked between yellowed pages.
+
+The map depicted an uncharted region of the Amazon, marked with symbols she'd never seen before. At the center, a single word: "Temple."
+
+Her phone buzzed. James Chen.
+
+"Elena, you need to see this. I've been translating those symbols from Professor Wade's notes. I think... I think he found something incredible."
+
+Elena's heart raced. Her mentor had died under mysterious circumstances six months ago. Now, perhaps, she could finally understand why.]]></SceneContent>
+    </SCENE>
+    <SCENE>
+      <ID>2</ID>
+      <Title><![CDATA[The Warning]]></Title>
+      <Desc><![CDATA[Elena receives a threatening message from Marcus Vale]]></Desc>
+      <SceneContent><![CDATA[The next morning, Elena found an envelope slipped under her office door. Expensive paper, unmarked.
+
+Inside, a photograph: her mentor's last excavation site. And beneath it, a handwritten note in elegant script:
+
+"Dr. Thorne, some discoveries are meant to remain buried. Continue your research, and you'll share Professor Wade's fate. - M.V."
+
+Elena's hands trembled. Marcus Vale. The name was whispered in archaeological circles - a wealthy collector known for acquiring artifacts through questionable means.
+
+She pulled out her phone and texted James: "We need to talk. Someone's threatening me."
+
+But instead of backing down, Elena felt her resolve strengthen. If Vale wanted to scare her off, it meant her mentor had been onto something real.]]></SceneContent>
+    </SCENE>
+  </SCENES>
+  <CHAPTERS>
+    <CHAPTER>
+      <ID>1</ID>
+      <Title><![CDATA[Chapter 1: The Beginning]]></Title>
+      <Desc><![CDATA[Opening chapter introducing the protagonist]]></Desc>
+      <Type>0</Type>
+      <ChapterType>0</ChapterType>
+      <Scenes>
+        <ScID>1</ScID>
+        <ScID>2</ScID>
+      </Scenes>
+    </CHAPTER>
+  </CHAPTERS>
+</YWRITER7>

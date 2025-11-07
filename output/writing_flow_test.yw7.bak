@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<YWRITER7>
+  <PROJECT>
+    <Ver>7</Ver>
+    <Title><![CDATA[RAG Writing Flow Test Novel]]></Title>
+    <Desc><![CDATA[A test novel to validate the complete writing workflow with RAG integration]]></Desc>
+    <AuthorName><![CDATA[AI Book Writer Test]]></AuthorName>
+  </PROJECT>
+  <LOCATIONS>
+    <LOCATION>
+      <ID>1</ID>
+      <Title><![CDATA[The Ancient Temple]]></Title>
+      <Desc><![CDATA[A mysterious temple hidden in the Amazon rainforest, covered in enigmatic symbols and guarded by ancient traps]]></Desc>
+      <AKA><![CDATA[Temple of the Ancients]]></AKA>
+    </LOCATION>
+    <LOCATION>
+      <ID>2</ID>
+      <Title><![CDATA[Oxford University]]></Title>
+      <Desc><![CDATA[Elena's academic home base, where she conducts research and plans expeditions]]></Desc>
+      <AKA><![CDATA[The University]]></AKA>
+    </LOCATION>
+    <LOCATION>
+      <ID>3</ID>
+      <Title><![CDATA[Vale Manor]]></Title>
+      <Desc><![CDATA[Marcus Vale's opulent estate, housing his private collection of stolen artifacts]]></Desc>
+      <AKA><![CDATA[The Manor]]></AKA>
+    </LOCATION>
+  </LOCATIONS>
+  <ITEMS />
+  <CHARACTERS>
+    <CHARACTER>
+      <ID>1</ID>
+      <Title><![CDATA[Elena Thorne]]></Title>
+      <Desc><![CDATA[A brave young archaeologist searching for ancient artifacts]]></Desc>
+      <Notes><![CDATA[Protagonist. PhD in Ancient Civilizations. Lost her mentor in a mysterious accident.]]></Notes>
+      <Bio><![CDATA[Elena grew up fascinated by ancient mysteries. Her determination to uncover the truth drives her forward despite danger.]]></Bio>
+      <FullName><![CDATA[Elena Marie Thorne]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>2</ID>
+      <Title><![CDATA[Marcus Vale]]></Title>
+      <Desc><![CDATA[A ruthless collector of ancient artifacts who will stop at nothing]]></Desc>
+      <Notes><![CDATA[Antagonist. Wealthy, cunning, and dangerous. Seeks power through ancient relics.]]></Notes>
+      <Bio><![CDATA[Marcus believes that ancient knowledge belongs to those strong enough to claim it. He views Elena as both a threat and an opportunity.]]></Bio>
+      <FullName><![CDATA[Marcus Alexander Vale]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>3</ID>
+      <Title><![CDATA[Dr. James Chen]]></Title>
+      <Desc><![CDATA[Elena's colleague and friend, an expert in ancient languages]]></Desc>
+      <Notes><![CDATA[Ally. Brilliant linguist. Provides crucial translations and support.]]></Notes>
+      <Bio><![CDATA[James has known Elena since graduate school. His linguistic expertise often unlocks mysteries that Elena's archaeological knowledge cannot.]]></Bio>
+      <FullName><![CDATA[James Chen]]></FullName>
+    </CHARACTER>
+  </CHARACTERS>
+  <SCENES />
+  <CHAPTERS>
+    <CHAPTER>
+      <ID>1</ID>
+      <Title><![CDATA[Chapter 1: The Beginning]]></Title>
+      <Desc><![CDATA[Opening chapter introducing the protagonist]]></Desc>
+      <Type>0</Type>
+      <ChapterType>0</ChapterType>
+    </CHAPTER>
+  </CHAPTERS>
+</YWRITER7>

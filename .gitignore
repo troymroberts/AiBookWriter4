@@ -40,9 +40,9 @@ env/
 Thumbs.db
 
 # Project specific
-output/*.yw7
+# output/*.yw7  # Temporarily including .yw7 files for testing/review
 output/*.txt
-output/*.bak
+# output/*.bak  # Temporarily including .bak files for testing/review
 !output/placeholder.txt
 
 # RAG/ChromaDB vector database storage
