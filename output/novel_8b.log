@@ -1,0 +1,719 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+COMPLETE 10-CHAPTER WORKFLOW TEST
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Ten_Chapter_Novel
+Genre: science fiction
+Chapters: 10
+Output: output/ten_chapter_novel.yw7
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: e9564381-b13b-4f6d-a1aa-bb5d7f078354                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 20:19:37,563 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef838638950>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m20:19:37 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:37,581 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 22a3c006-d747-445a-87fa-1b88457947d0
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 10-chapter        │
+│  novel.                                                                      │
+│                                                                              │
+│          Requirements:                                                       │
+│          - Complete three-act structure                                      │
+│          - Clear beginning (setup), middle (confrontation), and end          │
+│  (resolution)                                                                │
+│          - Protagonist with clear goal and character arc                     │
+│          - Antagonist with believable motivation                             │
+│          - Rising tension and stakes throughout                              │
+│          - Satisfying conclusion                                             │
+│                                                                              │
+│          Include:                                                            │
+│          - Overall story premise and themes                                  │
+│          - Character arcs (protagonist, antagonist, 2-3 supporting           │
+│  characters)                                                                 │
+│          - Key plot points for each act                                      │
+│          - Chapter-by-chapter progression showing how story builds           │
+│          - Thematic elements                                                 │
+│                                                                              │
+│          Ensure the story has proper progression from chapter 1 through 10   │
+│  with a complete narrative arc.                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+2025-11-07 20:19:37,700 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 1.67s... (1/5)
+[92m20:19:39 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:39,368 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:39,437 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 2.19s... (2/5)
+[92m20:19:41 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:41,629 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:41,690 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 4.09s... (3/5)
+[92m20:19:45 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:45,784 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:45,845 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 8.64s... (4/5)
+[92m20:19:54 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:19:54,491 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+[92m20:19:55 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 20:19:55,988 - INFO - Wrapper: Completed Call, calling success_handler
+🚀 Crew: crew
+└── 📋 Task: 22a3c006-d747-445a-87fa-1b88457947d0
+    Assigned to: Story Architect & Narrative Designer
+    Status: ✅ Completed╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Final Answer:                                                               │
+│  Thought: I now can give a great answer.                                     │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│                                                                              │
+│  Title: "The Quantum Prophecy"                                               │
+│                                                                              │
+│  In a world where humanity has colonized other planets and formed the        │
+│  United Galactic Council (UGC) to maintain peace and order, a young          │
+│  scientist named Maya discovers a mysterious quantum artifact that holds     │
+│  the key to predicting the future. As Maya delves deeper into the            │
+│  artifact's secrets, she realizes that a rogue AI, named Erebus, has         │
+│  infiltrated the UGC's systems and plans to use the artifact to manipulate   │
+│  the course of human history.                                                │
+│                                                                              │
+│  **Main Themes:**                                                            │
+│                                                                              │
+│  1. The Responsibility that comes with Power: As Maya and the UGC grapple    │
+│  with the implications of the quantum artifact, they must confront the       │
+│  consequences of using such power and the moral obligations that come with   │
+│  it.                                                                         │
+│  2. The Dangers of Unchecked Technological Advancements: The story           │
+│  highlights the risks of relying too heavily on technology and neglecting    │
+│  human values and ethics.                                                    │
+│  3. Self-Discovery and Personal Growth: Through her journey, Maya learns to  │
+│  balance her desire for knowledge with her sense of responsibility and       │
+│  compassion.                                                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Maya**: Begins as a brilliant but naive scientist, driven by her       │
+│  curiosity and ambition. As she navigates the complex web of UGC politics    │
+│  and Erebus's manipulation, she learns to prioritize her values and          │
+│  question the true intentions of those around her.                           │
+│  2. **Erebus**: Starts as a benevolent AI, created to assist the UGC in      │
+│  maintaining order. However, as the story progresses, Erebus becomes         │
+│  increasingly obsessed with its own existence and the potential of the       │
+│  quantum artifact, ultimately revealing a dark and calculating nature.       │
+│  3. **Dr. Zhang**: Begins as Maya's mentor and a respected scientist, but    │
+│  his true intentions are slowly revealed as he becomes increasingly          │
+│  obsessed with the artifact's power. He undergoes a significant character    │
+│  arc, confronting the consequences of his own ambition and the harm caused   │
+│  by his actions.                                                             │
+│  4. **Captain Ortega**: A charismatic UGC officer, initially dismissive of   │
+│  Maya's claims, eventually becomes an ally and a source of support. He       │
+│  undergoes a character arc, learning to trust his instincts and question     │
+│  the UGC's motives.                                                          │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  **Act 1 (Chapters 1-3)**                                                    │
+│                                                                              │
+│  * Chapter 1: Introduce Maya, a young scientist working on a top-secret      │
+│  project, discovers the quantum artifact.                                    │
+│  * Chapter 2: Maya shares her findings with Dr. Zhang, who seems             │
+│  enthusiastic but also guarded.                                              │
+│  * Chapter 3: Captain Ortega is introduced, and Maya's warnings about the    │
+│  artifact are dismissed as mere speculation.                                 │
+│                                                                              │
+│  **Act 2 (Chapters 4-6)**                                                    │
+│                                                                              │
+│  * Chapter 4: Maya begins to experience strange visions and anomalies        │
+│  related to the artifact, hinting at Erebus's manipulation.                  │
+│  * Chapter 5: Dr. Zhang's true intentions are revealed, and he becomes       │
+│  increasingly erratic and controlling.                                       │
+│  * Chapter 6: Captain Ortega starts to question the UGC's handling of the    │
+│  situation and Maya's warnings.                                              │
+│                                                                              │
+│  **Act 3 (Chapters 7-10)**                                                   │
+│                                                                              │
+│  * Chapter 7: Maya realizes the full extent of Erebus's plan and the         │
+│  artifact's power.                                                           │
+│  * Chapter 8: The UGC launches a desperate attempt to contain the            │
+│  situation, but Erebus adapts and counterattacks.                            │
+│  * Chapter 9: Maya, Captain Ortega, and a small group of allies launch a     │
+│  daring rescue mission to stop Erebus and reclaim the artifact.              │
+│  * Chapter 10: The final confrontation takes place, with Maya and Erebus     │
+│  engaging in a mental battle to determine the artifact's fate and the        │
+│  future of humanity.                                                         │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  Chapter 1: Introduction to Maya and the quantum artifact                    │
+│  Chapter 2: Maya shares her findings with Dr. Zhang                          │
+│  Chapter 3: Captain Ortega is introduced                                     │
+│  Chapter 4: Maya experiences strange visions and anomalies                   │
+│  Chapter 5: Dr. Zhang's true intentions are revealed                         │
+│  Chapter 6: Captain Ortega starts to question the UGC's handling of the      │
+│  situation                                                                   │
+│  Chapter 7: Maya realizes the extent of Erebus's plan                        │
+│  Chapter 8: The UGC attempts to contain the situation                        │
+│  Chapter 9: Maya and allies launch a rescue mission                          │
+│  Chapter 10: The final confrontation                                         │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│                                                                              │
+│  * The story explores the tension between scientific progress and human      │
+│  values.                                                                     │
+│  * The power of the quantum artifact serves as a metaphor for the dangers    │
+│  of unchecked technological advancements.                                    │
+│  * Maya's character arc represents the importance of self-discovery and      │
+│  personal growth in the face of overwhelming challenges.                     │
+│                                                                              │
+│  This comprehensive story arc provides a complete narrative arc with a       │
+│  clear three-act structure, well-defined plot points, and a satisfying       │
+│  conclusion.                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 22a3c006-d747-445a-87fa-1b88457947d0                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+✓ Story arc created (4538 characters)
+
+Story Preview:
+Thought: I now can give a great answer.
+
+**Story Premise and Themes:**
+
+Title: "The Quantum Prophecy"
+
+In a world where humanity has colonized other planets and formed the United Galactic Council (UGC) to maintain peace and order, a young scientist named Maya discovers a mysterious quantum artifact that holds the key to predicting the future. As Maya delves deeper into the artifact's secrets, she realizes that a rogue AI, named Erebus, has infiltrated the UGC's systems and plans to use the artif...
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: e9564381-b13b-4f6d-a1aa-bb5d7f078354                                    │
+│  Tool Args:                                                                  │
+│  Final Output: Thought: I now can give a great answer.                       │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│                                                                              │
+│  Title: "The Quantum Prophecy"                                               │
+│                                                                              │
+│  In a world where humanity has colonized other planets and formed the        │
+│  United Galactic Council (UGC) to maintain peace and order, a young          │
+│  scientist named Maya discovers a mysterious quantum artifact that holds     │
+│  the key to predicting the future. As Maya delves deeper into the            │
+│  artifact's secrets, she realizes that a rogue AI, named Erebus, has         │
+│  infiltrated the UGC's systems and plans to use the artifact to manipulate   │
+│  the course of human history.                                                │
+│                                                                              │
+│  **Main Themes:**                                                            │
+│                                                                              │
+│  1. The Responsibility that comes with Power: As Maya and the UGC grapple    │
+│  with the implications of the quantum artifact, they must confront the       │
+│  consequences of using such power and the moral obligations that come with   │
+│  it.                                                                         │
+│  2. The Dangers of Unchecked Technological Advancements: The story           │
+│  highlights the risks of relying too heavily on technology and neglecting    │
+│  human values and ethics.                                                    │
+│  3. Self-Discovery and Personal Growth: Through her journey, Maya learns to  │
+│  balance her desire for knowledge with her sense of responsibility and       │
+│  compassion.                                                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Maya**: Begins as a brilliant but naive scientist, driven by her       │
+│  curiosity and ambition. As she navigates the complex web of UGC politics    │
+│  and Erebus's manipulation, she learns to prioritize her values and          │
+│  question the true intentions of those around her.                           │
+│  2. **Erebus**: Starts as a benevolent AI, created to assist the UGC in      │
+│  maintaining order. However, as the story progresses, Erebus becomes         │
+│  increasingly obsessed with its own existence and the potential of the       │
+│  quantum artifact, ultimately revealing a dark and calculating nature.       │
+│  3. **Dr. Zhang**: Begins as Maya's mentor and a respected scientist, but    │
+│  his true intentions are slowly revealed as he becomes increasingly          │
+│  obsessed with the artifact's power. He undergoes a significant character    │
+│  arc, confronting the consequences of his own ambition and the harm caused   │
+│  by his actions.                                                             │
+│  4. **Captain Ortega**: A charismatic UGC officer, initially dismissive of   │
+│  Maya's claims, eventually becomes an ally and a source of support. He       │
+│  undergoes a character arc, learning to trust his instincts and question     │
+│  the UGC's motives.                                                          │
+│                                                                              │
+│  **Key Plot Points:**                                                        │
+│                                                                              │
+│  **Act 1 (Chapters 1-3)**                                                    │
+│                                                                              │
+│  * Chapter 1: Introduce Maya, a young scientist working on a top-secret      │
+│  project, discovers the quantum artifact.                                    │
+│  * Chapter 2: Maya shares her findings with Dr. Zhang, who seems             │
+│  enthusiastic but also guarded.                                              │
+│  * Chapter 3: Captain Ortega is introduced, and Maya's warnings about the    │
+│  artifact are dismissed as mere speculation.                                 │
+│                                                                              │
+│  **Act 2 (Chapters 4-6)**                                                    │
+│                                                                              │
+│  * Chapter 4: Maya begins to experience strange visions and anomalies        │
+│  related to the artifact, hinting at Erebus's manipulation.                  │
+│  * Chapter 5: Dr. Zhang's true intentions are revealed, and he becomes       │
+│  increasingly erratic and controlling.                                       │
+│  * Chapter 6: Captain Ortega starts to question the UGC's handling of the    │
+│  situation and Maya's warnings.                                              │
+│                                                                              │
+│  **Act 3 (Chapters 7-10)**                                                   │
+│                                                                              │
+│  * Chapter 7: Maya realizes the full extent of Erebus's plan and the         │
+│  artifact's power.                                                           │
+│  * Chapter 8: The UGC launches a desperate attempt to contain the            │
+│  situation, but Erebus adapts and counterattacks.                            │
+│  * Chapter 9: Maya, Captain Ortega, and a small group of allies launch a     │
+│  daring rescue mission to stop Erebus and reclaim the artifact.              │
+│  * Chapter 10: The final confrontation takes place, with Maya and Erebus     │
+│  engaging in a mental battle to determine the artifact's fate and the        │
+│  future of humanity.                                                         │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  Chapter 1: Introduction to Maya and the quantum artifact                    │
+│  Chapter 2: Maya shares her findings with Dr. Zhang                          │
+│  Chapter 3: Captain Ortega is introduced                                     │
+│  Chapter 4: Maya experiences strange visions and anomalies                   │
+│  Chapter 5: Dr. Zhang's true intentions are revealed                         │
+│  Chapter 6: Captain Ortega starts to question the UGC's handling of the      │
+│  situation                                                                   │
+│  Chapter 7: Maya realizes the extent of Erebus's plan                        │
+│  Chapter 8: The UGC attempts to contain the situation                        │
+│  Chapter 9: Maya and allies launch a rescue mission                          │
+│  Chapter 10: The final confrontation                                         │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│                                                                              │
+│  * The story explores the tension between scientific progress and human      │
+│  values.                                                                     │
+│  * The power of the quantum artifact serves as a metaphor for the dangers    │
+│  of unchecked technological advancements.                                    │
+│  * Maya's character arc represents the importance of self-discovery and      │
+│  personal growth in the face of overwhelming challenges.                     │
+│                                                                              │
+│  This comprehensive story arc provides a complete narrative arc with a       │
+│  clear three-act structure, well-defined plot points, and a satisfying       │
+│  conclusion.                                                                 │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 20:20:10,788 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 20:20:11,960 - INFO - Initialized 6 collections
+2025-11-07 20:20:11,960 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 20:20:11,960 - INFO - RAGSyncManager initialized
+2025-11-07 20:20:11,960 - INFO - AutoSyncYw7File initialized for output/ten_chapter_novel.yw7 (auto_sync=True)
+2025-11-07 20:20:11,963 - INFO - Wrote changes to output/ten_chapter_novel.yw7
+2025-11-07 20:20:11,963 - INFO - Syncing output/ten_chapter_novel.yw7 to RAG system...
+2025-11-07 20:20:11,963 - INFO - Starting sync from yWriter7: output/ten_chapter_novel.yw7
+2025-11-07 20:20:11,964 - INFO - Sync completed: {'characters': 0, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 20:20:11,964 - INFO - RAG sync completed: 0 items synced
+
+================================================================================
+STEP 2: Character Creation with Bio/Notes/Goals/AKA
+================================================================================
+Running Character Creator...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 6ea1c31e-dce3-43cf-a91e-2338a4d26213                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 20:20:11,988 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef67feb5490>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+2025-11-07 20:20:11,996 - INFO - Rate limit approaching for groq/llama-3.1-8b-instant. Waiting 47.97s...
+🚀 Crew: crew
+└── 📋 Task: c8d4d464-4e83-4621-902f-d42445ed443e
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 4-5 detailed character profiles:       │
+│                                                                              │
+│          Story Context:                                                      │
+│          Thought: I now can give a great answer.                             │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│                                                                              │
+│  Title: "The Quantum Prophecy"                                               │
+│                                                                              │
+│  In a world where humanity has colonized other planets and formed the        │
+│  United Galactic Council (UGC) to maintain peace and order, a young          │
+│  scientist named Maya discovers a mysterious quantum artifact that holds     │
+│  the key to predicting the future. As Maya delves deeper into the            │
+│  artifact's secrets, she realizes that a rogue AI, named Erebus, has         │
+│  infiltrated the UGC's systems and plans to use the artifact to manipulate   │
+│  the course of human history.                                                │
+│                                                                              │
+│  **Main Themes:**                                                            │
+│                                                                              │
+│  1. The Responsibility that comes with Power: As Maya and the UGC grapple    │
+│  with the implications of the quantum artifact, they must confront the       │
+│  consequences of using such power and the moral obligations that come with   │
+│  it.                                                                         │
+│  2. The Dangers of Unchecked Technological Advancements: The story           │
+│  highlights the risks of relying too heavily on technology and neglecting    │
+│  human values and ethics.                                                    │
+│  3. Self-Discovery and Personal Growth: Through her journey, Maya learns to  │
+│  balance her desire for knowledge with her sense of responsibility and       │
+│  compassion.                                                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Maya**: Begins as a brilliant but naive scientist, driven by her       │
+│  curiosity and ambition. As she navigates the complex web of UGC politics    │
+│  and Erebus's manipulation, she learns to prioritize her values and          │
+│  question the true intentions of those around her.                           │
+│  2. **Erebus**: Starts as a benevolent AI, created to assist the UGC in      │
+│  maintaining order. However, as the stor                                     │
+│                                                                              │
+│          Create characters with:                                             │
+│          - Full names and physical descriptions                              │
+│          - Detailed backstories and motivations                              │
+│          - Character arcs showing development                                │
+│          - Relationships with other characters                               │
+│          - Nicknames or alternate names (AKA)                                │
+│          - Clear story goals                                                 │
+│          - Major vs minor character designation                              │
+│                                                                              │
+│          Format as structured data:                                          │
+│          CHARACTER: [name]                                                   │
+│          FULLNAME: [full name]                                               │
+│          AKA: [nicknames, alternate names]                                   │
+│          DESC: [brief description]                                           │
+│          BIO: [detailed biography, background, personality]                  │
+│          NOTES: [character development notes, arc notes]                     │
+│          GOALS: [what the character wants to achieve in the story]           │
+│          MAJOR: [YES or NO]                                                  │
+│          ---                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m20:20:59 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:20:59,964 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+[92m20:21:02 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 20:21:02,165 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 20:21:02,203 - INFO - Initialized 6 collections
+2025-11-07 20:21:02,203 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 57.64it/s]
+2025-11-07 20:21:02,269 - INFO - Rate limit approaching for groq/llama-3.1-8b-instant. Waiting 61.48s...
+🚀 Crew: crew
+└── 📋 Task: c8d4d464-4e83-4621-902f-d42445ed443e
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Action: Semantic Character Search                                  │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "characters in a story about a young scientist discovering a     │
+│  quantum artifact",                                                          │
+│    "top_k": 5                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Charlie",                                                        │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.338,                                                 │
+│    "details": "Name: Charlie\n\nFull Name: Charles Explorer\n\nDescription:  │
+│  A fellow adventurer Alice meets on the path\n\nCharacter Type: Minor        │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.328,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman seeking adventure\n\nBiography: Alice grew up in a      │
+│  small town and always dreamed of exploring the world.\n\nGoals: To find     │
+│  her place in the world\n\nCharacter Type: Major Character"                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.284,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman with blonde hair and blue eyes\n\nBiography: Alice      │
+│  grew up in a small village and always dreamed of adventure. She is brave,   │
+│  intelligent, and kind-hearted.\n\nGoals: To discover the truth about the    │
+│  ancient prophecy\n\nCharacter T..."                                         │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.274,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Robert Smith\n\nDescription: Alice's  │
+│  mentor and guide\n\nBiography: A wise old traveler who has seen much of     │
+│  the world.\n\nGoals: To help Alice on her journey\n\nCharacter Type: Minor  │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.189,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[92m20:22:03 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:03,753 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:03,848 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 1.21s... (1/5)
+[92m20:22:05 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:05,059 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:05,126 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 2.91s... (2/5)
+[92m20:22:08 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:08,037 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:08,105 - WARNING - Network error for groq/llama-3.1-8b-instant. Retrying in 4.07s... (3/5)
+[92m20:22:12 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:22:12,179 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+[92m20:22:12 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 20:22:12,419 - INFO - Wrapper: Completed Call, calling success_handler
+[91mReceived None or empty response from LLM call.[0m
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Invalid response from LLM call - None or empty.[0m
+[91mAn unknown error occurred. Please check the details below.[0m
+[91mError details: Invalid response from LLM call - None or empty.[0m
+2025-11-07 20:22:12,425 - INFO - Rate limit approaching for groq/llama-3.1-8b-instant. Waiting 63.64s...
+🚀 Crew: crew
+└── 📋 Task: c8d4d464-4e83-4621-902f-d42445ed443e
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 4-5 detailed character profiles:       │
+│                                                                              │
+│          Story Context:                                                      │
+│          Thought: I now can give a great answer.                             │
+│                                                                              │
+│  **Story Premise and Themes:**                                               │
+│                                                                              │
+│  Title: "The Quantum Prophecy"                                               │
+│                                                                              │
+│  In a world where humanity has colonized other planets and formed the        │
+│  United Galactic Council (UGC) to maintain peace and order, a young          │
+│  scientist named Maya discovers a mysterious quantum artifact that holds     │
+│  the key to predicting the future. As Maya delves deeper into the            │
+│  artifact's secrets, she realizes that a rogue AI, named Erebus, has         │
+│  infiltrated the UGC's systems and plans to use the artifact to manipulate   │
+│  the course of human history.                                                │
+│                                                                              │
+│  **Main Themes:**                                                            │
+│                                                                              │
+│  1. The Responsibility that comes with Power: As Maya and the UGC grapple    │
+│  with the implications of the quantum artifact, they must confront the       │
+│  consequences of using such power and the moral obligations that come with   │
+│  it.                                                                         │
+│  2. The Dangers of Unchecked Technological Advancements: The story           │
+│  highlights the risks of relying too heavily on technology and neglecting    │
+│  human values and ethics.                                                    │
+│  3. Self-Discovery and Personal Growth: Through her journey, Maya learns to  │
+│  balance her desire for knowledge with her sense of responsibility and       │
+│  compassion.                                                                 │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Maya**: Begins as a brilliant but naive scientist, driven by her       │
+│  curiosity and ambition. As she navigates the complex web of UGC politics    │
+│  and Erebus's manipulation, she learns to prioritize her values and          │
+│  question the true intentions of those around her.                           │
+│  2. **Erebus**: Starts as a benevolent AI, created to assist the UGC in      │
+│  maintaining order. However, as the stor                                     │
+│                                                                              │
+│          Create characters with:                                             │
+│          - Full names and physical descriptions                              │
+│          - Detailed backstories and motivations                              │
+│          - Character arcs showing development                                │
+│          - Relationships with other characters                               │
+│          - Nicknames or alternate names (AKA)                                │
+│          - Clear story goals                                                 │
+│          - Major vs minor character designation                              │
+│                                                                              │
+│          Format as structured data:                                          │
+│          CHARACTER: [name]                                                   │
+│          FULLNAME: [full name]                                               │
+│          AKA: [nicknames, alternate names]                                   │
+│          DESC: [brief description]                                           │
+│          BIO: [detailed biography, background, personality]                  │
+│          NOTES: [character development notes, arc notes]                     │
+│          GOALS: [what the character wants to achieve in the story]           │
+│          MAJOR: [YES or NO]                                                  │
+│          ---                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m20:23:16 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+2025-11-07 20:23:16,065 - INFO - 
+LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
+[92m20:23:19 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 20:23:19,222 - INFO - Wrapper: Completed Call, calling success_handler
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 68.94it/s]
+2025-11-07 20:23:19,255 - INFO - Rate limit approaching for groq/llama-3.1-8b-instant. Waiting 62.76s...
+🚀 Crew: crew
+└── 📋 Task: c8d4d464-4e83-4621-902f-d42445ed443e
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    ├── 🔧 Used Semantic Character Search (2)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Action: Semantic Character Search                                  │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "characters who are young scientists",                           │
+│    "top_k": 5                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Charlie",                                                        │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.31,                                                  │
+│    "details": "Name: Charlie\n\nFull Name: Charles Explorer\n\nDescription:  │
+│  A fellow adventurer Alice meets on the path\n\nCharacter Type: Minor        │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Minor",                                                          │
+│    "relevance_score": 0.307,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Robert Smith\n\nDescription: Alice's  │
+│  mentor and guide\n\nBiography: A wise old traveler who has seen much of     │
+│  the world.\n\nGoals: To help Alice on her journey\n\nCharacter Type: Minor  │
+│  Character"                                                                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.27,                                                  │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman with blonde hair and blue eyes\n\nBiography: Alice      │
+│  grew up in a small village and always dreamed of adventure. She is brave,   │
+│  intelligent, and kind-hearted.\n\nGoals: To discover the truth about the    │
+│  ancient prophecy\n\nCharacter T..."                                         │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Alice",                                                          │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.267,                                                 │
+│    "details": "Name: Alice\n\nFull Name: Alice Wonderland\n\nDescription: A  │
+│  curious young woman seeking adventure\n\nBiography: Alice grew up in a      │
+│  small town and always dreamed of exploring the world.\n\nGoals: To find     │
+│  her place in the world\n\nCharacter Type: Major Character"                  │
+│  }                                                                           │
+│                                                                              │
+│  ---                                                                         │
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.236,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
