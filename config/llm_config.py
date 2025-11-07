@@ -161,6 +161,10 @@ class LLMConfig:
         if not model:
             model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp")
 
+        # CrewAI expects gemini/ prefix for Gemini models
+        if not model.startswith("gemini/"):
+            model = f"gemini/{model}"
+
         config = {
             "provider": "gemini",
             "model": model,
