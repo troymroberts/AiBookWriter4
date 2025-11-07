@@ -534,36 +534,33 @@ def test_complete_workflow():
     print(f"✓ Created {len(yw7.novel.chapters)} chapters with {scene_count} scenes")
 
     # ============================================================
-    # STEP 6: Prose Writing (First 5 scenes for testing)
+    # STEP 6: Prose Writing (ALL scenes)
     # ============================================================
-    print_step(6, "Prose Writing (First 5 Scenes)")
+    print_step(6, "Prose Writing (ALL Scenes - Full Novel Generation)")
 
     writer_config = WriterConfig(
         temperature=0.8,
-        max_tokens=16384,
+        max_tokens=32000,  # Increased for longer scenes
     )
     writer = Writer(config=writer_config)
 
     with AutoSyncYw7File(project_path) as yw7:
         scenes_written = 0
-        max_scenes_to_write = 5  # Write 5 scenes for testing
+        total_scenes = sum(len(yw7.novel.chapters[ch_id].srtScenes) for ch_id in yw7.novel.srtChapters)
+
+        print(f"Will write {total_scenes} scenes...")
 
         for ch_id in yw7.novel.srtChapters:
-            if scenes_written >= max_scenes_to_write:
-                break
-
             chapter = yw7.novel.chapters[ch_id]
+            print(f"\n📖 Writing Chapter: {chapter.title}")
 
             for scene_id in chapter.srtScenes:
-                if scenes_written >= max_scenes_to_write:
-                    break
-
                 scene = yw7.novel.scenes[scene_id]
 
-                print(f"  Writing: {scene.title}")
+                print(f"  Writing: {scene.title} ({scenes_written + 1}/{total_scenes})")
 
                 write_task = Task(
-                    description=f"""Write compelling prose for this scene:
+                    description=f"""Write compelling, detailed prose for this scene:
 
                     Title: {scene.title}
                     Goal: {scene.goal}
@@ -574,9 +571,9 @@ def test_complete_workflow():
                     {scene.notes}
 
                     Story Context:
-                    {story_arc[:500]}
+                    {story_arc[:1000]}
 
-                    Write 800-1200 words of engaging prose that:
+                    Write 2000-3000 words of rich, engaging prose that:
                     - Shows the character pursuing their goal
                     - Dramatizes the conflict with tension
                     - Reaches the specified outcome
@@ -586,7 +583,7 @@ def test_complete_workflow():
 
                     Use RAG tools to verify character and location details.""",
                     agent=writer,
-                    expected_output="800-1200 words of polished prose"
+                    expected_output="2000-3000 words of polished, detailed prose"
                 )
 
                 write_crew = Crew(
@@ -611,7 +608,7 @@ def test_complete_workflow():
 
     editor_config = EditorConfig(
         temperature=0.5,
-        max_tokens=8192,
+        max_tokens=32000,  # Increased to handle longer scenes
     )
     editor = Editor(config=editor_config)
 
