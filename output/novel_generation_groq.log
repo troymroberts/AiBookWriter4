@@ -1,0 +1,478 @@
+
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+COMPLETE 10-CHAPTER WORKFLOW TEST
+🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 🚀 
+
+Project: Ten_Chapter_Novel
+Genre: science fiction
+Chapters: 10
+Output: output/ten_chapter_novel.yw7
+
+================================================================================
+STEP 1: Story Planning
+================================================================================
+✓ Project initialized
+Running Story Planner...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 1e06fd5b-deb7-49af-95d9-6a3e7b66f298                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 19:35:02,081 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef595b3ccd0>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m19:35:02 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:02,100 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: 4f27bbd8-ebe7-4fcc-bb2f-d9ad943e95a3
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Task: Create a compelling science fiction story arc for a 10-chapter        │
+│  novel.                                                                      │
+│                                                                              │
+│          Requirements:                                                       │
+│          - Complete three-act structure                                      │
+│          - Clear beginning (setup), middle (confrontation), and end          │
+│  (resolution)                                                                │
+│          - Protagonist with clear goal and character arc                     │
+│          - Antagonist with believable motivation                             │
+│          - Rising tension and stakes throughout                              │
+│          - Satisfying conclusion                                             │
+│                                                                              │
+│          Include:                                                            │
+│          - Overall story premise and themes                                  │
+│          - Character arcs (protagonist, antagonist, 2-3 supporting           │
+│  characters)                                                                 │
+│          - Key plot points for each act                                      │
+│          - Chapter-by-chapter progression showing how story builds           │
+│          - Thematic elements                                                 │
+│                                                                              │
+│          Ensure the story has proper progression from chapter 1 through 10   │
+│  with a complete narrative arc.                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+2025-11-07 19:35:02,231 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 1.54s... (1/5)
+[92m19:35:03 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:03,775 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:03,843 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 2.45s... (2/5)
+[92m19:35:06 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:06,296 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:06,363 - WARNING - Network error for groq/llama-3.3-70b-versatile. Retrying in 4.70s... (3/5)
+[92m19:35:11 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:11,063 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+[92m19:35:15 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 19:35:15,164 - INFO - Wrapper: Completed Call, calling success_handler
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Story Architect & Narrative Designer                                 │
+│                                                                              │
+│  Final Answer:                                                               │
+│  In the realm of science fiction, a compelling story arc can be crafted by   │
+│  weaving together intricate plot points, character arcs, and thematic        │
+│  elements. For a 10-chapter novel, the narrative can unfold as follows:      │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a distant future where    │
+│  humanity has colonized other planets. The story follows the protagonist,    │
+│  Captain Jaxon Lee, as he navigates a complex web of time travel,            │
+│  artificial intelligence, and intergalactic politics. The core theme of the  │
+│  novel explores the consequences of playing with the fabric of time and the  │
+│  ethics of emerging technologies. Secondary themes include the importance    │
+│  of human connection, the dangers of unchecked power, and the quest for      │
+│  identity in a rapidly changing universe.                                    │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist - Captain Jaxon Lee:** Begins as a skilled but             │
+│  disillusioned space explorer, haunted by a tragic event in his past.        │
+│  Throughout the novel, Jaxon evolves into a leader who must confront his     │
+│  own demons and make difficult choices to protect humanity's future. His     │
+│  character arc is one of redemption and self-discovery.                      │
+│                                                                              │
+│  2. **Antagonist - Dr. Elara Vex:** A brilliant and charismatic scientist    │
+│  who believes that the key to humanity's survival lies in manipulating time  │
+│  itself. Her motivation stems from a personal loss, which she blames on the  │
+│  constraints of time. As the story progresses, her obsession with time       │
+│  travel and control over the timeline becomes increasingly ruthless,         │
+│  leading to a confrontation with Jaxon.                                      │
+│                                                                              │
+│  3. **Supporting Characters:**                                               │
+│     - **Commander Maya Singh:** A seasoned military officer who becomes      │
+│  Jaxon's ally and potential love interest. Her character arc involves        │
+│  learning to trust her instincts and challenge authority when necessary.     │
+│     - **Dr. Elianore Quasar:** A young, eccentric scientist who specializes  │
+│  in artificial intelligence. His arc is about finding his place in the       │
+│  world and proving his worth beyond his family's legacy.                     │
+│     - **Senator Arin Vashin:** A cunning politician who seeks to exploit     │
+│  the chaos for personal gain. His character serves as a foil to Jaxon,       │
+│  highlighting the dangers of ambition without conscience.                    │
+│                                                                              │
+│  **Key Plot Points for Each Act:**                                           │
+│                                                                              │
+│  - **Act 1 (Chapters 1-3):**                                                 │
+│    - Introduction to Jaxon Lee and the galaxy on the brink of a time travel  │
+│  revolution.                                                                 │
+│    - Inciting Incident: Jaxon discovers a hidden message from his past       │
+│  self, warning of an impending catastrophe linked to Dr. Vex's time travel   │
+│  experiments.                                                                │
+│    - Plot Point 1: Jaxon decides to investigate Dr. Vex, marking the         │
+│  beginning of his journey.                                                   │
+│                                                                              │
+│  - **Act 2 (Chapters 4-7):**                                                 │
+│    - Rising Action: Jaxon gathers allies (Maya, Elianore) and uncovers the   │
+│  extent of Dr. Vex's plan, facing obstacles and betrayals along the way.     │
+│    - Midpoint: The team discovers a critical flaw in Dr. Vex's technology    │
+│  that could destroy the timeline.                                            │
+│    - Complications and setbacks: Senator Vashin's interference, internal     │
+│  conflicts within the group, and the consequences of altering the timeline   │
+│  begin to manifest.                                                          │
+│    - Plot Point 2: A dramatic failure in stopping Dr. Vex leads to a         │
+│  significant change in the timeline, threatening the existence of entire     │
+│  planets.                                                                    │
+│                                                                              │
+│  - **Act 3 (Chapters 8-10):**                                                │
+│    - Climax: Jaxon and his allies launch a final, desperate assault on Dr.   │
+│  Vex's stronghold.                                                           │
+│    - Falling Action: The aftermath of the climax reveals the true extent of  │
+│  the damage to the timeline and the personal costs to the characters.        │
+│    - Resolution: Jaxon must make a choice that will determine the future of  │
+│  humanity, reflecting on the lessons learned about time, power, and          │
+│  connection. The novel concludes with a sense of hope and renewal, as Jaxon  │
+│  and the surviving characters look towards rebuilding and protecting the     │
+│  timeline.                                                                   │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  1. **Introduction to Jaxon Lee** and the premise of time travel in the      │
+│  galaxy.                                                                     │
+│  2. **The Mysterious Message:** Jaxon receives the warning from his past     │
+│  self.                                                                       │
+│  3. **Investigating Dr. Vex:** Jaxon's initial foray into uncovering Dr.     │
+│  Vex's plans.                                                                │
+│  4. **Gathering Allies:** Jaxon meets Maya and Elianore, forming a team to   │
+│  stop Dr. Vex.                                                               │
+│  5. **The senator's Gambit:** Arin Vashin's true intentions are revealed,    │
+│  complicating Jaxon's mission.                                               │
+│  6. **Discovering the Flaw:** The team finds a critical weakness in Dr.      │
+│  Vex's technology.                                                           │
+│  7. **Betrayal and Backlash:** Internal conflicts and external pressures     │
+│  threaten the team's cohesion and mission.                                   │
+│  8. **The Final Confrontation:** Jaxon and his allies face off against Dr.   │
+│  Vex in a battle to control the timeline.                                    │
+│  9. **Aftermath:** The team deals with the consequences of their actions     │
+│  and the changed timeline.                                                   │
+│  10. **Redemption and Renewal:** Jaxon makes his final choice, and the       │
+│  novel concludes with a glimpse into the uncertain but hopeful future.       │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│                                                                              │
+│  - **Time and Consequences:** The novel explores the butterfly effect of     │
+│  time travel, where small changes have profound consequences.                │
+│  - **Power and Corruption:** Dr. Vex's descent into madness and the          │
+│  senator's ruthless ambition illustrate the dangers of unchecked power.      │
+│  - **Human Connection:** Through Jaxon's relationships with Maya, Elianore,  │
+│  and others, the story highlights the importance of empathy and connection   │
+│  in a vast, often impersonal universe.                                       │
+│                                                                              │
+│  This comprehensive story arc for "Echoes of Eternity" weaves together       │
+│  action, science fiction elements, and character-driven drama, culminating   │
+│  in a satisfying narrative that explores the complexities of time, power,    │
+│  and human connection.                                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+🚀 Crew: crew
+└── 📋 Task: 4f27bbd8-ebe7-4fcc-bb2f-d9ad943e95a3
+    Assigned to: Story Architect & Narrative Designer
+    Status: ✅ Completed╭────────────────────────────── Task Completion ───────────────────────────────╮
+│                                                                              │
+│  Task Completed                                                              │
+│  Name: 4f27bbd8-ebe7-4fcc-bb2f-d9ad943e95a3                                  │
+│  Agent: Story Architect & Narrative Designer                                 │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+✓ Story arc created (5508 characters)
+
+Story Preview:
+In the realm of science fiction, a compelling story arc can be crafted by weaving together intricate plot points, character arcs, and thematic elements. For a 10-chapter novel, the narrative can unfold as follows:
+
+**Overall Story Premise and Themes:**
+The novel, titled "Echoes of Eternity," is set in a distant future where humanity has colonized other planets. The story follows the protagonist, Captain Jaxon Lee, as he navigates a complex web of time travel, artificial intelligence, and interga...
+
+╭────────────────────────────── Crew Completion ───────────────────────────────╮
+│                                                                              │
+│  Crew Execution Completed                                                    │
+│  Name: crew                                                                  │
+│  ID: 1e06fd5b-deb7-49af-95d9-6a3e7b66f298                                    │
+│  Tool Args:                                                                  │
+│  Final Output: In the realm of science fiction, a compelling story arc can   │
+│  be crafted by weaving together intricate plot points, character arcs, and   │
+│  thematic elements. For a 10-chapter novel, the narrative can unfold as      │
+│  follows:                                                                    │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a distant future where    │
+│  humanity has colonized other planets. The story follows the protagonist,    │
+│  Captain Jaxon Lee, as he navigates a complex web of time travel,            │
+│  artificial intelligence, and intergalactic politics. The core theme of the  │
+│  novel explores the consequences of playing with the fabric of time and the  │
+│  ethics of emerging technologies. Secondary themes include the importance    │
+│  of human connection, the dangers of unchecked power, and the quest for      │
+│  identity in a rapidly changing universe.                                    │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist - Captain Jaxon Lee:** Begins as a skilled but             │
+│  disillusioned space explorer, haunted by a tragic event in his past.        │
+│  Throughout the novel, Jaxon evolves into a leader who must confront his     │
+│  own demons and make difficult choices to protect humanity's future. His     │
+│  character arc is one of redemption and self-discovery.                      │
+│                                                                              │
+│  2. **Antagonist - Dr. Elara Vex:** A brilliant and charismatic scientist    │
+│  who believes that the key to humanity's survival lies in manipulating time  │
+│  itself. Her motivation stems from a personal loss, which she blames on the  │
+│  constraints of time. As the story progresses, her obsession with time       │
+│  travel and control over the timeline becomes increasingly ruthless,         │
+│  leading to a confrontation with Jaxon.                                      │
+│                                                                              │
+│  3. **Supporting Characters:**                                               │
+│     - **Commander Maya Singh:** A seasoned military officer who becomes      │
+│  Jaxon's ally and potential love interest. Her character arc involves        │
+│  learning to trust her instincts and challenge authority when necessary.     │
+│     - **Dr. Elianore Quasar:** A young, eccentric scientist who specializes  │
+│  in artificial intelligence. His arc is about finding his place in the       │
+│  world and proving his worth beyond his family's legacy.                     │
+│     - **Senator Arin Vashin:** A cunning politician who seeks to exploit     │
+│  the chaos for personal gain. His character serves as a foil to Jaxon,       │
+│  highlighting the dangers of ambition without conscience.                    │
+│                                                                              │
+│  **Key Plot Points for Each Act:**                                           │
+│                                                                              │
+│  - **Act 1 (Chapters 1-3):**                                                 │
+│    - Introduction to Jaxon Lee and the galaxy on the brink of a time travel  │
+│  revolution.                                                                 │
+│    - Inciting Incident: Jaxon discovers a hidden message from his past       │
+│  self, warning of an impending catastrophe linked to Dr. Vex's time travel   │
+│  experiments.                                                                │
+│    - Plot Point 1: Jaxon decides to investigate Dr. Vex, marking the         │
+│  beginning of his journey.                                                   │
+│                                                                              │
+│  - **Act 2 (Chapters 4-7):**                                                 │
+│    - Rising Action: Jaxon gathers allies (Maya, Elianore) and uncovers the   │
+│  extent of Dr. Vex's plan, facing obstacles and betrayals along the way.     │
+│    - Midpoint: The team discovers a critical flaw in Dr. Vex's technology    │
+│  that could destroy the timeline.                                            │
+│    - Complications and setbacks: Senator Vashin's interference, internal     │
+│  conflicts within the group, and the consequences of altering the timeline   │
+│  begin to manifest.                                                          │
+│    - Plot Point 2: A dramatic failure in stopping Dr. Vex leads to a         │
+│  significant change in the timeline, threatening the existence of entire     │
+│  planets.                                                                    │
+│                                                                              │
+│  - **Act 3 (Chapters 8-10):**                                                │
+│    - Climax: Jaxon and his allies launch a final, desperate assault on Dr.   │
+│  Vex's stronghold.                                                           │
+│    - Falling Action: The aftermath of the climax reveals the true extent of  │
+│  the damage to the timeline and the personal costs to the characters.        │
+│    - Resolution: Jaxon must make a choice that will determine the future of  │
+│  humanity, reflecting on the lessons learned about time, power, and          │
+│  connection. The novel concludes with a sense of hope and renewal, as Jaxon  │
+│  and the surviving characters look towards rebuilding and protecting the     │
+│  timeline.                                                                   │
+│                                                                              │
+│  **Chapter-by-Chapter Progression:**                                         │
+│                                                                              │
+│  1. **Introduction to Jaxon Lee** and the premise of time travel in the      │
+│  galaxy.                                                                     │
+│  2. **The Mysterious Message:** Jaxon receives the warning from his past     │
+│  self.                                                                       │
+│  3. **Investigating Dr. Vex:** Jaxon's initial foray into uncovering Dr.     │
+│  Vex's plans.                                                                │
+│  4. **Gathering Allies:** Jaxon meets Maya and Elianore, forming a team to   │
+│  stop Dr. Vex.                                                               │
+│  5. **The senator's Gambit:** Arin Vashin's true intentions are revealed,    │
+│  complicating Jaxon's mission.                                               │
+│  6. **Discovering the Flaw:** The team finds a critical weakness in Dr.      │
+│  Vex's technology.                                                           │
+│  7. **Betrayal and Backlash:** Internal conflicts and external pressures     │
+│  threaten the team's cohesion and mission.                                   │
+│  8. **The Final Confrontation:** Jaxon and his allies face off against Dr.   │
+│  Vex in a battle to control the timeline.                                    │
+│  9. **Aftermath:** The team deals with the consequences of their actions     │
+│  and the changed timeline.                                                   │
+│  10. **Redemption and Renewal:** Jaxon makes his final choice, and the       │
+│  novel concludes with a glimpse into the uncertain but hopeful future.       │
+│                                                                              │
+│  **Thematic Elements:**                                                      │
+│                                                                              │
+│  - **Time and Consequences:** The novel explores the butterfly effect of     │
+│  time travel, where small changes have profound consequences.                │
+│  - **Power and Corruption:** Dr. Vex's descent into madness and the          │
+│  senator's ruthless ambition illustrate the dangers of unchecked power.      │
+│  - **Human Connection:** Through Jaxon's relationships with Maya, Elianore,  │
+│  and others, the story highlights the importance of empathy and connection   │
+│  in a vast, often impersonal universe.                                       │
+│                                                                              │
+│  This comprehensive story arc for "Echoes of Eternity" weaves together       │
+│  action, science fiction elements, and character-driven drama, culminating   │
+│  in a satisfying narrative that explores the complexities of time, power,    │
+│  and human connection.                                                       │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 19:35:30,388 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-11-07 19:35:31,558 - INFO - Initialized 6 collections
+2025-11-07 19:35:31,558 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+2025-11-07 19:35:31,558 - INFO - RAGSyncManager initialized
+2025-11-07 19:35:31,558 - INFO - AutoSyncYw7File initialized for output/ten_chapter_novel.yw7 (auto_sync=True)
+2025-11-07 19:35:31,561 - INFO - Wrote changes to output/ten_chapter_novel.yw7
+2025-11-07 19:35:31,561 - INFO - Syncing output/ten_chapter_novel.yw7 to RAG system...
+2025-11-07 19:35:31,561 - INFO - Starting sync from yWriter7: output/ten_chapter_novel.yw7
+2025-11-07 19:35:31,562 - INFO - Sync completed: {'characters': 0, 'locations': 0, 'items': 0, 'plot_events': 0, 'relationships': 0}
+2025-11-07 19:35:31,562 - INFO - RAG sync completed: 0 items synced
+
+================================================================================
+STEP 2: Character Creation with Bio/Notes/Goals/AKA
+================================================================================
+Running Character Creator...
+╭─────────────────────────── Crew Execution Started ───────────────────────────╮
+│                                                                              │
+│  Crew Execution Started                                                      │
+│  Name: crew                                                                  │
+│  ID: 95fafde5-9257-4f28-bd22-788cba31fc8d                                    │
+│  Tool Args:                                                                  │
+│                                                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2025-11-07 19:35:31,586 - WARNING - Error initializing trace batch: HTTPSConnectionPool(host='app.crewai.com', port=443): Max retries exceeded with url: /crewai_plus/api/v1/tracing/ephemeral/batches (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ef3dd80ce90>: Failed to resolve 'app.crewai.com' ([Errno -3] Temporary failure in name resolution)")). Continuing without tracing.
+[92m19:35:31 - LiteLLM:INFO[0m: utils.py:3421 - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+2025-11-07 19:35:31,594 - INFO - 
+LiteLLM completion() model= llama-3.3-70b-versatile; provider = groq
+🚀 Crew: crew
+└── 📋 Task: cf7f9667-2aad-4861-b1f1-81cb3259c6b1
+    Status: Executing Task...
+    └── 🧠 Thinking...╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Task: Based on the story arc, create 4-5 detailed character profiles:       │
+│                                                                              │
+│          Story Context:                                                      │
+│          In the realm of science fiction, a compelling story arc can be      │
+│  crafted by weaving together intricate plot points, character arcs, and      │
+│  thematic elements. For a 10-chapter novel, the narrative can unfold as      │
+│  follows:                                                                    │
+│                                                                              │
+│  **Overall Story Premise and Themes:**                                       │
+│  The novel, titled "Echoes of Eternity," is set in a distant future where    │
+│  humanity has colonized other planets. The story follows the protagonist,    │
+│  Captain Jaxon Lee, as he navigates a complex web of time travel,            │
+│  artificial intelligence, and intergalactic politics. The core theme of the  │
+│  novel explores the consequences of playing with the fabric of time and the  │
+│  ethics of emerging technologies. Secondary themes include the importance    │
+│  of human connection, the dangers of unchecked power, and the quest for      │
+│  identity in a rapidly changing universe.                                    │
+│                                                                              │
+│  **Character Arcs:**                                                         │
+│                                                                              │
+│  1. **Protagonist - Captain Jaxon Lee:** Begins as a skilled but             │
+│  disillusioned space explorer, haunted by a tragic event in his past.        │
+│  Throughout the novel, Jaxon evolves into a leader who must confront his     │
+│  own demons and make difficult choices to protect humanity's future. His     │
+│  character arc is one of redemption and self-discovery.                      │
+│                                                                              │
+│  2. **Antagonist - Dr. Elara Vex:** A brilliant and charismatic scientist    │
+│  who believes that the key to humanity's survival lies in manipulating time  │
+│  itself. Her motivation stems from a personal loss, which she blames on the  │
+│  constraints of time. As the story progresses, her obsession with time       │
+│  travel and control over the timeline becomes increasi                       │
+│                                                                              │
+│          Create characters with:                                             │
+│          - Full names and physical descriptions                              │
+│          - Detailed backstories and motivations                              │
+│          - Character arcs showing development                                │
+│          - Relationships with other characters                               │
+│          - Nicknames or alternate names (AKA)                                │
+│          - Clear story goals                                                 │
+│          - Major vs minor character designation                              │
+│                                                                              │
+│          Format as structured data:                                          │
+│          CHARACTER: [name]                                                   │
+│          FULLNAME: [full name]                                               │
+│          AKA: [nicknames, alternate names]                                   │
+│          DESC: [brief description]                                           │
+│          BIO: [detailed biography, background, personality]                  │
+│          NOTES: [character development notes, arc notes]                     │
+│          GOALS: [what the character wants to achieve in the story]           │
+│          MAJOR: [YES or NO]                                                  │
+│          ---                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[92m19:35:35 - LiteLLM:INFO[0m: utils.py:1302 - Wrapper: Completed Call, calling success_handler
+2025-11-07 19:35:35,650 - INFO - Wrapper: Completed Call, calling success_handler
+2025-11-07 19:35:35,699 - INFO - Initialized 6 collections
+2025-11-07 19:35:35,699 - INFO - VectorStoreManager initialized with ChromaDB at knowledge_base
+Batches:   0%|          | 0/1 [00:00<?, ?it/s]Batches: 100%|██████████| 1/1 [00:00<00:00, 56.21it/s]
+2025-11-07 19:35:35,786 - INFO - Rate limit approaching for groq/llama-3.3-70b-versatile. Waiting 40.93s...
+🚀 Crew: crew
+└── 📋 Task: cf7f9667-2aad-4861-b1f1-81cb3259c6b1
+    Status: Executing Task...
+    ├── 🔧 Used Semantic Character Search (1)
+    └── 🧠 Thinking...╭────────────────────────── 🔧 Agent Tool Execution ───────────────────────────╮
+│                                                                              │
+│  Agent: Character Development Specialist                                     │
+│                                                                              │
+│  Thought: Thought: To create detailed character profiles, I need to start    │
+│  by searching for the main protagonist and antagonist in the story, and      │
+│  then use the information gathered to find other characters and their        │
+│  relationships.                                                              │
+│                                                                              │
+│  Using Tool: Semantic Character Search                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭───────────────────────────────── Tool Input ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "query": "main protagonist",                                              │
+│    "top_k": 1                                                                │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────── Tool Output ─────────────────────────────────╮
+│                                                                              │
+│  {                                                                           │
+│    "name": "Bob",                                                            │
+│    "type": "Major",                                                          │
+│    "relevance_score": 0.418,                                                 │
+│    "details": "Name: Bob\n\nFull Name: Bob the Brave\n\nDescription: A       │
+│  strong warrior with dark hair and green eyes\n\nBiography: Bob is Alice's   │
+│  childhood friend and protector. He is loyal and skilled in                  │
+│  combat.\n\nGoals: To protect Alice and prove his worth\n\nCharacter Type:   │
+│  Major Character"                                                            │
+│  }                                                                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
