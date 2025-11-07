@@ -2,36 +2,98 @@
 <YWRITER7>
   <PROJECT>
     <Ver>7</Ver>
-    <Title><![CDATA[Five Chapter Test Novel]]></Title>
-    <Desc><![CDATA[A test novel created by AI Book Writer]]></Desc>
+    <Title><![CDATA[AI Book Writer Test Novel]]></Title>
+    <Desc><![CDATA[A test novel created by the AI Book Writer application]]></Desc>
     <AuthorName><![CDATA[AI Book Writer]]></AuthorName>
+    <Bio><![CDATA[An intelligent book writing system]]></Bio>
   </PROJECT>
   <LOCATIONS>
     <LOCATION>
       <ID>1</ID>
-      <Title><![CDATA[Test Location]]></Title>
-      <Desc><![CDATA[A placeholder location]]></Desc>
+      <Title><![CDATA[The Town Square]]></Title>
+      <Desc><![CDATA[A bustling central plaza where merchants sell their wares]]></Desc>
+      <AKA><![CDATA[Central Plaza]]></AKA>
+    </LOCATION>
+    <LOCATION>
+      <ID>2</ID>
+      <Title><![CDATA[The Forest Path]]></Title>
+      <Desc><![CDATA[A winding trail through ancient woods]]></Desc>
+    </LOCATION>
+    <LOCATION>
+      <ID>3</ID>
+      <Title><![CDATA[The Hidden Glade]]></Title>
+      <Desc><![CDATA[A secret clearing deep in the forest]]></Desc>
     </LOCATION>
   </LOCATIONS>
-  <ITEMS />
+  <ITEMS>
+    <ITEM>
+      <ID>1</ID>
+      <Title><![CDATA[Magic Compass]]></Title>
+      <Desc><![CDATA[A mysterious compass that points to one's deepest desire]]></Desc>
+    </ITEM>
+  </ITEMS>
   <CHARACTERS>
     <CHARACTER>
       <ID>1</ID>
-      <Title><![CDATA[Test Character]]></Title>
-      <Desc><![CDATA[A placeholder character]]></Desc>
-      <FullName><![CDATA[Test Character Name]]></FullName>
+      <Title><![CDATA[Alice]]></Title>
+      <Desc><![CDATA[A curious young woman seeking adventure]]></Desc>
+      <Bio><![CDATA[Alice grew up in a small town and always dreamed of exploring the world.]]></Bio>
+      <Goals><![CDATA[To find her place in the world]]></Goals>
+      <FullName><![CDATA[Alice Wonderland]]></FullName>
       <Major>-1</Major>
     </CHARACTER>
+    <CHARACTER>
+      <ID>2</ID>
+      <Title><![CDATA[Bob]]></Title>
+      <Desc><![CDATA[Alice's mentor and guide]]></Desc>
+      <Bio><![CDATA[A wise old traveler who has seen much of the world.]]></Bio>
+      <Goals><![CDATA[To help Alice on her journey]]></Goals>
+      <FullName><![CDATA[Robert Smith]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>3</ID>
+      <Title><![CDATA[Charlie]]></Title>
+      <Desc><![CDATA[A fellow adventurer Alice meets on the path]]></Desc>
+      <FullName><![CDATA[Charles Explorer]]></FullName>
+    </CHARACTER>
+    <CHARACTER>
+      <ID>4</ID>
+      <Title><![CDATA[Sync Test Character]]></Title>
+      <Desc><![CDATA[Created to test bidirectional sync]]></Desc>
+    </CHARACTER>
   </CHARACTERS>
+  <PROJECTNOTES>
+    <PROJECTNOTE>
+      <ID>1</ID>
+      <Title><![CDATA[Story Theme]]></Title>
+      <Desc><![CDATA[The central theme is self-discovery and finding one's true path in life.]]></Desc>
+    </PROJECTNOTE>
+    <PROJECTNOTE>
+      <ID>2</ID>
+      <Title><![CDATA[Writing Style]]></Title>
+      <Desc><![CDATA[Use vivid descriptions and internal monologue to convey Alice's emotional journey.]]></Desc>
+    </PROJECTNOTE>
+    <PROJECTNOTE>
+      <ID>3</ID>
+      <Title><![CDATA[Test Note from CrewAI Tool]]></Title>
+      <Desc><![CDATA[This note was created by the automated test suite using CrewAI tools.]]></Desc>
+    </PROJECTNOTE>
+    <PROJECTNOTE>
+      <ID>4</ID>
+      <Title><![CDATA[Sync Test Note]]></Title>
+      <Desc><![CDATA[Testing bidirectional sync]]></Desc>
+    </PROJECTNOTE>
+  </PROJECTNOTES>
   <SCENES>
     <SCENE>
       <ID>1</ID>
-      <Title><![CDATA[Scene 1.1]]></Title>
-      <Desc><![CDATA[Scene placeholder for Chapter 1]]></Desc>
-      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Title><![CDATA[Scene 1: Discovery]]></Title>
+      <Desc><![CDATA[Alice finds the compass at a merchant's stall]]></Desc>
+      <SceneContent><![CDATA[This content was written by the CrewAI WriteSceneContentTool during automated testing.]]></SceneContent>
       <Status>1</Status>
       <Characters>
         <CharID>1</CharID>
+        <CharID>2</CharID>
       </Characters>
       <Locations>
         <LocID>1</LocID>
@@ -39,12 +101,23 @@
     </SCENE>
     <SCENE>
       <ID>2</ID>
-      <Title><![CDATA[Scene 2.1]]></Title>
-      <Desc><![CDATA[Scene placeholder for Chapter 2]]></Desc>
-      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Title><![CDATA[Scene 2: Meeting Bob]]></Title>
+      <Desc><![CDATA[Alice encounters Bob, who recognizes the compass]]></Desc>
+      <SceneContent><![CDATA[As Alice studied the compass, an old man approached her. His weathered face bore the marks of countless journeys.
+
+"I see you've found the Seeker's Compass," Bob said quietly. "I haven't seen one of those in many years."
+
+Alice looked up, startled. "You know what this is?"
+
+Bob nodded slowly. "Aye, and I know where it's pointing you. That forest path is the beginning of a long journey."
+
+"Will you help me?" Alice asked.
+
+The old traveler smiled. "That's why I'm here, lass. That's why I'm here."]]></SceneContent>
       <Status>1</Status>
       <Characters>
         <CharID>1</CharID>
+        <CharID>2</CharID>
       </Characters>
       <Locations>
         <LocID>1</LocID>
@@ -52,69 +125,41 @@
     </SCENE>
     <SCENE>
       <ID>3</ID>
-      <Title><![CDATA[Scene 3.1]]></Title>
-      <Desc><![CDATA[Scene placeholder for Chapter 3]]></Desc>
-      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Title><![CDATA[Scene 1: The Forest Path]]></Title>
+      <Desc><![CDATA[They enter the ancient forest following the compass]]></Desc>
+      <SceneContent><![CDATA[The forest path was overgrown and dark, sunlight filtering through the canopy in scattered beams. Alice held the compass steady as it guided them deeper into the woods.
+
+"How long have you been traveling, Bob?" Alice asked.
+
+"More years than I care to count," he replied. "But every journey teaches you something new."
+
+The compass needle suddenly shifted, pointing to a barely visible trail branching off to the left.]]></SceneContent>
       <Status>1</Status>
       <Characters>
         <CharID>1</CharID>
+        <CharID>2</CharID>
       </Characters>
       <Locations>
-        <LocID>1</LocID>
-      </Locations>
-    </SCENE>
-    <SCENE>
-      <ID>4</ID>
-      <Title><![CDATA[Scene 4.1]]></Title>
-      <Desc><![CDATA[Scene placeholder for Chapter 4]]></Desc>
-      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
-      <Status>1</Status>
-      <Characters>
-        <CharID>1</CharID>
-      </Characters>
-      <Locations>
-        <LocID>1</LocID>
-      </Locations>
-    </SCENE>
-    <SCENE>
-      <ID>5</ID>
-      <Title><![CDATA[Scene 5.1]]></Title>
-      <Desc><![CDATA[Scene placeholder for Chapter 5]]></Desc>
-      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
-      <Status>1</Status>
-      <Characters>
-        <CharID>1</CharID>
-      </Characters>
-      <Locations>
-        <LocID>1</LocID>
+        <LocID>2</LocID>
       </Locations>
     </SCENE>
   </SCENES>
   <CHAPTERS>
     <CHAPTER>
       <ID>1</ID>
-      <Title><![CDATA[Chapter 1]]></Title>
-      <Desc><![CDATA[Chapter 1 placeholder]]></Desc>
+      <Title><![CDATA[Chapter 1: The Beginning]]></Title>
+      <Desc><![CDATA[Alice discovers the magic compass in the town square]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
         <ScID>1</ScID>
-      </Scenes>
-    </CHAPTER>
-    <CHAPTER>
-      <ID>2</ID>
-      <Title><![CDATA[Chapter 2]]></Title>
-      <Desc><![CDATA[Chapter 2 placeholder]]></Desc>
-      <Type>0</Type>
-      <ChapterType>0</ChapterType>
-      <Scenes>
         <ScID>2</ScID>
       </Scenes>
     </CHAPTER>
     <CHAPTER>
-      <ID>3</ID>
-      <Title><![CDATA[Chapter 3]]></Title>
-      <Desc><![CDATA[Chapter 3 placeholder]]></Desc>
+      <ID>2</ID>
+      <Title><![CDATA[Chapter 2: Into the Woods]]></Title>
+      <Desc><![CDATA[Alice and Bob venture into the mysterious forest]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
@@ -122,24 +167,25 @@
       </Scenes>
     </CHAPTER>
     <CHAPTER>
-      <ID>4</ID>
-      <Title><![CDATA[Chapter 4]]></Title>
-      <Desc><![CDATA[Chapter 4 placeholder]]></Desc>
+      <ID>3</ID>
+      <Title><![CDATA[Chapter 3: Test Chapter]]></Title>
+      <Desc><![CDATA[A test chapter created by the automated test suite]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
-      <Scenes>
-        <ScID>4</ScID>
-      </Scenes>
+    </CHAPTER>
+    <CHAPTER>
+      <ID>4</ID>
+      <Title><![CDATA[Chapter 4: Test Chapter]]></Title>
+      <Desc><![CDATA[A test chapter created by the automated test suite]]></Desc>
+      <Type>0</Type>
+      <ChapterType>0</ChapterType>
     </CHAPTER>
     <CHAPTER>
       <ID>5</ID>
-      <Title><![CDATA[Chapter 5]]></Title>
-      <Desc><![CDATA[Chapter 5 placeholder]]></Desc>
+      <Title><![CDATA[Chapter 5: Test Chapter]]></Title>
+      <Desc><![CDATA[A test chapter created by the automated test suite]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
-      <Scenes>
-        <ScID>5</ScID>
-      </Scenes>
     </CHAPTER>
   </CHAPTERS>
 </YWRITER7>
