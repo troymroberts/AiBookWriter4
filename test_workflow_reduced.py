@@ -392,8 +392,9 @@ def test_reduced_workflow():
             scene.title = f"Scene {i}.1"
             scene.desc = f"Scene placeholder for Chapter {i}"
             scene.scType = 0  # Action scene
-            scene.status = 1  # Outline
-            scene.sceneContent = ""  # Empty content
+            scene.status = 2  # Draft (not Outline, which might need content)
+            # Set scene content to a space (not empty) to avoid self-closing tag issues
+            scene.sceneContent = " "  # Single space to create proper CDATA tag
 
             yw7.novel.scenes[scene_id] = scene
             yw7.novel.chapters[chapter_id].srtScenes.append(scene_id)
