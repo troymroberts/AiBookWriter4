@@ -3,67 +3,24 @@
   <PROJECT>
     <Ver>7</Ver>
     <Title><![CDATA[Five Chapter Test Novel]]></Title>
-    <Desc><![CDATA[In the realm of science fiction, a compelling story arc can be crafted by weaving together intricate plot points, character arcs, and thematic elements. For a 5-chapter novel, the story premise and themes can be centered around the concept of humanity's quest for immortality and the consequences that come with it.
-
-**Overall Story Premise and Themes:**
-The story, titled "Elysium's Gate," is set in a future where humanity has discovered a way to transfer consciousness into a virtual reality, effe]]></Desc>
+    <Desc><![CDATA[A test novel created by AI Book Writer]]></Desc>
     <AuthorName><![CDATA[AI Book Writer]]></AuthorName>
   </PROJECT>
   <LOCATIONS>
     <LOCATION>
       <ID>1</ID>
-      <Title><![CDATA[Elysium City]]></Title>
-      <Desc><![CDATA[Elysium City is the central hub of human innovation, a marvel of modern technology where the boundaries of reality are pushed to their limits. This futuristic metropolis is home to the most advanced artificial intelligence, virtual reality, and biotechnology, making it the epitome of human progress. The city is a sprawling complex of towering skyscrapers, neon-lit streets, and advanced infrastructure, creating a sense of awe and wonder for its inhabitants. At its core, Elysium City is a place where humanity has transcended the constraints of mortality, living in a world of endless possibility and discovery.]]></Desc>
-      <AKA><![CDATA[The Utopia, New Eden, The Immortal Realm]]></AKA>
-    </LOCATION>
-    <LOCATION>
-      <ID>2</ID>
-      <Title><![CDATA[The Nexus]]></Title>
-      <Desc><![CDATA[The Nexus is a vast, underground facility that serves as the primary transfer point for human consciousness into the virtual reality of Elysium. This labyrinthine complex is a maze of advanced servers, neural interfaces, and cryogenic chambers, where the essence of human beings is uploaded into the digital realm. The Nexus is a place of great significance, marking the threshold between the mortal world and the immortal expanse of Elysium. Its sterile, high-tech environment is a testament to human ingenuity, yet it also raises questions about the nature of existence and the consequences of abandoning the physical body.]]></Desc>
-      <AKA><![CDATA[The Gateway, The Portal, The Transfer Point]]></AKA>
-    </LOCATION>
-    <LOCATION>
-      <ID>3</ID>
-      <Title><![CDATA[The Archives]]></Title>
-      <Desc><![CDATA[The Archives is a vast, virtual library that contains the collective knowledge and experiences of humanity. This vast, digital repository is a treasure trove of information, storing the memories, thoughts, and emotions of countless individuals who have uploaded their consciousness into Elysium. The Archives is a place of great historical significance, preserving the cultural heritage of humanity and serving as a reminder of the mortal world that once was. Its vast, digital halls are filled with the whispers of the past, echoing the triumphs and tragedies of human civilization.]]></Desc>
-      <AKA><![CDATA[The Vault, The Repository, The Memory Bank]]></AKA>
-    </LOCATION>
-    <LOCATION>
-      <ID>4</ID>
-      <Title><![CDATA[The Abyss]]></Title>
-      <Desc><![CDATA[The Abyss is a desolate, virtual wasteland that exists on the fringes of Elysium, a realm of darkness and chaos that threatens the very fabric of the utopian society. This foreboding landscape is home to the remnants of failed uploads, glitched consciousness, and other anomalies that have been cast aside by the Elysium's gatekeepers. The Abyss is a place of great danger, where the rules of reality are distorted and the laws of physics are twisted. It is a constant reminder of the risks and uncertainties of playing god with human consciousness, and the terrible consequences that can arise when the boundaries of mortality are pushed too far.]]></Desc>
-      <AKA><![CDATA[The Void, The Wastes, The Outer Realm]]></AKA>
+      <Title><![CDATA[Test Location]]></Title>
+      <Desc><![CDATA[A placeholder location]]></Desc>
     </LOCATION>
   </LOCATIONS>
   <ITEMS />
   <CHARACTERS>
     <CHARACTER>
       <ID>1</ID>
-      <Title><![CDATA[Alice]]></Title>
-      <Desc><![CDATA[A curious young woman seeking adventure]]></Desc>
-      <Notes><![CDATA[Major character in the story, drives the plot forward]]></Notes>
-      <Bio><![CDATA[Alice grew up in a small town and always dreamed of exploring the world. She is brave, intelligent, and kind-hearted.]]></Bio>
-      <Goals><![CDATA[To find her place in the world, to discover the truth about the ancient prophecy]]></Goals>
-      <FullName><![CDATA[Alice Wonderland]]></FullName>
+      <Title><![CDATA[Test Character]]></Title>
+      <Desc><![CDATA[A placeholder character]]></Desc>
+      <FullName><![CDATA[Test Character Name]]></FullName>
       <Major>-1</Major>
-    </CHARACTER>
-    <CHARACTER>
-      <ID>2</ID>
-      <Title><![CDATA[Eve]]></Title>
-      <Desc><![CDATA[A mysterious sorceress with silver hair]]></Desc>
-      <Notes><![CDATA[Minor character, but has significant influence on the plot]]></Notes>
-      <Bio><![CDATA[Eve knows ancient magic and guards dangerous secrets. She is enigmatic and powerful.]]></Bio>
-      <Goals><![CDATA[To prevent the prophecy from being fulfilled]]></Goals>
-      <FullName><![CDATA[Eve the Enchantress]]></FullName>
-    </CHARACTER>
-    <CHARACTER>
-      <ID>3</ID>
-      <Title><![CDATA[Charlie]]></Title>
-      <Desc><![CDATA[A fellow adventurer Alice meets on the path]]></Desc>
-      <Notes><![CDATA[Minor character, provides support to Alice]]></Notes>
-      <Bio><![CDATA[Charlie is a skilled explorer and becomes Alice's ally in her quest.]]></Bio>
-      <Goals><![CDATA[To help Alice on her journey]]></Goals>
-      <FullName><![CDATA[Charles Explorer]]></FullName>
     </CHARACTER>
   </CHARACTERS>
   <SCENES>
@@ -71,43 +28,73 @@ The story, titled "Elysium's Gate," is set in a future where humanity has discov
       <ID>1</ID>
       <Title><![CDATA[Scene 1.1]]></Title>
       <Desc><![CDATA[Scene placeholder for Chapter 1]]></Desc>
-      <SceneContent><![CDATA[ ]]></SceneContent>
-      <Status>2</Status>
+      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Status>1</Status>
+      <Characters>
+        <CharID>1</CharID>
+      </Characters>
+      <Locations>
+        <LocID>1</LocID>
+      </Locations>
     </SCENE>
     <SCENE>
       <ID>2</ID>
       <Title><![CDATA[Scene 2.1]]></Title>
       <Desc><![CDATA[Scene placeholder for Chapter 2]]></Desc>
-      <SceneContent><![CDATA[ ]]></SceneContent>
-      <Status>2</Status>
+      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Status>1</Status>
+      <Characters>
+        <CharID>1</CharID>
+      </Characters>
+      <Locations>
+        <LocID>1</LocID>
+      </Locations>
     </SCENE>
     <SCENE>
       <ID>3</ID>
       <Title><![CDATA[Scene 3.1]]></Title>
       <Desc><![CDATA[Scene placeholder for Chapter 3]]></Desc>
-      <SceneContent><![CDATA[ ]]></SceneContent>
-      <Status>2</Status>
+      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Status>1</Status>
+      <Characters>
+        <CharID>1</CharID>
+      </Characters>
+      <Locations>
+        <LocID>1</LocID>
+      </Locations>
     </SCENE>
     <SCENE>
       <ID>4</ID>
       <Title><![CDATA[Scene 4.1]]></Title>
       <Desc><![CDATA[Scene placeholder for Chapter 4]]></Desc>
-      <SceneContent><![CDATA[ ]]></SceneContent>
-      <Status>2</Status>
+      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Status>1</Status>
+      <Characters>
+        <CharID>1</CharID>
+      </Characters>
+      <Locations>
+        <LocID>1</LocID>
+      </Locations>
     </SCENE>
     <SCENE>
       <ID>5</ID>
       <Title><![CDATA[Scene 5.1]]></Title>
       <Desc><![CDATA[Scene placeholder for Chapter 5]]></Desc>
-      <SceneContent><![CDATA[ ]]></SceneContent>
-      <Status>2</Status>
+      <SceneContent><![CDATA[This is placeholder scene content.]]></SceneContent>
+      <Status>1</Status>
+      <Characters>
+        <CharID>1</CharID>
+      </Characters>
+      <Locations>
+        <LocID>1</LocID>
+      </Locations>
     </SCENE>
   </SCENES>
   <CHAPTERS>
     <CHAPTER>
       <ID>1</ID>
       <Title><![CDATA[Chapter 1]]></Title>
-      <Desc><![CDATA[Chapter 1 placeholder (content to be generated)]]></Desc>
+      <Desc><![CDATA[Chapter 1 placeholder]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
@@ -117,7 +104,7 @@ The story, titled "Elysium's Gate," is set in a future where humanity has discov
     <CHAPTER>
       <ID>2</ID>
       <Title><![CDATA[Chapter 2]]></Title>
-      <Desc><![CDATA[Chapter 2 placeholder (content to be generated)]]></Desc>
+      <Desc><![CDATA[Chapter 2 placeholder]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
@@ -127,7 +114,7 @@ The story, titled "Elysium's Gate," is set in a future where humanity has discov
     <CHAPTER>
       <ID>3</ID>
       <Title><![CDATA[Chapter 3]]></Title>
-      <Desc><![CDATA[Chapter 3 placeholder (content to be generated)]]></Desc>
+      <Desc><![CDATA[Chapter 3 placeholder]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
@@ -137,7 +124,7 @@ The story, titled "Elysium's Gate," is set in a future where humanity has discov
     <CHAPTER>
       <ID>4</ID>
       <Title><![CDATA[Chapter 4]]></Title>
-      <Desc><![CDATA[Chapter 4 placeholder (content to be generated)]]></Desc>
+      <Desc><![CDATA[Chapter 4 placeholder]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>
@@ -147,7 +134,7 @@ The story, titled "Elysium's Gate," is set in a future where humanity has discov
     <CHAPTER>
       <ID>5</ID>
       <Title><![CDATA[Chapter 5]]></Title>
-      <Desc><![CDATA[Chapter 5 placeholder (content to be generated)]]></Desc>
+      <Desc><![CDATA[Chapter 5 placeholder]]></Desc>
       <Type>0</Type>
       <ChapterType>0</ChapterType>
       <Scenes>

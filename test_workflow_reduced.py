@@ -396,6 +396,10 @@ def test_reduced_workflow():
             # Set scene content to a space (not empty) to avoid self-closing tag issues
             scene.sceneContent = " "  # Single space to create proper CDATA tag
 
+            # Initialize empty lists for characters and locations (required by yWriter7)
+            scene.characters = []
+            scene.locations = []
+
             yw7.novel.scenes[scene_id] = scene
             yw7.novel.chapters[chapter_id].srtScenes.append(scene_id)
 
