@@ -79,6 +79,14 @@ class LLMConfig:
             return self._get_gemini_config(agent_name)
         elif provider == "groq":
             return self._get_groq_config(agent_name)
+        elif provider == "openrouter":
+            return self._get_openrouter_config(agent_name)
+        elif provider == "deepseek":
+            return self._get_deepseek_config(agent_name)
+        elif provider == "together_ai":
+            return self._get_together_ai_config(agent_name)
+        elif provider == "openai":
+            return self._get_openai_config(agent_name)
         else:
             raise ValueError(f"Unsupported LLM provider: {provider}")
 
@@ -209,6 +217,126 @@ class LLMConfig:
 
         return config
 
+    def _get_openrouter_config(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Get OpenRouter provider configuration."""
+        api_key = os.getenv("OPENROUTER_API_KEY")
+        if not api_key:
+            raise ValueError("OPENROUTER_API_KEY not found in environment variables")
+
+        # Try agent-specific model first
+        model = None
+        if agent_name:
+            agent_config = self.app_config.get('agents', {}).get(agent_name, {})
+            if 'model' in agent_config:
+                model = agent_config['model']
+
+        # Fall back to default OpenRouter model
+        if not model:
+            model = os.getenv("OPENROUTER_MODEL", "qwen/qwen-2.5-72b-instruct")
+
+        # OpenRouter uses openrouter/ prefix
+        if not model.startswith("openrouter/"):
+            model = f"openrouter/{model}"
+
+        config = {
+            "provider": "openrouter",
+            "model": model,
+            "api_key": api_key,
+            "temperature": self._get_temperature(agent_name),
+            "max_tokens": self._get_max_tokens(agent_name),
+        }
+
+        return config
+
+    def _get_deepseek_config(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Get DeepSeek provider configuration."""
+        api_key = os.getenv("DEEPSEEK_API_KEY")
+        if not api_key:
+            raise ValueError("DEEPSEEK_API_KEY not found in environment variables")
+
+        # Try agent-specific model first
+        model = None
+        if agent_name:
+            agent_config = self.app_config.get('agents', {}).get(agent_name, {})
+            if 'model' in agent_config:
+                model = agent_config['model']
+
+        # Fall back to default DeepSeek model
+        if not model:
+            model = os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
+
+        # DeepSeek uses deepseek/ prefix
+        if not model.startswith("deepseek/"):
+            model = f"deepseek/{model}"
+
+        config = {
+            "provider": "deepseek",
+            "model": model,
+            "api_key": api_key,
+            "temperature": self._get_temperature(agent_name),
+            "max_tokens": self._get_max_tokens(agent_name),
+        }
+
+        return config
+
+    def _get_together_ai_config(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Get Together AI provider configuration."""
+        api_key = os.getenv("TOGETHER_API_KEY")
+        if not api_key:
+            raise ValueError("TOGETHER_API_KEY not found in environment variables")
+
+        # Try agent-specific model first
+        model = None
+        if agent_name:
+            agent_config = self.app_config.get('agents', {}).get(agent_name, {})
+            if 'model' in agent_config:
+                model = agent_config['model']
+
+        # Fall back to default Together AI model
+        if not model:
+            model = os.getenv("TOGETHER_MODEL", "Qwen/Qwen2.5-72B-Instruct")
+
+        # Together AI uses together_ai/ prefix
+        if not model.startswith("together_ai/"):
+            model = f"together_ai/{model}"
+
+        config = {
+            "provider": "together_ai",
+            "model": model,
+            "api_key": api_key,
+            "temperature": self._get_temperature(agent_name),
+            "max_tokens": self._get_max_tokens(agent_name),
+        }
+
+        return config
+
+    def _get_openai_config(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Get OpenAI provider configuration."""
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY not found in environment variables")
+
+        # Try agent-specific model first
+        model = None
+        if agent_name:
+            agent_config = self.app_config.get('agents', {}).get(agent_name, {})
+            if 'model' in agent_config:
+                model = agent_config['model']
+
+        # Fall back to default OpenAI model
+        if not model:
+            model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+        config = {
+            "provider": "openai",
+            "model": model,
+            "api_key": api_key,
+            "temperature": self._get_temperature(agent_name),
+            "max_tokens": self._get_max_tokens(agent_name),
+        }
+
+        return config
+
     def _get_temperature(self, agent_name: Optional[str] = None) -> float:
         """Get temperature setting for agent or default."""
         # Check agent-specific config first
@@ -291,6 +419,42 @@ class LLMConfig:
 
         elif provider == "groq":
             # Groq configuration (OpenAI-compatible)
+            return LLM(
+                model=config['model'],
+                api_key=config.get('api_key'),
+                temperature=config.get('temperature'),
+                max_tokens=config.get('max_tokens'),
+            )
+
+        elif provider == "openrouter":
+            # OpenRouter configuration
+            return LLM(
+                model=config['model'],
+                api_key=config.get('api_key'),
+                temperature=config.get('temperature'),
+                max_tokens=config.get('max_tokens'),
+            )
+
+        elif provider == "deepseek":
+            # DeepSeek configuration
+            return LLM(
+                model=config['model'],
+                api_key=config.get('api_key'),
+                temperature=config.get('temperature'),
+                max_tokens=config.get('max_tokens'),
+            )
+
+        elif provider == "together_ai":
+            # Together AI configuration
+            return LLM(
+                model=config['model'],
+                api_key=config.get('api_key'),
+                temperature=config.get('temperature'),
+                max_tokens=config.get('max_tokens'),
+            )
+
+        elif provider == "openai":
+            # OpenAI configuration
             return LLM(
                 model=config['model'],
                 api_key=config.get('api_key'),

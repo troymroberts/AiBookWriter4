@@ -145,6 +145,47 @@ RATE_LIMITS = {
             "rpd": 1500,      # 1500 RPD experimental
         },
     },
+    "openrouter": {
+        # Free models
+        "qwen/qwen-2.5-72b-instruct": {
+            "tpm": 200000,   # 200K TPM free tier
+            "rpm": 20,        # 20 RPM free tier
+            "rpd": 200,       # 200 RPD free tier
+        },
+        "deepseek/deepseek-chat": {
+            "tpm": 200000,
+            "rpm": 20,
+            "rpd": 200,
+        },
+        "meta-llama/llama-3.1-70b-instruct": {
+            "tpm": 200000,
+            "rpm": 20,
+            "rpd": 200,
+        },
+        # Paid models vary widely
+    },
+    "deepseek": {
+        "deepseek-chat": {
+            "tpm": 1000000,  # 1M TPM free tier
+            "rpm": 100,       # 100 RPM free tier
+            "rpd": 10000,     # 10K RPD free tier
+        },
+        "deepseek-coder": {
+            "tpm": 1000000,
+            "rpm": 100,
+            "rpd": 10000,
+        },
+    },
+    "together_ai": {
+        "Qwen/Qwen2.5-72B-Instruct": {
+            "tpm": 600000,   # 600K TPM with free credits
+            "rpm": 60,        # 60 RPM
+        },
+        "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+            "tpm": 600000,
+            "rpm": 60,
+        },
+    },
 }
 
 
