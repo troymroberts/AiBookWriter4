@@ -42,6 +42,7 @@ Thumbs.db
 # Project specific
 output/*.yw7
 output/*.txt
+output/*.bak
 !output/placeholder.txt
 
 # RAG/ChromaDB vector database storage
