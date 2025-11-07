@@ -1,90 +1,113 @@
-# --- agents/story_planner.py ---
-from langchain_ollama import OllamaLLM
-from langchain.prompts import ChatPromptTemplate
-import yaml
-import os  # Import os for path manipulation
+"""
+Story Planner Agent - Develops overarching story arcs and narrative structure.
+
+This CrewAI agent uses:
+- Centralized LLM configuration
+- Genre-specific story structure templates
+- Multi-chapter arc planning
+"""
+
+from crewai import Agent
 from pydantic import BaseModel, Field
 from typing import Optional
+from config.llm_config import get_llm_config
 
-# Configuration model for the StoryPlanner agent
+
 class StoryPlannerConfig(BaseModel):
-    llm_endpoint: str = Field(
-        default="http://localhost:11434",
-        description="Endpoint for the language model server.",
-    )
-    llm_model: str = Field(
-        default="ollama/llama3:latest",
-        description="Model identifier for the story planner.",
-    )
-    temperature: float = Field(
-        default=0.7, description="Temperature setting for the language model."
-    )
-    max_tokens: int = Field(
-        default=3000, description="Maximum number of tokens for the language model."
-    )
-    top_p: float = Field(
-        default=0.95, description="Top-p sampling parameter for the language model."
-    )
-    context_window: int = Field(
-        default=8192, description="Context window for the language model."
-    )
-    streaming: bool = Field(
-        default=True, description="Enable streaming responses from the LLM."
-    )
-    system_template: Optional[str] = Field(
-        default=None, description="System template for the story planner agent."
-    )
-    prompt_template: Optional[str] = Field(
-        default=None, description="Prompt template for the story planner agent."
-    )
-    response_template: Optional[str] = Field(
-        default=None, description="Response template for the story planner agent."
-    )
+    temperature: float = Field(default=0.7, ge=0.0, le=1.0, description="Temperature for LLM")
+    top_p: float = Field(default=0.95, ge=0.0, le=1.0, description="Top-p sampling parameter")
+    max_tokens: int = Field(default=12288, description="Maximum tokens for responses")
+    streaming: bool = Field(default=True, description="Enable streaming output")
 
     class Config:
         arbitrary_types_allowed = True
 
 
-class StoryPlanner:
-    """Agent responsible for developing the overarching story arc."""
+class StoryPlanner(Agent):
+    """
+    Story Planner agent for developing overarching story arcs.
 
-    def __init__(self, config: StoryPlannerConfig, prompts_dir, genre, num_chapters, streaming=True):  # Updated to take config and prompts_dir
-        """
-        Initializes the StoryPlanner agent with LLM configuration and prompts loaded from files.
-        """
-        self.llm = OllamaLLM(
-            base_url=config.llm_endpoint,
-            model=config.llm_model,
-            context_window=config.context_window,
-            temperature=config.temperature,
-            max_tokens=config.max_tokens,
-            top_p=config.top_p,
-            streaming=streaming  # Use the streaming parameter here
+    Features:
+    - CrewAI-based architecture
+    - Centralized LLM configuration
+    - Genre-aware story structure
+    - Multi-chapter arc planning
+    - Character arc development
+    - Thematic element integration
+    """
+
+    def __init__(self, config: StoryPlannerConfig):
+        # Get LLM configuration
+        llm_config = get_llm_config()
+        agent_config = llm_config.get_agent_config("story_planner")
+
+        # Override with provided config
+        if config.temperature:
+            agent_config['temperature'] = config.temperature
+        if config.max_tokens:
+            agent_config['max_tokens'] = config.max_tokens
+
+        # Create LLM
+        llm = llm_config.create_llm("story_planner")
+
+        # Initialize CrewAI agent
+        super().__init__(
+            role=agent_config.get('role', 'Story Architect & Narrative Designer'),
+            goal=agent_config.get(
+                'goal',
+                """Create compelling story arcs with well-defined plot points, character arcs, and thematic elements.
+                Design a cohesive narrative structure that spans multiple chapters with proper pacing, conflict escalation,
+                and satisfying resolution. Ensure each act builds on the previous one and maintains reader engagement."""
+            ),
+            backstory=agent_config.get(
+                'backstory',
+                """You are an expert in narrative structure, story theory, and genre conventions with years of experience
+                analyzing successful novels. You understand the hero's journey, three-act structure, and various narrative
+                frameworks. You excel at creating compelling story arcs that balance character development with plot progression,
+                weaving together multiple storylines into a cohesive narrative."""
+            ),
+            verbose=True,
+            allow_delegation=False,
+            llm=llm,
+            tools=[],  # Story planning doesn't need RAG tools (creates the foundation for RAG)
         )
-        # Load prompts from genre-specific config file
-        prompts_dir = prompts_dir # Ensure prompts_dir is used from init
-        prompt_file_path = os.path.join(prompts_dir, "story_planner.yaml") # Construct prompt file path
-        with open(prompt_file_path, "r") as f:
-            agent_prompts = yaml.safe_load(f) # Load prompts for this agent
 
-        self.system_message = agent_prompts['system_message'] # Load system message
-        self.user_prompt_template = agent_prompts['user_prompt'] # Load user prompt template
+        self.config = config
 
-        self.prompt = ChatPromptTemplate.from_messages([
-            ("system", self.system_message),
-            ("user", self.user_prompt_template)
-        ])
-        self.genre = genre
-        self.num_chapters = num_chapters  # Store num_chapters as instance variable
-        print(f"DEBUG agents/story_planner.py: StoryPlanner __init__ received num_chapters: {num_chapters}") # DEBUG PRINT
+    def plan_story_arc(
+        self,
+        genre: str,
+        num_chapters: int,
+        story_premise: str,
+        additional_instructions: str = ""
+    ) -> str:
+        """
+        Plan the overarching story arc for a novel.
 
-    def plan_story_arc(self, genre, num_chapters, additional_instructions=""):  # UPDATED: Removed default num_chapters=10 and using parameter
-        """Plans the story arc for a novel, incorporating the configured genre."""
-        chain = self.prompt | self.llm
-        print(f"DEBUG agents/story_planner.py: plan_story_arc received num_chapters: {num_chapters}") # DEBUG PRINT
-        for chunk in chain.stream({  # Use chain.stream() for streaming
-            "genre": genre,  # Use the passed-in genre parameter
-            "num_chapters": num_chapters,  # UPDATED: Now using the num_chapters parameter passed to this method
-            "additional_instructions": additional_instructions
-        }):
-            yield chunk  # Yield each chunk to the caller for streaming
+        Args:
+            genre: The story genre
+            num_chapters: Number of chapters to plan for
+            story_premise: The basic premise or concept
+            additional_instructions: Any additional planning requirements
+
+        Returns:
+            Comprehensive story arc plan
+        """
+        planning_context = f"""
+Story Premise: {story_premise}
+
+Genre: {genre}
+Number of Chapters: {num_chapters}
+
+Please create a comprehensive story arc that includes:
+1. Three-Act Structure breakdown
+2. Major plot points and turning points
+3. Character arcs for main characters
+4. Conflict escalation pattern
+5. Thematic elements
+6. Chapter-by-chapter outline with key events
+
+{additional_instructions}
+"""
+
+        return f"Planning story arc:\n{planning_context}"
