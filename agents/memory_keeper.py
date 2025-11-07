@@ -29,7 +29,7 @@ from tools.rag_tools import (
 class MemoryKeeperConfig(BaseModel):
     temperature: float = Field(default=0.6, ge=0.0, le=1.0, description="Temperature for LLM (lower for consistency)")
     top_p: float = Field(default=0.9, ge=0.0, le=1.0, description="Top-p sampling parameter")
-    max_tokens: int = Field(default=3000, description="Maximum tokens for responses")
+    max_tokens: int = Field(default=8192, description="Maximum tokens for responses")
     enable_continuity_checks: bool = Field(default=True, description="Enable automatic continuity checking")
     enable_relationship_tracking: bool = Field(default=True, description="Enable relationship tracking")
 

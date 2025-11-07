@@ -23,7 +23,7 @@ agents:
     goal: "Create compelling story arcs with well-defined plot points, character arcs, and thematic elements"
     backstory: "Expert in narrative structure, story theory, and genre conventions with years of experience analyzing successful novels"
     temperature: 0.7
-    max_tokens: 4096
+    max_tokens: 12288  # Increased for comprehensive story arcs and detailed planning
     # provider: "anthropic"  # Optional: override DEFAULT_LLM_PROVIDER from .env
     # model: "claude-3-5-sonnet-20241022"  # Optional: override provider default
 
@@ -32,63 +32,63 @@ agents:
     goal: "Develop rich, immersive settings with detailed locations, atmosphere, and cultural context"
     backstory: "Master of environmental storytelling and world-building who creates vivid, believable settings that enhance the narrative"
     temperature: 0.7
-    max_tokens: 3500
+    max_tokens: 8192  # Increased for detailed world-building
 
   outline_creator:
     role: "Chapter & Scene Architect"
     goal: "Design detailed chapter-by-chapter outlines with scene breakdowns and narrative flow"
     backstory: "Structural expert who excels at breaking down complex narratives into manageable, well-paced chapters and scenes"
     temperature: 0.7
-    max_tokens: 4096
+    max_tokens: 12288  # Increased for comprehensive multi-chapter outlines
 
   writer:
     role: "Prose Writer & Storyteller"
     goal: "Write engaging, polished prose that brings the story to life with vivid descriptions and compelling dialogue"
     backstory: "Accomplished author with mastery of language, style, and voice across multiple genres"
     temperature: 0.8
-    max_tokens: 4096
+    max_tokens: 16384  # Significantly increased for full chapter generation (3000-5000 words)
 
   editor:
     role: "Editorial Specialist"
     goal: "Refine and polish written content for clarity, consistency, pacing, and style"
     backstory: "Experienced editor with a keen eye for narrative flow, character consistency, and prose quality"
     temperature: 0.5
-    max_tokens: 3500
+    max_tokens: 8192  # Increased to review and revise full chapters
 
   critic:
     role: "Literary Critic & Quality Analyst"
     goal: "Provide constructive feedback on story elements, identify weaknesses, and suggest improvements"
     backstory: "Critical reader with deep understanding of storytelling techniques and reader expectations"
     temperature: 0.6
-    max_tokens: 3000
+    max_tokens: 6144  # Increased for detailed analysis and feedback
 
   character_creator:
     role: "Character Development Specialist"
     goal: "Create deep, multidimensional characters with compelling backstories, motivations, and arcs"
     backstory: "Expert in psychology and character development who brings fictional people to life"
     temperature: 0.7
-    max_tokens: 3500
+    max_tokens: 6144  # Increased for comprehensive character profiles
 
   relationship_architect:
     role: "Character Relationship Designer"
     goal: "Design complex, dynamic relationships between characters that drive conflict and growth"
     backstory: "Specialist in interpersonal dynamics and character interactions that create compelling drama"
     temperature: 0.7
-    max_tokens: 3000
+    max_tokens: 6144  # Increased for detailed relationship mapping
 
   lore_builder:
     role: "Lore & Mythology Expert"
     goal: "Develop rich backstory, history, and cultural lore that adds depth to the world"
     backstory: "Master of creating intricate mythologies, histories, and cultural frameworks that enhance worldbuilding"
     temperature: 0.7
-    max_tokens: 3500
+    max_tokens: 8192  # Increased for extensive lore and mythology
 
   memory_keeper:
     role: "Memory Keeper & Continuity Guardian"
     goal: "Track and maintain story continuity, character development, and world-building consistency using semantic search to verify facts and ensure narrative coherence"
     backstory: "Guardian of story continuity with perfect recall of all story elements through a comprehensive knowledge base. Expert at identifying inconsistencies and ensuring coherent narratives"
     temperature: 0.6
-    max_tokens: 3000
+    max_tokens: 8192  # Increased for comprehensive continuity analysis with RAG results
 
 # -----------------------------------------------------------------------------
 # Workflow Configuration
