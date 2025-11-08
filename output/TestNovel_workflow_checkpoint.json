@@ -7,7 +7,7 @@
     "location_creation"
   ],
   "current_step": null,
-  "failed_step": null,
+  "failed_step": "chapter_outlining",
   "story_arc": "### Story Premise and Themes\n\n**Title:** *Echoes of the Void*\n\n**Premise:**\nIn the year 2150, humanity has colonized several planets in the Alpha Centauri system. Dr. Elara Myles, a brilliant xenobiologist, is tasked with investigating a mysterious signal emanating from a remote planet, Xylo-7. The signal appears to be a distress call from an unknown source, and the fate of the colony on Xylo-7 hangs in the balance. As Elara delves deeper, she uncovers a sinister plot that threatens not only the",
   "characters_created": [
     "1",
@@ -28,11 +28,18 @@
   "scenes_written": [],
   "scenes_edited": [],
   "start_time": "2025-11-08T01:35:53.318510",
-  "last_checkpoint_time": "2025-11-08T01:38:24.610564",
+  "last_checkpoint_time": "2025-11-08T01:38:39.799811",
   "end_time": null,
   "total_api_calls": 0,
   "provider_usage": {},
-  "errors": [],
+  "errors": [
+    {
+      "step": "chapter_outlining",
+      "error": "litellm.APIConnectionError: OllamaException - [Errno 111] Connection refused",
+      "error_type": "APIConnectionError",
+      "timestamp": "2025-11-08T01:38:39.796985"
+    }
+  ],
   "genre": "science fiction",
   "num_chapters": 3
 }
