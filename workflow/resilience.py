@@ -16,14 +16,16 @@ logger = logging.getLogger(__name__)
 
 
 # Provider fallback chains
+# Current active providers: openrouter (primary), groq (fallback)
 PROVIDER_FALLBACK_CHAIN = {
-    "groq": ["anthropic", "gemini", "openrouter", "deepseek"],
-    "anthropic": ["groq", "gemini", "openrouter"],
-    "gemini": ["groq", "anthropic", "openrouter"],
-    "openrouter": ["groq", "gemini", "anthropic"],
-    "deepseek": ["groq", "gemini", "anthropic"],
-    "together_ai": ["groq", "gemini", "anthropic"],
-    "openai": ["groq", "anthropic", "gemini"],
+    "openrouter": ["groq"],  # OpenRouter fails → try Groq
+    "groq": ["openrouter"],  # Groq fails → try OpenRouter
+    # Disabled providers (kept for reference)
+    "anthropic": ["groq", "openrouter"],
+    "gemini": ["groq", "openrouter"],
+    "deepseek": ["groq", "openrouter"],
+    "together_ai": ["groq", "openrouter"],
+    "openai": ["groq", "openrouter"],
 }
 
 
