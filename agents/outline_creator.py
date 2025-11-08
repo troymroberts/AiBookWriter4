@@ -32,11 +32,11 @@ from tools.ywriter_tools import (
 class OutlineCreatorConfig(BaseModel):
     """Configuration for the OutlineCreator agent."""
     llm_endpoint: str = Field(
-        default="http://localhost:11444",
+        default="https://openrouter.ai/api/v1",
         description="Endpoint for the language model server.",
     )
     llm_model: str = Field(
-        default="ollama/llama3:latest",
+        default="openrouter/qwen/qwen-2.5-72b-instruct",
         description="Model identifier for the outline creator.",
     )
     temperature: float = Field(

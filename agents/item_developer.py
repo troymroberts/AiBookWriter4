@@ -3,8 +3,8 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 class ItemDeveloperConfig(BaseModel):
-    llm_endpoint: str = Field(default="http://10.1.1.47:11434", description="Endpoint for the language model server.")
-    llm_model: str = Field(default="ollama/llama3.2:1b", description="Model identifier for the item developer.")
+    llm_endpoint: str = Field(default="https://openrouter.ai/api/v1", description="Endpoint for the language model server.")
+    llm_model: str = Field(default="openrouter/qwen/qwen-2.5-72b-instruct", description="Model identifier for the item developer.")
     temperature: float = Field(default=0.7, description="Temperature setting for the language model.")
     max_tokens: int = Field(default=2000, description="Maximum number of tokens for the language model.")
     top_p: float = Field(default=0.95, description="Top-p sampling parameter for the language model.")
