@@ -61,8 +61,9 @@ class Writer(Agent):
         # Create LLM
         llm = llm_config.create_llm("writer")
 
-        # Prepare tools
-        tools = self._prepare_tools(config)
+        # Prepare tools - TEMPORARILY DISABLED for debugging
+        # tools = self._prepare_tools(config)
+        tools = []  # Empty tools list to avoid RAG interference
 
         # Initialize CrewAI agent
         super().__init__(
@@ -70,16 +71,15 @@ class Writer(Agent):
             goal=agent_config.get(
                 'goal',
                 """Write engaging, polished prose that brings the story to life with vivid descriptions and compelling dialogue.
-                Use semantic search to verify character consistency and plot continuity.
-                Ensure each chapter flows naturally from previous events and maintains established character voices.
-                Generate chapters between 2500-5000 words with rich detail and emotional depth."""
+                Generate complete scenes with 2000-3000 words of rich detail and emotional depth.
+                Focus on: vivid sensory details, natural dialogue, character emotions, smooth pacing.
+                IMPORTANT: Always output the complete prose text. Never say you cannot write or provide explanations instead of prose."""
             ),
             backstory=agent_config.get(
                 'backstory',
-                """You are an accomplished author with mastery of language, style, and voice across multiple genres.
-                You have access to the complete story knowledge base and can verify character details, previous events,
-                and world-building elements before writing. You excel at crafting compelling narratives that maintain
-                continuity while advancing the plot. Your prose is vivid, engaging, and emotionally resonant."""
+                """You are an accomplished fiction author with mastery of language, style, and voice across multiple genres.
+                You excel at crafting compelling narratives with vivid descriptions and authentic dialogue.
+                Your prose is engaging, emotionally resonant, and professionally polished."""
             ),
             verbose=True,
             allow_delegation=False,

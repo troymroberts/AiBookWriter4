@@ -546,22 +546,30 @@ def execute_prose_writing(state: WorkflowState, config, controller: WorkflowCont
 
                 def write_scene():
                     write_task = Task(
-                        description=f"""Write this scene:
+                        description=f"""Write a complete scene in narrative prose format.
 
+                        SCENE DETAILS:
                         Chapter: {chapter.title}
                         Scene: {scene.title}
                         Scene Description: {scene.desc}
 
-                        Write 2000-3000 words of engaging prose.
-                        Include:
-                        - Vivid sensory details
-                        - Natural dialogue
-                        - Character emotions and reactions
-                        - Smooth pacing
+                        REQUIREMENTS:
+                        - Write 2000-3000 words of narrative prose
+                        - Use third person past tense
+                        - Include vivid sensory details
+                        - Include natural dialogue between characters
+                        - Show character emotions and reactions
+                        - Maintain smooth pacing
 
-                        Write in third person past tense.""",
+                        OUTPUT FORMAT:
+                        Write the complete narrative text only. Do NOT include:
+                        - Explanations or meta-commentary
+                        - Outlines or summaries
+                        - Disclaimers or apologies
+
+                        Start writing the scene immediately.""",
                         agent=writer,
-                        expected_output="2000-3000 words of polished prose"
+                        expected_output="Complete narrative prose text (2000-3000 words)"
                     )
 
                     write_crew = Crew(
