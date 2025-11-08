@@ -6,10 +6,11 @@
     "character_creation",
     "location_creation",
     "chapter_outlining",
-    "scene_structuring"
+    "scene_structuring",
+    "prose_writing"
   ],
   "current_step": null,
-  "failed_step": "prose_writing",
+  "failed_step": "editorial_refinement",
   "story_arc": "### Story Premise and Themes\n\n**Title:** *Echoes of the Void*\n\n**Premise:**\nIn the year 2150, humanity has colonized several planets in the Alpha Centauri system. Dr. Elara Myles, a brilliant xenobiologist, is tasked with investigating a mysterious signal emanating from a remote planet, Xylo-7. The signal appears to be a distress call from an unknown source, and the fate of the colony on Xylo-7 hangs in the balance. As Elara delves deeper, she uncovers a sinister plot that threatens not only the",
   "characters_created": [
     "1",
@@ -41,10 +42,20 @@
     "8",
     "9"
   ],
-  "scenes_written": [],
+  "scenes_written": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
   "scenes_edited": [],
   "start_time": "2025-11-08T01:35:53.318510",
-  "last_checkpoint_time": "2025-11-08T02:10:57.702064",
+  "last_checkpoint_time": "2025-11-08T14:53:50.752030",
   "end_time": null,
   "total_api_calls": 0,
   "provider_usage": {},
@@ -96,6 +107,12 @@
       "error": "Invalid response from LLM call - None or empty.",
       "error_type": "ValueError",
       "timestamp": "2025-11-08T02:10:57.701199"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-08T14:53:50.750920"
     }
   ],
   "genre": "science fiction",
