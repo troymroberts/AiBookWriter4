@@ -617,16 +617,22 @@ def execute_editorial_refinement(state: WorkflowState, config, controller: Workf
     """
     Execute Step 7: Editorial Refinement.
 
+    Note: Using Writer agent for editorial tasks since it handles RAG+editing better than Editor agent.
+    This is a workaround for a CrewAI incompatibility with the Editor role and tool usage.
+
     Returns:
         Number of scenes edited
     """
     logger.info("Starting editorial refinement")
 
-    editor_config = EditorConfig(
+    # Use Writer agent for editorial tasks (works better with RAG than Editor agent)
+    from agents.writer import Writer, WriterConfig
+    editor_config = WriterConfig(
         temperature=0.5,
         max_tokens=32000,
+        enable_rag=True  # Writer handles RAG correctly for editorial tasks
     )
-    editor = Editor(config=editor_config)
+    editor = Writer(config=editor_config)
 
     scenes_edited = 0
 

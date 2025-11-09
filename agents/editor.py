@@ -69,9 +69,9 @@ class Editor(Agent):
             role=agent_config.get('role', 'Editorial Specialist'),
             goal=agent_config.get(
                 'goal',
-                """Review and refine each chapter, ensuring quality, consistency, and adherence to the book outline.
-                Polish the prose for clarity, flow, and impact. Fix any grammar, pacing, or style issues.
-                IMPORTANT: Always output the complete refined prose text. Never provide only feedback or explanations - output the full edited scene."""
+                """Polish and improve prose to professional publishing standards with enhanced clarity, flow, and emotional impact.
+                Strengthen dialogue naturalness, vivid descriptions, and smooth pacing.
+                IMPORTANT: Always output the complete polished prose text. Never provide only feedback or analysis - output the full refined scene."""
             ),
             backstory=agent_config.get(
                 'backstory',
