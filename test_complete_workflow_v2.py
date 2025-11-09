@@ -613,24 +613,59 @@ def execute_prose_writing(state: WorkflowState, config, controller: WorkflowCont
     return scenes_written
 
 
+def chunk_text_by_paragraphs(text: str, max_chunk_size: int = 2000) -> list:
+    """
+    Split text into chunks at paragraph boundaries, respecting max size.
+
+    Args:
+        text: Text to split
+        max_chunk_size: Maximum characters per chunk
+
+    Returns:
+        List of text chunks
+    """
+    paragraphs = text.split('\n\n')
+    chunks = []
+    current_chunk = []
+    current_size = 0
+
+    for para in paragraphs:
+        para_size = len(para) + 2  # +2 for \n\n
+
+        if current_size + para_size > max_chunk_size and current_chunk:
+            # Save current chunk and start new one
+            chunks.append('\n\n'.join(current_chunk))
+            current_chunk = [para]
+            current_size = para_size
+        else:
+            current_chunk.append(para)
+            current_size += para_size
+
+    # Add final chunk
+    if current_chunk:
+        chunks.append('\n\n'.join(current_chunk))
+
+    return chunks
+
+
 def execute_editorial_refinement(state: WorkflowState, config, controller: WorkflowController) -> int:
     """
-    Execute Step 7: Editorial Refinement.
+    Execute Step 7: Editorial Refinement with chunked processing.
 
-    Note: Using Writer agent for editorial tasks since it handles RAG+editing better than Editor agent.
-    This is a workaround for a CrewAI incompatibility with the Editor role and tool usage.
+    Uses chunked approach to handle large scenes while keeping RAG fully functional.
+    Each chunk is edited separately with RAG tools available, then reassembled.
 
     Returns:
         Number of scenes edited
     """
-    logger.info("Starting editorial refinement")
+    logger.info("Starting editorial refinement (chunked with RAG)")
 
-    # Use Writer agent for editorial tasks (works better with RAG than Editor agent)
+    # Use Writer agent for editorial tasks with RAG enabled
     from agents.writer import Writer, WriterConfig
     editor_config = WriterConfig(
         temperature=0.5,
-        max_tokens=32000,
-        enable_rag=True  # Writer handles RAG correctly for editorial tasks
+        max_tokens=8192,
+        enable_rag=True  # RAG enabled for continuity checking
     )
     editor = Writer(config=editor_config)
 
@@ -653,48 +688,66 @@ def execute_editorial_refinement(state: WorkflowState, config, controller: Workf
 
                 logger.info(f"  Refining: {scene.title}")
 
-                def edit_scene():
-                    edit_task = Task(
-                        description=f"""Review and refine this scene:
+                # Chunk the scene for processing
+                chunks = chunk_text_by_paragraphs(scene.sceneContent, max_chunk_size=2000)
+                logger.info(f"    Split into {len(chunks)} chunks")
 
-                        Title: {scene.title}
-                        Current Draft:
-                        {scene.sceneContent}
+                def edit_scene_chunked():
+                    edited_chunks = []
 
-                        Improve:
-                        - Clarity and flow
-                        - Dialogue naturalness
-                        - Pacing and tension
-                        - Sensory details
-                        - Grammar and style
+                    for i, chunk in enumerate(chunks, 1):
+                        logger.info(f"    Editing chunk {i}/{len(chunks)} ({len(chunk)} chars)")
 
-                        Maintain the core story beats and character voice.
+                        # Provide context about position in scene
+                        position_context = ""
+                        if len(chunks) > 1:
+                            if i == 1:
+                                position_context = "This is the BEGINNING of the scene. "
+                            elif i == len(chunks):
+                                position_context = "This is the ENDING of the scene. "
+                            else:
+                                position_context = f"This is the MIDDLE of the scene (part {i}/{len(chunks)}). "
 
-                        OUTPUT FORMAT:
-                        Output the complete refined narrative text only. Do NOT include:
-                        - Editorial comments or meta-commentary
-                        - Lists of changes made
-                        - Explanations or feedback
+                        edit_task = Task(
+                            description=f"""Refine this section of prose:
 
-                        Output the full polished prose immediately.""",
-                        agent=editor,
-                        expected_output="Complete refined narrative prose"
-                    )
+                            Scene: {scene.title}
+                            {position_context}
 
-                    edit_crew = Crew(
-                        agents=[editor],
-                        tasks=[edit_task],
-                        process=Process.sequential,
-                        verbose=True
-                    )
+                            Text to refine:
+                            {chunk}
 
-                    return validate_and_retry_crew_kickoff(edit_crew, f"editing_{scene.title}", max_retries=3)
+                            Improve:
+                            - Clarity and flow
+                            - Dialogue naturalness
+                            - Pacing and tension
+                            - Sensory details
+                            - Grammar and style
+
+                            OUTPUT FORMAT:
+                            Output ONLY the refined text. Do NOT include meta-commentary, explanations, or notes.""",
+                            agent=editor,
+                            expected_output="Refined narrative prose"
+                        )
+
+                        edit_crew = Crew(
+                            agents=[editor],
+                            tasks=[edit_task],
+                            process=Process.sequential,
+                            verbose=False  # Reduce verbosity for chunks
+                        )
+
+                        chunk_result = validate_and_retry_crew_kickoff(edit_crew, f"editing_{scene.title}_chunk_{i}", max_retries=2)
+                        edited_chunks.append(str(chunk_result))
+
+                    # Reassemble chunks
+                    return '\n\n'.join(edited_chunks)
 
                 try:
-                    # Edit with retry
+                    # Edit with retry (chunked approach)
                     edited_result = run_step_with_retry(
                         f"edit_scene_{scene_id}",
-                        edit_scene,
+                        edit_scene_chunked,
                         max_retries=2
                     )
 
@@ -1104,6 +1157,12 @@ Examples:
         '--status',
         action='store_true',
         help='Show project status and exit'
+    )
+
+    parser.add_argument(
+        '--skip-editorial',
+        action='store_true',
+        help='Skip editorial refinement (Step 7) - prose from Step 6 is already high quality'
     )
 
     args = parser.parse_args()
