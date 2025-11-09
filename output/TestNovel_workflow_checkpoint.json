@@ -9,7 +9,7 @@
     "scene_structuring",
     "prose_writing"
   ],
-  "current_step": null,
+  "current_step": "editorial_refinement",
   "failed_step": "editorial_refinement",
   "story_arc": "### Story Premise and Themes\n\n**Title:** *Echoes of the Void*\n\n**Premise:**\nIn the year 2150, humanity has colonized several planets in the Alpha Centauri system. Dr. Elara Myles, a brilliant xenobiologist, is tasked with investigating a mysterious signal emanating from a remote planet, Xylo-7. The signal appears to be a distress call from an unknown source, and the fate of the colony on Xylo-7 hangs in the balance. As Elara delves deeper, she uncovers a sinister plot that threatens not only the",
   "characters_created": [
@@ -53,9 +53,18 @@
     "8",
     "9"
   ],
-  "scenes_edited": [],
+  "scenes_edited": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+  ],
   "start_time": "2025-11-08T01:35:53.318510",
-  "last_checkpoint_time": "2025-11-09T12:34:08.273030",
+  "last_checkpoint_time": "2025-11-09T13:12:40.330519",
   "end_time": null,
   "total_api_calls": 0,
   "provider_usage": {},
@@ -131,6 +140,30 @@
       "error": "Invalid response from LLM call - None or empty.",
       "error_type": "ValueError",
       "timestamp": "2025-11-09T12:34:08.271462"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:47:22.906847"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:47:48.956789"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:51:36.938717"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:52:03.431971"
     }
   ],
   "genre": "science fiction",
