@@ -662,9 +662,17 @@ def execute_editorial_refinement(state: WorkflowState, config, controller: Workf
                         - Sensory details
                         - Grammar and style
 
-                        Maintain the core story beats and character voice.""",
+                        Maintain the core story beats and character voice.
+
+                        OUTPUT FORMAT:
+                        Output the complete refined narrative text only. Do NOT include:
+                        - Editorial comments or meta-commentary
+                        - Lists of changes made
+                        - Explanations or feedback
+
+                        Output the full polished prose immediately.""",
                         agent=editor,
-                        expected_output="Refined, polished prose"
+                        expected_output="Complete refined narrative prose"
                     )
 
                     edit_crew = Crew(

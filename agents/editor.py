@@ -61,8 +61,9 @@ class Editor(Agent):
         # Create LLM
         llm = llm_config.create_llm("editor")
 
-        # Prepare tools
-        tools = self._prepare_tools(config)
+        # Prepare tools - TEMPORARILY DISABLED for debugging
+        # tools = self._prepare_tools(config)
+        tools = []  # Empty tools list to avoid RAG interference
 
         # Initialize agent with RAG configuration
         super().__init__(
@@ -70,16 +71,14 @@ class Editor(Agent):
             goal=agent_config.get(
                 'goal',
                 """Review and refine each chapter, ensuring quality, consistency, and adherence to the book outline.
-                Use semantic search to verify character consistency, plot continuity, and world-building alignment.
-                Check that each chapter meets length requirements and maintains the established narrative voice.
-                Provide specific, actionable feedback for improvements."""
+                Polish the prose for clarity, flow, and impact. Fix any grammar, pacing, or style issues.
+                IMPORTANT: Always output the complete refined prose text. Never provide only feedback or explanations - output the full edited scene."""
             ),
             backstory=agent_config.get(
                 'backstory',
                 """You are an expert editor with a keen eye for detail and narrative consistency.
-                You have access to the complete story knowledge base and can verify facts across all chapters.
-                You check for strict alignment with the chapter outline, verify character and world-building consistency,
-                and critically review prose quality. You ensure each chapter maintains continuity with the established story."""
+                You polish prose to professional publishing standards, improving clarity, flow, and emotional impact.
+                You refine dialogue, strengthen descriptions, and ensure smooth pacing throughout each scene."""
             ),
             verbose=True,
             allow_delegation=False,
