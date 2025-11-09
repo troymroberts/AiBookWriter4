@@ -658,14 +658,17 @@ def execute_editorial_refinement(state: WorkflowState, config, controller: Workf
     Returns:
         Number of scenes edited
     """
-    logger.info("Starting editorial refinement (chunked with RAG)")
+    logger.info("Starting editorial refinement (chunked, RAG disabled to avoid CrewAI bug)")
 
-    # Use Writer agent for editorial tasks with RAG enabled
+    # Use Writer agent for editorial tasks with minimal RAG tools
+    # Research shows CrewAI bug: multiple tools + long input + Qwen = empty responses
+    # (GitHub issues #2885, #3454)
+    # Solution: Reduce tools for editorial (use full RAG only for writing)
     from agents.writer import Writer, WriterConfig
     editor_config = WriterConfig(
         temperature=0.5,
         max_tokens=8192,
-        enable_rag=True  # RAG enabled for continuity checking
+        enable_rag=False  # Disable RAG tools for editorial to avoid CrewAI multi-tool bug
     )
     editor = Writer(config=editor_config)
 
