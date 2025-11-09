@@ -55,7 +55,7 @@
   ],
   "scenes_edited": [],
   "start_time": "2025-11-08T01:35:53.318510",
-  "last_checkpoint_time": "2025-11-08T14:53:50.752030",
+  "last_checkpoint_time": "2025-11-09T12:34:08.273030",
   "end_time": null,
   "total_api_calls": 0,
   "provider_usage": {},
@@ -113,6 +113,24 @@
       "error": "Invalid response from LLM call - None or empty.",
       "error_type": "ValueError",
       "timestamp": "2025-11-08T14:53:50.750920"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:33:16.130701"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:33:42.215133"
+    },
+    {
+      "step": "editorial_refinement",
+      "error": "Invalid response from LLM call - None or empty.",
+      "error_type": "ValueError",
+      "timestamp": "2025-11-09T12:34:08.271462"
     }
   ],
   "genre": "science fiction",
