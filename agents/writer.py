@@ -61,9 +61,8 @@ class Writer(Agent):
         # Create LLM
         llm = llm_config.create_llm("writer")
 
-        # Prepare tools - TEMPORARILY DISABLED for debugging
-        # tools = self._prepare_tools(config)
-        tools = []  # Empty tools list to avoid RAG interference
+        # Prepare tools
+        tools = self._prepare_tools(config)
 
         # Initialize CrewAI agent
         super().__init__(
