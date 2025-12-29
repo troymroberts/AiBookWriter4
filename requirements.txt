@@ -1,7 +1,20 @@
-crewai==0.100.0
-langchain>=0.0.325
-langchain-community>=0.0.1
-langchain-ollama>=0.0.1
-PyYAML==6.0.1
-python-dotenv==1.0.1
+# AiBookWriter4 - CrewAI Rewrite
+# Updated: 2025-12-29
+
+# Core Framework
+crewai>=1.7.0
+crewai-tools>=0.17.0
+
+# LLM Support
+langchain-ollama>=1.0.0
+
+# Configuration
+pydantic>=2.0.0
+PyYAML>=6.0.1
+python-dotenv>=1.0.1
+
+# UI
+streamlit>=1.40.0
+
+# Utilities
 rich>=13.7.0

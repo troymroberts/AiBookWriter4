@@ -1,8 +1,174 @@
-model_list:
-  - model_name: ollama/qwen2.5:1.5b
-    litellm_params:
-      base_url: http://10.1.1.47:11434
+# AiBookWriter4 Configuration
+# Extended CrewAI Workflow - 2025-12-29
 
-genre: literary_fiction # Default genre selection
-prompts_file: config/prompts.yaml # Path to the prompts configuration file
-num_chapters: 4 # Default number of chapters for the project
+# =============================================================================
+# Ollama LLM Configuration
+# =============================================================================
+ollama:
+  base_url: "http://10.1.1.40:11434"
+
+  # Default model for all agents (can be overridden per-agent)
+  # Available: qwen3-0.6b-40k:latest (fast), qwen3:8b, qwen3:4b, llama3.2:latest
+  default_model: "qwen3-0.6b-40k:latest"
+
+  # Model assignments per agent (optional overrides)
+  # Larger models recommended for complex tasks
+  models:
+    # Foundation agents
+    story_architect: "qwen3-0.6b-40k:latest"
+
+    # World building agents
+    character_designer: "qwen3-0.6b-40k:latest"
+    location_designer: "qwen3-0.6b-40k:latest"
+    item_cataloger: "qwen3-0.6b-40k:latest"
+
+    # Structure agents
+    plot_architect: "qwen3-0.6b-40k:latest"
+    timeline_manager: "qwen3-0.6b-40k:latest"
+
+    # Writing agents
+    scene_writer: "qwen3-0.6b-40k:latest"
+    dialogue_specialist: "qwen3-0.6b-40k:latest"
+    chapter_compiler: "qwen3-0.6b-40k:latest"
+
+    # Editorial agents
+    continuity_editor: "qwen3-0.6b-40k:latest"
+    style_editor: "qwen3-0.6b-40k:latest"
+    manuscript_reviewer: "qwen3-0.6b-40k:latest"
+
+    # Light novel agents
+    arc_architect: "qwen3-0.6b-40k:latest"
+    character_roster_manager: "qwen3-0.6b-40k:latest"
+    power_system_manager: "qwen3-0.6b-40k:latest"
+    cliffhanger_specialist: "qwen3-0.6b-40k:latest"
+
+    # Fantasy agents
+    magic_system_designer: "qwen3-0.6b-40k:latest"
+    faction_manager: "qwen3-0.6b-40k:latest"
+    lore_keeper: "qwen3-0.6b-40k:latest"
+    combat_choreographer: "qwen3-0.6b-40k:latest"
+
+    # Literary agents
+    theme_weaver: "qwen3-0.6b-40k:latest"
+    prose_stylist: "qwen3-0.6b-40k:latest"
+    psychological_depth: "qwen3-0.6b-40k:latest"
+
+# =============================================================================
+# LLM Parameters
+# =============================================================================
+llm:
+  temperature: 0.7
+  max_tokens: 4000
+  top_p: 0.9
+
+# =============================================================================
+# Project Defaults
+# =============================================================================
+defaults:
+  # Project type: standard, light_novel, literary, fantasy, epic_fantasy
+  project_type: "standard"
+
+  # Genre (used for genre-specific prompts)
+  genre: "literary_fiction"
+
+  # Number of chapters (overridden by project_type defaults if not set)
+  num_chapters: 10
+
+# =============================================================================
+# Paths
+# =============================================================================
+paths:
+  genres_dir: "config/genres"
+  output_dir: "output"
+  ywriter_projects: "projects"
+
+# =============================================================================
+# Crew Settings
+# =============================================================================
+crew:
+  verbose: true
+  process: "sequential"  # sequential or hierarchical
+  memory: true           # Enable CrewAI memory system
+
+# =============================================================================
+# Knowledge / RAG Settings
+# =============================================================================
+knowledge:
+  # Enable yWriter7 integration for RAG
+  ywriter_integration: true
+
+  # Include scene content in RAG (can be large)
+  include_scene_content: false
+
+  # Embedder configuration (uses Ollama by default)
+  embedder:
+    provider: "ollama"
+    model: "nomic-embed-text"  # Good embedding model
+    # For OpenAI: provider: "openai", model: "text-embedding-3-small"
+
+# =============================================================================
+# Vector Database (for large-scale projects)
+# =============================================================================
+vector_db:
+  # Enable external vector DB (recommended for light novels)
+  enabled: false
+
+  # Provider: chromadb (default, local) or qdrant
+  provider: "chromadb"
+
+  # Qdrant configuration (if using qdrant)
+  qdrant:
+    url: ""
+    api_key: ""
+    collection_prefix: "aibook_"
+
+# =============================================================================
+# Workflow Settings
+# =============================================================================
+workflow:
+  # Run world-building agents in parallel where possible
+  parallel_world_building: true
+
+  # Enable editorial review loops
+  editorial_loops: true
+
+  # Maximum editorial loop iterations before proceeding
+  max_editorial_iterations: 3
+
+  # Enable automatic continuity checking
+  auto_continuity_check: true
+
+# =============================================================================
+# Output Settings
+# =============================================================================
+output:
+  # Output formats to generate
+  formats:
+    - "markdown"
+    - "ywriter7"
+    - "json"
+
+  # Include metadata in output
+  include_metadata: true
+
+  # Save intermediate outputs for each phase
+  save_intermediate: true
+
+# =============================================================================
+# UI Settings (for Streamlit app)
+# =============================================================================
+ui:
+  # Streamlit server port (consistent across restarts)
+  port: 8501
+
+  # Show advanced options by default
+  show_advanced: false
+
+  # Default story prompt
+  default_prompt: "A lighthouse keeper on a remote island discovers a mysterious signal that seems to be coming from beneath the waves."
+
+  # Show agent progress in real-time
+  show_agent_progress: true
+
+  # Enable streaming output display
+  streaming_output: true
