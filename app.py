@@ -776,21 +776,93 @@ def main():
                     st.subheader("World Building")
                     world = results.get('world_building', {})
 
+                    # Check for errors
+                    if 'errors' in results and results['errors']:
+                        with st.expander("⚠️ Errors Encountered", expanded=True):
+                            for err in results['errors']:
+                                st.error(err)
+
                     if world:
-                        sub_tabs = st.tabs(["Characters", "Locations", "Items", "Magic", "Factions", "Lore"])
+                        sub_tabs = st.tabs(["Characters", "Locations", "Items", "Magic", "Factions", "Lore", "Summary"])
 
                         with sub_tabs[0]:
-                            st.markdown(world.get('characters', 'No character data'))
+                            # New format: list of individual character profiles
+                            characters = world.get('characters', [])
+                            if isinstance(characters, list) and characters:
+                                st.success(f"Generated {len(characters)} characters")
+                                for char in characters:
+                                    char_type = char.get('type', 'unknown')
+                                    icon = "⭐" if char_type == 'main' else "👤"
+                                    with st.expander(f"{icon} {char.get('name', 'Unknown')} ({char.get('role', 'Unknown')})"):
+                                        st.markdown(char.get('profile', 'No profile data'))
+                            elif isinstance(characters, str):
+                                st.markdown(characters)
+                            else:
+                                st.info("No character data")
+
                         with sub_tabs[1]:
-                            st.markdown(world.get('locations', 'No location data'))
+                            locations = world.get('locations', [])
+                            if isinstance(locations, list) and locations:
+                                st.success(f"Generated {len(locations)} locations")
+                                for loc in locations:
+                                    with st.expander(f"🏰 {loc.get('name', 'Unknown')} ({loc.get('type', 'Unknown')})"):
+                                        st.markdown(loc.get('profile', 'No profile data'))
+                            elif isinstance(locations, str):
+                                st.markdown(locations)
+                            else:
+                                st.info("No location data")
+
                         with sub_tabs[2]:
-                            st.markdown(world.get('items', 'No item data'))
+                            items = world.get('items', [])
+                            if isinstance(items, list) and items:
+                                st.success(f"Generated {len(items)} items")
+                                for item in items:
+                                    with st.expander(f"🗡️ {item.get('name', 'Unknown')} ({item.get('category', 'Unknown')})"):
+                                        st.caption(f"Owner: {item.get('owner', 'Unknown')}")
+                                        st.markdown(item.get('profile', 'No profile data'))
+                            elif isinstance(items, str):
+                                st.markdown(items)
+                            else:
+                                st.info("No item data")
+
                         with sub_tabs[3]:
                             st.markdown(world.get('magic_system', 'No magic system data'))
+
                         with sub_tabs[4]:
                             st.markdown(world.get('factions', 'No faction data'))
+
                         with sub_tabs[5]:
                             st.markdown(world.get('lore', 'No lore data'))
+
+                        with sub_tabs[6]:
+                            # Show entity extraction summary
+                            entity_list = world.get('entity_list', {})
+                            if entity_list:
+                                st.subheader("Entity Extraction Summary")
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    st.metric("Main Characters", len(entity_list.get('main_characters', [])))
+                                    st.metric("Locations", len(entity_list.get('locations', [])))
+                                with col2:
+                                    st.metric("Supporting Characters", len(entity_list.get('supporting_characters', [])))
+                                    st.metric("Items", len(entity_list.get('items', [])))
+
+                                # Generation success rates
+                                st.subheader("Generation Results")
+                                chars_generated = len(world.get('characters', []))
+                                locs_generated = len(world.get('locations', []))
+                                items_generated = len(world.get('items', []))
+
+                                total_expected = (len(entity_list.get('main_characters', [])) +
+                                                min(len(entity_list.get('supporting_characters', [])), 10) +
+                                                len(entity_list.get('locations', [])) +
+                                                min(len(entity_list.get('items', [])), 15))
+                                total_generated = chars_generated + locs_generated + items_generated
+
+                                if total_expected > 0:
+                                    success_rate = (total_generated / total_expected) * 100
+                                    st.progress(success_rate / 100)
+                                    st.caption(f"Success rate: {success_rate:.1f}% ({total_generated}/{total_expected} entities)")
                     else:
                         st.info("No world building data available")
 

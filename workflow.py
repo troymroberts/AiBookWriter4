@@ -1,14 +1,19 @@
 """
 AiBookWriter4 - Workflow Orchestrator
 Coordinates agent execution with parallel/sequential logic and editorial loops.
+Includes retry logic and failure monitoring for robust generation.
 """
 
 from crewai import Crew, Process, Task, Agent
 from typing import Optional, Dict, Any, List, Callable
 import yaml
 import os
-from dataclasses import dataclass
+import time
+import traceback
+from dataclasses import dataclass, field
 from enum import Enum
+from datetime import datetime
+from functools import wraps
 
 from agents import create_llm, load_genre_config
 from agents_extended import (
@@ -77,12 +82,220 @@ class WorkflowPhase(Enum):
 
 
 @dataclass
+class TaskAttempt:
+    """Record of a single task attempt."""
+    attempt_number: int
+    started_at: datetime
+    completed_at: Optional[datetime] = None
+    success: bool = False
+    error: Optional[str] = None
+    output_length: int = 0
+
+
+@dataclass
+class TaskMonitor:
+    """Monitor for tracking task execution with retries."""
+    task_name: str
+    max_retries: int = 3
+    retry_delay: float = 2.0
+    attempts: List[TaskAttempt] = field(default_factory=list)
+    final_output: Optional[str] = None
+
+    def record_attempt(self, success: bool, error: str = None, output: str = None):
+        """Record an attempt result."""
+        attempt = TaskAttempt(
+            attempt_number=len(self.attempts) + 1,
+            started_at=self.attempts[-1].started_at if self.attempts else datetime.now(),
+            completed_at=datetime.now(),
+            success=success,
+            error=error,
+            output_length=len(output) if output else 0
+        )
+        if self.attempts:
+            self.attempts[-1] = attempt
+        else:
+            self.attempts.append(attempt)
+
+        if success and output:
+            self.final_output = output
+
+    def start_attempt(self):
+        """Start a new attempt."""
+        self.attempts.append(TaskAttempt(
+            attempt_number=len(self.attempts) + 1,
+            started_at=datetime.now()
+        ))
+
+    @property
+    def total_attempts(self) -> int:
+        return len(self.attempts)
+
+    @property
+    def succeeded(self) -> bool:
+        return any(a.success for a in self.attempts)
+
+    @property
+    def last_error(self) -> Optional[str]:
+        for attempt in reversed(self.attempts):
+            if attempt.error:
+                return attempt.error
+        return None
+
+    def get_summary(self) -> str:
+        """Get a summary of all attempts."""
+        lines = [f"Task: {self.task_name}"]
+        lines.append(f"  Total attempts: {self.total_attempts}")
+        lines.append(f"  Success: {self.succeeded}")
+        if self.final_output:
+            lines.append(f"  Output length: {len(self.final_output)} chars")
+        for attempt in self.attempts:
+            status = "✓" if attempt.success else "✗"
+            lines.append(f"  Attempt {attempt.attempt_number}: {status}")
+            if attempt.error:
+                lines.append(f"    Error: {attempt.error[:100]}...")
+        return "\n".join(lines)
+
+
+@dataclass
 class WorkflowResult:
     """Result from a workflow phase."""
     phase: WorkflowPhase
     success: bool
     outputs: Dict[str, Any]
     errors: List[str]
+    task_monitors: Dict[str, TaskMonitor] = field(default_factory=dict)
+
+    def get_failed_tasks(self) -> List[str]:
+        """Get list of tasks that failed after all retries."""
+        return [name for name, monitor in self.task_monitors.items()
+                if not monitor.succeeded]
+
+    def get_retry_summary(self) -> str:
+        """Get summary of all task retries."""
+        lines = []
+        for name, monitor in self.task_monitors.items():
+            if monitor.total_attempts > 1 or not monitor.succeeded:
+                lines.append(monitor.get_summary())
+        return "\n\n".join(lines) if lines else "All tasks succeeded on first attempt."
+
+
+def with_retry(max_retries: int = 3, delay: float = 2.0, backoff: float = 1.5):
+    """
+    Decorator for retrying failed operations.
+
+    Args:
+        max_retries: Maximum number of retry attempts
+        delay: Initial delay between retries in seconds
+        backoff: Multiplier for delay after each retry
+    """
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            current_delay = delay
+
+            for attempt in range(1, max_retries + 1):
+                try:
+                    result = func(*args, **kwargs)
+
+                    # Validate the result isn't empty or a failure message
+                    if result:
+                        result_str = str(result)
+                        # Check for common failure patterns
+                        failure_patterns = [
+                            "Your final answer must be",
+                            "I cannot",
+                            "I'm unable to",
+                            "Error:",
+                            "Failed to",
+                        ]
+                        is_failure = any(p.lower() in result_str.lower()[:200]
+                                        for p in failure_patterns)
+
+                        # Check minimum length (at least 500 chars for real content)
+                        is_too_short = len(result_str.strip()) < 500
+
+                        if is_failure or is_too_short:
+                            raise ValueError(
+                                f"Output appears invalid (length={len(result_str)}, "
+                                f"failure_pattern={is_failure})"
+                            )
+
+                    return result
+
+                except Exception as e:
+                    last_exception = e
+                    error_msg = str(e)
+
+                    # Log the retry
+                    print(f"\n⚠️  Attempt {attempt}/{max_retries} failed: {error_msg[:100]}")
+
+                    if attempt < max_retries:
+                        print(f"   Retrying in {current_delay:.1f}s...")
+                        time.sleep(current_delay)
+                        current_delay *= backoff
+                    else:
+                        print(f"❌ All {max_retries} attempts failed")
+
+            # All retries exhausted
+            raise last_exception
+
+        return wrapper
+    return decorator
+
+
+def validate_output(output: str, min_length: int = 500, task_type: str = "general") -> bool:
+    """
+    Validate that agent output is acceptable.
+
+    Args:
+        output: The output string to validate
+        min_length: Minimum acceptable length
+        task_type: Type of task for specialized validation
+
+    Returns:
+        True if valid, raises ValueError if invalid
+    """
+    if not output:
+        raise ValueError("Output is empty")
+
+    output_str = str(output).strip()
+
+    # Check minimum length
+    if len(output_str) < min_length:
+        raise ValueError(
+            f"Output too short: {len(output_str)} chars (min: {min_length})"
+        )
+
+    # Check for failure patterns
+    failure_patterns = [
+        "your final answer must be",
+        "i cannot complete",
+        "i'm unable to",
+        "error:",
+        "failed to generate",
+        "insufficient context",
+    ]
+
+    lower_output = output_str.lower()[:500]
+    for pattern in failure_patterns:
+        if pattern in lower_output:
+            raise ValueError(f"Output contains failure pattern: '{pattern}'")
+
+    # Task-specific validation
+    if task_type == "character":
+        required_sections = ["name", "personality", "background"]
+        for section in required_sections:
+            if section.lower() not in lower_output:
+                print(f"   Warning: Character output may be missing '{section}' section")
+
+    elif task_type == "location":
+        required_sections = ["description", "atmosphere"]
+        for section in required_sections:
+            if section.lower() not in lower_output:
+                print(f"   Warning: Location output may be missing '{section}' section")
+
+    return True
 
 
 class StreamingCallback:
@@ -614,14 +827,44 @@ class NovelWorkflow:
         # Summary
         print("\n" + "="*60)
         print("WORLD BUILDING COMPLETE")
-        print(f"  Characters: {len(outputs['characters'])}")
-        print(f"  Locations: {len(outputs['locations'])}")
-        print(f"  Items: {len(outputs['items'])}")
+        print("="*60)
+
+        # Calculate success stats
+        total_chars = len(entity_list.get('main_characters', [])) + len(entity_list.get('supporting_characters', [])[:10])
+        total_locs = len(entity_list.get('locations', []))
+        total_items = len(entity_list.get('items', [])[:15])
+
+        successful_chars = len(outputs['characters'])
+        successful_locs = len(outputs['locations'])
+        successful_items = len(outputs['items'])
+
+        print(f"\n  Characters: {successful_chars}/{total_chars} generated")
+        print(f"  Locations:  {successful_locs}/{total_locs} generated")
+        print(f"  Items:      {successful_items}/{total_items} generated")
+
+        # Show any failures
+        if errors:
+            print(f"\n  ⚠️  {len(errors)} errors occurred:")
+            for err in errors[:5]:  # Show first 5 errors
+                print(f"    - {err[:80]}")
+            if len(errors) > 5:
+                print(f"    ... and {len(errors) - 5} more")
+
+        # Overall success rate
+        total = total_chars + total_locs + total_items
+        successful = successful_chars + successful_locs + successful_items
+        if total > 0:
+            success_rate = (successful / total) * 100
+            print(f"\n  Overall success rate: {success_rate:.1f}%")
+
         print("="*60 + "\n")
+
+        # Determine overall success (allow partial success if > 50%)
+        partial_success = total > 0 and (successful / total) >= 0.5
 
         result = WorkflowResult(
             phase=WorkflowPhase.WORLD_BUILDING,
-            success=len(errors) == 0,
+            success=len(errors) == 0 or partial_success,
             outputs=outputs,
             errors=errors
         )
@@ -639,57 +882,107 @@ class NovelWorkflow:
         role: str,
         description: str,
         is_main: bool = True,
-        previous_characters: List[str] = None
+        previous_characters: List[str] = None,
+        max_retries: int = 3
     ) -> str:
-        """Generate a single character with full context."""
+        """Generate a single character with full context and retry logic."""
         story_task = self.task_outputs.get('story_task')
+        min_length = 2000 if is_main else 1000
 
-        char_task = create_single_character_task(
-            agent=self.agents['character_designer'],
-            story_task=story_task,
-            character_name=name,
-            character_role=role,
-            character_brief=description,
-            is_main=is_main,
-            previous_characters=previous_characters
-        )
+        for attempt in range(1, max_retries + 1):
+            try:
+                print(f"   Attempt {attempt}/{max_retries}...")
 
-        crew = self._create_crew(
-            agents=[self.agents['character_designer']],
-            tasks=[char_task],
-            process=Process.sequential
-        )
+                char_task = create_single_character_task(
+                    agent=self.agents['character_designer'],
+                    story_task=story_task,
+                    character_name=name,
+                    character_role=role,
+                    character_brief=description,
+                    is_main=is_main,
+                    previous_characters=previous_characters
+                )
 
-        result = crew.kickoff()
-        return result.raw if hasattr(result, 'raw') else str(result)
+                crew = self._create_crew(
+                    agents=[self.agents['character_designer']],
+                    tasks=[char_task],
+                    process=Process.sequential
+                )
+
+                result = crew.kickoff()
+                output = result.raw if hasattr(result, 'raw') else str(result)
+
+                # Validate output
+                validate_output(output, min_length=min_length, task_type="character")
+                print(f"   ✓ Success: {len(output)} chars")
+                return output
+
+            except Exception as e:
+                error_msg = str(e)
+                print(f"   ✗ Failed: {error_msg[:80]}")
+
+                if attempt < max_retries:
+                    delay = 2.0 * (1.5 ** (attempt - 1))
+                    print(f"   Retrying in {delay:.1f}s...")
+                    time.sleep(delay)
+                else:
+                    print(f"   ❌ All {max_retries} attempts failed for {name}")
+                    raise
+
+        raise RuntimeError(f"Failed to generate character {name} after {max_retries} attempts")
 
     def _generate_single_location(
         self,
         name: str,
         loc_type: str,
         description: str,
-        previous_locations: List[str] = None
+        previous_locations: List[str] = None,
+        max_retries: int = 3
     ) -> str:
-        """Generate a single location with full context."""
+        """Generate a single location with full context and retry logic."""
         story_task = self.task_outputs.get('story_task')
+        min_length = 1500
 
-        loc_task = create_single_location_task(
-            agent=self.agents['location_designer'],
-            story_task=story_task,
-            location_name=name,
-            location_type=loc_type,
-            location_brief=description,
-            previous_locations=previous_locations
-        )
+        for attempt in range(1, max_retries + 1):
+            try:
+                print(f"   Attempt {attempt}/{max_retries}...")
 
-        crew = self._create_crew(
-            agents=[self.agents['location_designer']],
-            tasks=[loc_task],
-            process=Process.sequential
-        )
+                loc_task = create_single_location_task(
+                    agent=self.agents['location_designer'],
+                    story_task=story_task,
+                    location_name=name,
+                    location_type=loc_type,
+                    location_brief=description,
+                    previous_locations=previous_locations
+                )
 
-        result = crew.kickoff()
-        return result.raw if hasattr(result, 'raw') else str(result)
+                crew = self._create_crew(
+                    agents=[self.agents['location_designer']],
+                    tasks=[loc_task],
+                    process=Process.sequential
+                )
+
+                result = crew.kickoff()
+                output = result.raw if hasattr(result, 'raw') else str(result)
+
+                # Validate output
+                validate_output(output, min_length=min_length, task_type="location")
+                print(f"   ✓ Success: {len(output)} chars")
+                return output
+
+            except Exception as e:
+                error_msg = str(e)
+                print(f"   ✗ Failed: {error_msg[:80]}")
+
+                if attempt < max_retries:
+                    delay = 2.0 * (1.5 ** (attempt - 1))
+                    print(f"   Retrying in {delay:.1f}s...")
+                    time.sleep(delay)
+                else:
+                    print(f"   ❌ All {max_retries} attempts failed for {name}")
+                    raise
+
+        raise RuntimeError(f"Failed to generate location {name} after {max_retries} attempts")
 
     def _generate_single_item(
         self,
@@ -697,29 +990,54 @@ class NovelWorkflow:
         category: str,
         description: str,
         owner: str = "Unknown",
-        previous_items: List[str] = None
+        previous_items: List[str] = None,
+        max_retries: int = 3
     ) -> str:
-        """Generate a single item with full context."""
+        """Generate a single item with full context and retry logic."""
         story_task = self.task_outputs.get('story_task')
+        min_length = 800
 
-        item_task = create_single_item_task(
-            agent=self.agents['item_cataloger'],
-            story_task=story_task,
-            item_name=name,
-            item_category=category,
-            item_brief=description,
-            owner=owner,
-            previous_items=previous_items
-        )
+        for attempt in range(1, max_retries + 1):
+            try:
+                print(f"   Attempt {attempt}/{max_retries}...")
 
-        crew = self._create_crew(
-            agents=[self.agents['item_cataloger']],
-            tasks=[item_task],
-            process=Process.sequential
-        )
+                item_task = create_single_item_task(
+                    agent=self.agents['item_cataloger'],
+                    story_task=story_task,
+                    item_name=name,
+                    item_category=category,
+                    item_brief=description,
+                    owner=owner,
+                    previous_items=previous_items
+                )
 
-        result = crew.kickoff()
-        return result.raw if hasattr(result, 'raw') else str(result)
+                crew = self._create_crew(
+                    agents=[self.agents['item_cataloger']],
+                    tasks=[item_task],
+                    process=Process.sequential
+                )
+
+                result = crew.kickoff()
+                output = result.raw if hasattr(result, 'raw') else str(result)
+
+                # Validate output
+                validate_output(output, min_length=min_length, task_type="item")
+                print(f"   ✓ Success: {len(output)} chars")
+                return output
+
+            except Exception as e:
+                error_msg = str(e)
+                print(f"   ✗ Failed: {error_msg[:80]}")
+
+                if attempt < max_retries:
+                    delay = 2.0 * (1.5 ** (attempt - 1))
+                    print(f"   Retrying in {delay:.1f}s...")
+                    time.sleep(delay)
+                else:
+                    print(f"   ❌ All {max_retries} attempts failed for {name}")
+                    raise
+
+        raise RuntimeError(f"Failed to generate item {name} after {max_retries} attempts")
 
     def _run_world_building_batch_fallback(
         self,
