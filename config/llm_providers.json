@@ -1,0 +1,20 @@
+{
+  "Local Ollama": {
+    "name": "Local Ollama",
+    "provider_type": "ollama",
+    "base_url": "http://localhost:11434",
+    "api_key": "",
+    "default_model": "llama3.2",
+    "enabled": true,
+    "extra_config": {}
+  },
+  "Network Ollama": {
+    "name": "Network Ollama",
+    "provider_type": "ollama",
+    "base_url": "http://10.1.1.40:11434",
+    "api_key": "",
+    "default_model": "qwen3-0.6b-40k:latest",
+    "enabled": true,
+    "extra_config": {}
+  }
+}

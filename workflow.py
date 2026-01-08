@@ -5,7 +5,7 @@ Includes retry logic and failure monitoring for robust generation.
 """
 
 from crewai import Crew, Process, Task, Agent
-from typing import Optional, Dict, Any, List, Callable
+from typing import Optional, Dict, Any, List, Callable, Tuple
 import yaml
 import os
 import time
@@ -63,7 +63,27 @@ from tasks_extended import (
     create_arc_design_task,
     create_plot_structure_task,
     create_timeline_task,
+    # Chapter writing tasks
+    create_chapter_writing_task,
+    parse_chapter_outline,
+    # Scene-level writing
+    create_scene_breakdown_task,
+    create_enhanced_scene_writing_task,
+    parse_scenes_from_plot_structure,
+    get_chapter_scenes,
 )
+
+# Try to import LLM provider system (optional)
+try:
+    from llm_providers import (
+        get_registry, get_agent_manager, get_context_prompt_modifier
+    )
+    LLM_PROVIDERS_AVAILABLE = True
+except ImportError:
+    LLM_PROVIDERS_AVAILABLE = False
+    get_registry = None
+    get_agent_manager = None
+    get_context_prompt_modifier = None
 from config.project_types import (
     ProjectTypeConfig,
     get_project_type,
@@ -389,7 +409,40 @@ class NovelWorkflow:
             return yaml.safe_load(f)
 
     def _create_llms(self) -> Dict[str, Any]:
-        """Create LLM instances for all enabled agents."""
+        """Create LLM instances for all enabled agents.
+
+        Uses the LLM provider system if available, otherwise falls back
+        to config.yaml Ollama settings.
+        """
+        llms = {}
+        enabled_agents = self.project_config.get_enabled_agents()
+
+        # Try to use the provider system first
+        if LLM_PROVIDERS_AVAILABLE:
+            try:
+                agent_manager = get_agent_manager()
+
+                # Check if provider system is configured
+                if agent_manager.default_provider:
+                    print("Using LLM Provider System for agent LLMs")
+                    for agent_name in enabled_agents:
+                        try:
+                            llms[agent_name] = agent_manager.create_llm_for_agent(agent_name)
+                            assignment = agent_manager.get_assignment(agent_name)
+                            print(f"  {agent_name}: {assignment.provider_name}/{assignment.model_id}")
+                        except Exception as e:
+                            print(f"  Warning: Could not create LLM for {agent_name}: {e}")
+                            # Fall back to default Ollama
+                            llms[agent_name] = self._create_fallback_llm(agent_name)
+                    return llms
+            except Exception as e:
+                print(f"Provider system error, falling back to config.yaml: {e}")
+
+        # Fallback: Use config.yaml Ollama settings
+        return self._create_llms_from_config()
+
+    def _create_llms_from_config(self) -> Dict[str, Any]:
+        """Create LLMs from config.yaml (legacy/fallback method)."""
         ollama_config = self.config['ollama']
         llm_params = self.config['llm']
 
@@ -411,6 +464,34 @@ class NovelWorkflow:
             )
 
         return llms
+
+    def _create_fallback_llm(self, agent_name: str) -> Any:
+        """Create a fallback LLM using config.yaml settings."""
+        ollama_config = self.config['ollama']
+        llm_params = self.config['llm']
+
+        base_url = ollama_config['base_url']
+        default_model = ollama_config['default_model']
+        model = ollama_config.get('models', {}).get(agent_name, default_model)
+
+        return create_llm(
+            base_url=base_url,
+            model=model,
+            temperature=llm_params.get('temperature', 0.7),
+            max_tokens=llm_params.get('max_tokens', 4000),
+            top_p=llm_params.get('top_p', 0.9)
+        )
+
+    def get_context_window_for_agent(self, agent_name: str) -> int:
+        """Get the context window size for an agent's assigned model."""
+        if LLM_PROVIDERS_AVAILABLE:
+            try:
+                agent_manager = get_agent_manager()
+                return agent_manager.get_context_window_for_agent(agent_name)
+            except:
+                pass
+        # Default fallback
+        return self.config.get('llm', {}).get('context_window', 40000)
 
     def _create_agents(self) -> Dict[str, Agent]:
         """Create all enabled agents."""
@@ -824,6 +905,9 @@ class NovelWorkflow:
             except Exception as e:
                 errors.append(f"Lore design error: {str(e)}")
 
+        # Store combined summaries for structure phase
+        self._store_world_building_summaries(outputs)
+
         # Summary
         print("\n" + "="*60)
         print("WORLD BUILDING COMPLETE")
@@ -875,6 +959,51 @@ class NovelWorkflow:
             self.on_phase_complete(result)
 
         return result
+
+    def _store_world_building_summaries(self, outputs: Dict[str, Any]):
+        """Store combined world building summaries for use by structure phase."""
+        # Create character summary
+        char_summary_lines = ["# CHARACTER SUMMARY\n"]
+        for char in outputs.get('characters', []):
+            char_summary_lines.append(f"## {char.get('name', 'Unknown')} ({char.get('role', 'Unknown')})")
+            char_summary_lines.append(f"Type: {char.get('type', 'unknown')}")
+            # Include abbreviated profile
+            profile = char.get('profile', '')
+            if profile and len(profile) > 500:
+                char_summary_lines.append(profile[:2000] + "...\n")
+            else:
+                char_summary_lines.append(profile + "\n")
+
+        self.task_outputs['character_summary'] = "\n".join(char_summary_lines)
+
+        # Create location summary
+        loc_summary_lines = ["# LOCATION SUMMARY\n"]
+        for loc in outputs.get('locations', []):
+            loc_summary_lines.append(f"## {loc.get('name', 'Unknown')} ({loc.get('type', 'Unknown')})")
+            profile = loc.get('profile', '')
+            if profile and len(profile) > 500:
+                loc_summary_lines.append(profile[:1500] + "...\n")
+            else:
+                loc_summary_lines.append(profile + "\n")
+
+        self.task_outputs['location_summary'] = "\n".join(loc_summary_lines)
+
+        # Create item summary
+        item_summary_lines = ["# ITEM SUMMARY\n"]
+        for item in outputs.get('items', []):
+            item_summary_lines.append(f"## {item.get('name', 'Unknown')} ({item.get('category', 'Unknown')})")
+            item_summary_lines.append(f"Owner: {item.get('owner', 'Unknown')}")
+            profile = item.get('profile', '')
+            if profile and len(profile) > 500:
+                item_summary_lines.append(profile[:1000] + "...\n")
+            else:
+                item_summary_lines.append(profile + "\n")
+
+        self.task_outputs['item_summary'] = "\n".join(item_summary_lines)
+
+        print(f"\n  Stored summaries: {len(self.task_outputs['character_summary'])} chars (characters), "
+              f"{len(self.task_outputs['location_summary'])} chars (locations), "
+              f"{len(self.task_outputs['item_summary'])} chars (items)")
 
     def _generate_single_character(
         self,
@@ -1198,12 +1327,21 @@ class NovelWorkflow:
                 arc_outputs = self._run_arc_design()
                 outputs['arcs'] = arc_outputs
 
-            # Plot architecture
+            # Plot architecture - use summaries if individual generation was used
+            character_context = self.task_outputs.get('character_task')
+            location_context = self.task_outputs.get('location_task')
+
+            # If we used individual generation, create context from summaries
+            if character_context is None and 'character_summary' in self.task_outputs:
+                character_context = self.task_outputs['character_summary']
+            if location_context is None and 'location_summary' in self.task_outputs:
+                location_context = self.task_outputs['location_summary']
+
             plot_task = create_plot_structure_task(
                 agent=self.agents['plot_architect'],
                 story_task=self.task_outputs['story_task'],
-                character_task=self.task_outputs['character_task'],
-                location_task=self.task_outputs['location_task'],
+                character_task=character_context,
+                location_task=location_context,
                 num_chapters=self.num_chapters
             )
 
@@ -1381,24 +1519,155 @@ class NovelWorkflow:
 
         return results
 
-    def run_writing_phase(self) -> WorkflowResult:
-        """Run the writing phase - writes all chapters."""
+    def run_writing_phase(
+        self,
+        chapters_to_write: Optional[List[int]] = None,
+        max_chapters: Optional[int] = None
+    ) -> WorkflowResult:
+        """
+        Run the writing phase - writes actual chapter prose.
+
+        Args:
+            chapters_to_write: Specific chapter numbers to write (default: all)
+            max_chapters: Maximum chapters to write in this run (default: all)
+
+        Returns:
+            WorkflowResult with written chapters
+        """
+        if WorkflowPhase.STRUCTURE not in self.phase_results:
+            raise RuntimeError("Structure phase must complete before writing")
+
         if self.on_phase_start:
             self.on_phase_start(WorkflowPhase.WRITING)
 
         errors = []
-        outputs = {'chapters': []}
+        outputs = {
+            'chapters': [],
+            'chapter_summaries': [],
+            'total_word_count': 0
+        }
 
-        # This would iterate through chapters and scenes
-        # Simplified for now - full implementation would parse plot structure
-        # and write each scene with proper context
+        # Get required context
+        story_task = self.task_outputs.get('story_task')
+        plot_task = self.task_outputs.get('plot_task')
 
-        # Placeholder for chapter writing loop
-        outputs['status'] = "Writing phase structure defined - implementation pending"
+        if not story_task or not plot_task:
+            errors.append("Missing story or plot task from previous phases")
+            return WorkflowResult(
+                phase=WorkflowPhase.WRITING,
+                success=False,
+                outputs=outputs,
+                errors=errors
+            )
+
+        # Get plot structure for chapter outlines
+        structure_results = self.phase_results.get(WorkflowPhase.STRUCTURE)
+        plot_structure = ""
+        if structure_results and structure_results.outputs:
+            plot_structure = structure_results.outputs.get('plot_structure', '')
+
+        # Get character and location context
+        character_context = self.task_outputs.get('character_summary', '')
+        location_context = self.task_outputs.get('location_summary', '')
+
+        # Determine which chapters to write
+        if chapters_to_write:
+            chapters = chapters_to_write
+        else:
+            chapters = list(range(1, self.num_chapters + 1))
+
+        if max_chapters:
+            chapters = chapters[:max_chapters]
+
+        # Check for scene_writer agent
+        if 'scene_writer' not in self.agents:
+            errors.append("Scene writer agent not available for this project type")
+            return WorkflowResult(
+                phase=WorkflowPhase.WRITING,
+                success=False,
+                outputs=outputs,
+                errors=errors
+            )
+
+        print("\n" + "="*60)
+        print("WRITING PHASE - SCENE-BY-SCENE GENERATION")
+        print(f"Chapters to write: {len(chapters)}")
+        print("="*60 + "\n")
+
+        # Track all scenes for yWriter export
+        outputs['all_scenes'] = []
+
+        previous_chapter_summary = ""
+
+        for i, chapter_num in enumerate(chapters):
+            print(f"\n{'='*50}")
+            print(f"Writing Chapter {chapter_num}/{chapters[-1]} (scene-by-scene)")
+            print(f"{'='*50}")
+
+            try:
+                # Extract chapter outline from plot structure
+                chapter_outline = parse_chapter_outline(plot_structure, chapter_num)
+
+                # Generate chapter using scene-by-scene approach
+                chapter_content, scenes = self._write_chapter_by_scenes(
+                    chapter_number=chapter_num,
+                    chapter_outline=chapter_outline,
+                    character_context=character_context,
+                    location_context=location_context,
+                    previous_chapter_summary=previous_chapter_summary
+                )
+
+                # Store the chapter
+                word_count = len(chapter_content.split())
+                outputs['chapters'].append({
+                    'number': chapter_num,
+                    'content': chapter_content,
+                    'word_count': word_count,
+                    'scenes': scenes  # Include individual scenes
+                })
+                outputs['total_word_count'] += word_count
+
+                # Store scenes for yWriter export
+                for scene in scenes:
+                    scene['chapter_number'] = chapter_num
+                    outputs['all_scenes'].append(scene)
+
+                # Create summary for next chapter's continuity
+                previous_chapter_summary = self._create_chapter_summary(
+                    chapter_content, chapter_num
+                )
+                outputs['chapter_summaries'].append({
+                    'number': chapter_num,
+                    'summary': previous_chapter_summary
+                })
+
+                print(f"✓ Chapter {chapter_num} complete: {word_count:,} words ({len(scenes)} scenes)")
+
+                if self.on_task_complete:
+                    self.on_task_complete(
+                        f'chapter_{chapter_num}',
+                        f"Chapter {chapter_num} written ({word_count:,} words, {len(scenes)} scenes)"
+                    )
+
+            except Exception as e:
+                error_msg = f"Error writing chapter {chapter_num}: {str(e)}"
+                errors.append(error_msg)
+                print(f"✗ {error_msg}")
+                traceback.print_exc()
+
+        # Summary
+        print("\n" + "="*60)
+        print("WRITING PHASE COMPLETE")
+        print("="*60)
+        print(f"\n  Chapters written: {len(outputs['chapters'])}/{len(chapters)}")
+        print(f"  Total word count: {outputs['total_word_count']:,} words")
+        if errors:
+            print(f"  Errors: {len(errors)}")
+        print("="*60 + "\n")
 
         result = WorkflowResult(
             phase=WorkflowPhase.WRITING,
-            success=len(errors) == 0,
+            success=len(errors) < len(chapters),  # Allow partial success
             outputs=outputs,
             errors=errors
         )
@@ -1409,6 +1678,324 @@ class NovelWorkflow:
             self.on_phase_complete(result)
 
         return result
+
+    def _write_single_chapter(
+        self,
+        chapter_number: int,
+        chapter_outline: str,
+        character_context: str = "",
+        location_context: str = "",
+        previous_chapter_summary: str = "",
+        max_retries: int = 2
+    ) -> str:
+        """Write a single chapter with retry logic."""
+        story_task = self.task_outputs.get('story_task')
+        plot_task = self.task_outputs.get('plot_task')
+
+        for attempt in range(1, max_retries + 1):
+            try:
+                print(f"   Attempt {attempt}/{max_retries}...")
+
+                # Create the chapter writing task
+                # Get context window for scene_writer agent
+                context_window = self.get_context_window_for_agent('scene_writer')
+
+                chapter_task = create_chapter_writing_task(
+                    agent=self.agents['scene_writer'],
+                    story_task=story_task,
+                    plot_task=plot_task,
+                    chapter_number=chapter_number,
+                    chapter_outline=chapter_outline,
+                    character_context=character_context,
+                    location_context=location_context,
+                    previous_chapter_summary=previous_chapter_summary,
+                    genre_config=self.genre_config,
+                    context_window=context_window
+                )
+
+                # Run the crew
+                crew = self._create_crew(
+                    agents=[self.agents['scene_writer']],
+                    tasks=[chapter_task],
+                    process=Process.sequential
+                )
+
+                result = crew.kickoff()
+                output = result.raw if hasattr(result, 'raw') else str(result)
+
+                # Validate - chapters should be substantial (2500 words ≈ 12500 chars minimum)
+                word_count = len(output.split())
+                min_words = 1500  # Minimum acceptable
+                if word_count < min_words:
+                    raise ValueError(f"Chapter too short: {word_count} words (need {min_words}+)")
+
+                # Check for prompt bleed (structural markers that shouldn't be in prose)
+                bad_patterns = ['Scene 1:', 'ACT 1:', 'ACT 2:', '**Scene', '## Scene',
+                               '### Scene', 'WRITING REQUIREMENTS', 'OUTPUT FORMAT']
+                for pattern in bad_patterns:
+                    if pattern in output:
+                        print(f"   Warning: Found prompt bleed pattern '{pattern}'")
+
+                return output
+
+            except Exception as e:
+                print(f"   ✗ Failed: {str(e)[:80]}")
+
+                if attempt < max_retries:
+                    delay = 2.0 * attempt
+                    print(f"   Retrying in {delay:.1f}s...")
+                    time.sleep(delay)
+                else:
+                    raise
+
+        raise RuntimeError(f"Failed to write chapter {chapter_number}")
+
+    def _create_chapter_summary(self, chapter_content: str, chapter_number: int) -> str:
+        """Create a brief summary of a chapter for continuity."""
+        # Simple extraction - take key events
+        # In a more advanced implementation, this could use an LLM
+        lines = chapter_content.split('\n')
+        summary_parts = []
+
+        # Get title
+        for line in lines[:5]:
+            if line.strip().startswith('#'):
+                summary_parts.append(f"Title: {line.strip('#').strip()}")
+                break
+
+        # Estimate based on content
+        word_count = len(chapter_content.split())
+        summary_parts.append(f"Word count: {word_count}")
+
+        # Try to extract key sentences (first substantial paragraph)
+        paragraphs = [p.strip() for p in chapter_content.split('\n\n') if len(p.strip()) > 100]
+        if paragraphs:
+            # Take snippet from near beginning and near end
+            first_para = paragraphs[0] if paragraphs else ""
+            last_para = paragraphs[-1] if len(paragraphs) > 1 else ""
+
+            if first_para:
+                summary_parts.append(f"Opening: {first_para[:200]}...")
+            if last_para and last_para != first_para:
+                summary_parts.append(f"Ending: ...{last_para[-200:]}")
+
+        return f"Chapter {chapter_number} Summary:\n" + "\n".join(summary_parts)
+
+    def _write_chapter_by_scenes(
+        self,
+        chapter_number: int,
+        chapter_outline: str,
+        character_context: str = "",
+        location_context: str = "",
+        previous_chapter_summary: str = ""
+    ) -> Tuple[str, List[Dict[str, Any]]]:
+        """
+        Write a chapter scene-by-scene for better context management.
+
+        This approach:
+        1. Breaks the chapter into 3-7 scenes
+        2. Generates each scene individually with full context
+        3. Maintains continuity between scenes
+        4. Returns both combined chapter and individual scenes
+
+        Returns:
+            Tuple of (combined_chapter_content, list_of_scene_dicts)
+        """
+        story_task = self.task_outputs.get('story_task')
+        context_window = self.get_context_window_for_agent('scene_writer')
+
+        print(f"   Breaking chapter into scenes...")
+
+        # Step 1: Generate scene breakdown
+        breakdown_task = create_scene_breakdown_task(
+            agent=self.agents['scene_writer'],
+            story_task=story_task,
+            chapter_outline=chapter_outline,
+            chapter_number=chapter_number,
+            character_context=character_context[:3000],
+            location_context=location_context[:2000],
+            context_window=context_window
+        )
+
+        crew = self._create_crew(
+            agents=[self.agents['scene_writer']],
+            tasks=[breakdown_task],
+            process=Process.sequential
+        )
+
+        result = crew.kickoff()
+        scene_breakdown = result.raw if hasattr(result, 'raw') else str(result)
+
+        # Parse scenes from breakdown
+        # Use a simpler inline parser for the breakdown output
+        scenes = self._parse_scene_breakdown(scene_breakdown, chapter_number)
+
+        if not scenes:
+            print(f"   Warning: No scenes parsed, creating default scene list")
+            scenes = [{
+                'chapter_number': chapter_number,
+                'scene_number': 1,
+                'setting': 'Main location',
+                'characters': [],
+                'pov_character': 'protagonist',
+                'goal': 'Advance the plot',
+                'conflict': '',
+                'outcome': '',
+                'word_count_target': 2500
+            }]
+
+        print(f"   Found {len(scenes)} scenes to write")
+
+        # Step 2: Write each scene with context
+        written_scenes = []
+        previous_scene_content = ""
+
+        for i, scene_data in enumerate(scenes):
+            scene_num = scene_data.get('scene_number', i + 1)
+            print(f"   Writing Scene {scene_num}/{len(scenes)}...")
+
+            # Get next scene preview for setup
+            next_scene_preview = ""
+            if i < len(scenes) - 1:
+                next_scene = scenes[i + 1]
+                next_scene_preview = f"""
+Scene {next_scene.get('scene_number', i+2)}: {next_scene.get('goal', '')}
+Setting: {next_scene.get('setting', '')}
+"""
+
+            # Create the scene task
+            scene_task = create_enhanced_scene_writing_task(
+                agent=self.agents['scene_writer'],
+                story_task=story_task,
+                scene_data=scene_data,
+                chapter_context=chapter_outline,
+                previous_scene_content=previous_scene_content,
+                next_scene_preview=next_scene_preview,
+                character_profiles=character_context[:4000],
+                location_details=location_context[:2000],
+                context_window=context_window
+            )
+
+            # Run scene generation
+            crew = self._create_crew(
+                agents=[self.agents['scene_writer']],
+                tasks=[scene_task],
+                process=Process.sequential
+            )
+
+            result = crew.kickoff()
+            scene_content = result.raw if hasattr(result, 'raw') else str(result)
+
+            # Store the scene
+            word_count = len(scene_content.split())
+            written_scenes.append({
+                'scene_number': scene_num,
+                'content': scene_content,
+                'word_count': word_count,
+                'pov': scene_data.get('pov_character', ''),
+                'setting': scene_data.get('setting', '')
+            })
+
+            print(f"      Scene {scene_num}: {word_count} words")
+
+            # Update previous scene for continuity
+            previous_scene_content = scene_content
+
+            if self.on_task_complete:
+                self.on_task_complete(
+                    f'scene_{chapter_number}_{scene_num}',
+                    f"Scene {scene_num} written ({word_count} words)"
+                )
+
+        # Step 3: Combine scenes into chapter
+        chapter_content = self._compile_scenes_to_chapter(
+            chapter_number, written_scenes
+        )
+
+        return chapter_content, written_scenes
+
+    def _parse_scene_breakdown(self, breakdown: str, chapter_number: int) -> List[Dict]:
+        """Parse scene data from a scene breakdown output."""
+        import re
+        scenes = []
+
+        # Look for SCENE markers
+        scene_pattern = r'SCENE\s+(\d+)[:\s]'
+        scene_matches = list(re.finditer(scene_pattern, breakdown, re.IGNORECASE))
+
+        for idx, match in enumerate(scene_matches):
+            scene_num = int(match.group(1))
+            start_pos = match.end()
+
+            # Find end of this scene section
+            if idx < len(scene_matches) - 1:
+                end_pos = scene_matches[idx + 1].start()
+            else:
+                end_pos = len(breakdown)
+
+            scene_text = breakdown[start_pos:end_pos]
+
+            # Parse scene details
+            scene_data = {
+                'chapter_number': chapter_number,
+                'scene_number': scene_num,
+                'setting': '',
+                'characters': [],
+                'pov_character': '',
+                'goal': '',
+                'conflict': '',
+                'outcome': '',
+                'word_count_target': 1000
+            }
+
+            # Extract fields
+            for line in scene_text.split('\n'):
+                line = line.strip()
+                line_lower = line.lower()
+
+                if 'pov character:' in line_lower or 'pov:' in line_lower:
+                    scene_data['pov_character'] = re.split(r'pov[^:]*:', line, flags=re.I)[-1].strip()
+                elif 'setting:' in line_lower or 'location:' in line_lower:
+                    scene_data['setting'] = re.split(r'(setting|location):', line, flags=re.I)[-1].strip()
+                elif 'characters:' in line_lower or 'characters present:' in line_lower:
+                    chars = re.split(r'characters[^:]*:', line, flags=re.I)[-1].strip()
+                    scene_data['characters'] = [c.strip() for c in chars.split(',') if c.strip()]
+                elif 'goal:' in line_lower or 'scene goal:' in line_lower:
+                    scene_data['goal'] = re.split(r'goal:', line, flags=re.I)[-1].strip()
+                elif 'conflict:' in line_lower:
+                    scene_data['conflict'] = line.split(':')[-1].strip()
+                elif 'outcome:' in line_lower:
+                    scene_data['outcome'] = line.split(':')[-1].strip()
+                elif 'word count' in line_lower:
+                    wc_match = re.search(r'(\d+)', line)
+                    if wc_match:
+                        scene_data['word_count_target'] = int(wc_match.group(1))
+
+            # Use first character as POV if not specified
+            if not scene_data['pov_character'] and scene_data['characters']:
+                scene_data['pov_character'] = scene_data['characters'][0]
+
+            scenes.append(scene_data)
+
+        return scenes
+
+    def _compile_scenes_to_chapter(
+        self,
+        chapter_number: int,
+        scenes: List[Dict]
+    ) -> str:
+        """Compile individual scenes into a complete chapter."""
+        chapter_parts = []
+
+        for scene in scenes:
+            content = scene.get('content', '')
+            if content:
+                chapter_parts.append(content.strip())
+
+        # Join with scene breaks
+        chapter_content = "\n\n* * *\n\n".join(chapter_parts)
+
+        return chapter_content
 
     def run_editorial_phase(self) -> WorkflowResult:
         """Run editorial review phase."""
@@ -1458,6 +2045,368 @@ class NovelWorkflow:
             self.on_phase_complete(result)
 
         return result
+
+    # =========================================================================
+    # EXPORT METHODS
+    # =========================================================================
+
+    def export_chapters_markdown(self) -> str:
+        """
+        Export all written chapters as a single markdown document.
+
+        Returns:
+            Markdown string containing all chapters
+        """
+        writing_result = self.phase_results.get(WorkflowPhase.WRITING)
+        if not writing_result or not writing_result.outputs.get('chapters'):
+            return "# No chapters written yet\n\nRun the writing phase first."
+
+        chapters = writing_result.outputs['chapters']
+        total_words = writing_result.outputs.get('total_word_count', 0)
+
+        # Build the markdown document
+        lines = [
+            f"# {self.genre.replace('_', ' ').title()} Novel",
+            "",
+            f"*Project Type: {self.project_type}*",
+            f"*Total Chapters: {len(chapters)}*",
+            f"*Total Words: {total_words:,}*",
+            "",
+            "---",
+            "",
+        ]
+
+        for chapter in chapters:
+            chapter_num = chapter['number']
+            content = chapter['content']
+            word_count = chapter['word_count']
+
+            # Clean up the content (remove duplicate headers if present)
+            lines.append(content)
+            lines.append("")
+            lines.append(f"*({word_count:,} words)*")
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+        # Add footer
+        lines.append("")
+        lines.append("---")
+        lines.append(f"*Generated by AiBookWriter4*")
+        lines.append(f"*Total: {total_words:,} words across {len(chapters)} chapters*")
+
+        return "\n".join(lines)
+
+    def export_chapters_separate(self) -> Dict[str, str]:
+        """
+        Export chapters as separate markdown files.
+
+        Returns:
+            Dictionary mapping filename to content
+        """
+        writing_result = self.phase_results.get(WorkflowPhase.WRITING)
+        if not writing_result or not writing_result.outputs.get('chapters'):
+            return {}
+
+        chapters = writing_result.outputs['chapters']
+        files = {}
+
+        for chapter in chapters:
+            chapter_num = chapter['number']
+            content = chapter['content']
+
+            filename = f"chapter_{chapter_num:03d}.md"
+            files[filename] = content
+
+        return files
+
+    def export_to_ywriter(self) -> str:
+        """
+        Export chapters in yWriter7 compatible XML format (.yw7).
+
+        yWriter7 stores projects in XML with specific structure.
+        This exports chapters and scenes in that format.
+
+        Returns:
+            XML string for yWriter7 project file
+        """
+        import html
+        import re
+
+        def escape_xml(text: str) -> str:
+            """Escape text for XML and clean up problematic characters."""
+            if not text:
+                return ""
+            # Remove or replace problematic characters
+            text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
+            # Escape XML entities
+            return html.escape(text, quote=False)
+
+        def clean_content(content: str) -> str:
+            """Clean content for yWriter - convert markdown to plain text."""
+            if not content:
+                return ""
+            # Remove markdown headers
+            content = re.sub(r'^#{1,6}\s*', '', content, flags=re.MULTILINE)
+            # Remove markdown bold/italic
+            content = re.sub(r'\*\*([^*]+)\*\*', r'\1', content)
+            content = re.sub(r'\*([^*]+)\*', r'\1', content)
+            # Remove code blocks
+            content = re.sub(r'```[^`]*```', '', content, flags=re.DOTALL)
+            content = re.sub(r'`([^`]+)`', r'\1', content)
+            # Clean up extra whitespace
+            content = re.sub(r'\n{3,}', '\n\n', content)
+            return content.strip()
+
+        writing_result = self.phase_results.get(WorkflowPhase.WRITING)
+        world_result = self.phase_results.get(WorkflowPhase.WORLD_BUILDING)
+
+        title = f"{self.genre.replace('_', ' ').title()} Novel"
+
+        # Build XML manually to ensure proper structure
+        xml_lines = [
+            '<?xml version="1.0" encoding="utf-8"?>',
+            '<YWRITER7>',
+            '  <PROJECT>',
+            '    <Ver>7</Ver>',
+            f'    <Title>{escape_xml(title)}</Title>',
+            '    <Author>AI Book Writer</Author>',
+            f'    <Desc>Generated {escape_xml(self.project_type)} project</Desc>',
+            f'    <WordTarget>{self.num_chapters * 3000}</WordTarget>',
+            '  </PROJECT>',
+            '  <CHAPTERS>',
+        ]
+
+        scene_xml = []
+        scene_id = 1
+
+        if writing_result and writing_result.outputs.get('chapters'):
+            chapters = writing_result.outputs['chapters']
+
+            for chapter in chapters:
+                chapter_num = chapter['number']
+                scenes = chapter.get('scenes', [])
+
+                # Extract chapter title from content
+                chapter_title = f"Chapter {chapter_num}"
+                for line in chapter['content'].split('\n')[:10]:
+                    line = line.strip()
+                    if line.startswith('#'):
+                        chapter_title = line.lstrip('#').strip()
+                        if ':' in chapter_title:
+                            chapter_title = chapter_title.split(':', 1)[1].strip()
+                        break
+
+                # Chapter element
+                xml_lines.append(f'    <CHAPTER>')
+                xml_lines.append(f'      <ID>{chapter_num}</ID>')
+                xml_lines.append(f'      <Title>{escape_xml(chapter_title)}</Title>')
+                xml_lines.append(f'      <SortOrder>{chapter_num}</SortOrder>')
+                xml_lines.append(f'      <Type>0</Type>')
+                xml_lines.append(f'      <ChapterType>0</ChapterType>')
+                xml_lines.append(f'      <Scenes>')
+
+                # Handle scene-by-scene output
+                if scenes:
+                    chapter_scene_ids = []
+                    for scene in scenes:
+                        chapter_scene_ids.append(scene_id)
+                        scene_num = scene.get('scene_number', 1)
+                        scene_content = clean_content(scene.get('content', ''))
+                        scene_wc = scene.get('word_count', len(scene_content.split()))
+                        pov = scene.get('pov', '')
+                        setting = scene.get('setting', '')
+
+                        scene_title = f"Scene {scene_num}"
+                        if pov:
+                            scene_title += f" ({pov})"
+
+                        # Scene element
+                        scene_xml.append(f'    <SCENE>')
+                        scene_xml.append(f'      <ID>{scene_id}</ID>')
+                        scene_xml.append(f'      <Title>{escape_xml(scene_title)}</Title>')
+                        if pov:
+                            scene_xml.append(f'      <POV>{escape_xml(pov)}</POV>')
+                        scene_xml.append(f'      <Status>2</Status>')
+                        scene_xml.append(f'      <SceneContent><![CDATA[{scene_content}]]></SceneContent>')
+                        scene_xml.append(f'      <WordCount>{scene_wc}</WordCount>')
+                        scene_xml.append(f'      <LetterCount>{len(scene_content)}</LetterCount>')
+                        if setting:
+                            scene_xml.append(f'      <Notes>Setting: {escape_xml(setting)}</Notes>')
+                        scene_xml.append(f'    </SCENE>')
+
+                        scene_id += 1
+
+                    # Add scene IDs to chapter
+                    for sid in chapter_scene_ids:
+                        xml_lines.append(f'        <ScID>{sid}</ScID>')
+
+                else:
+                    # Fallback: single scene per chapter (old format)
+                    content = clean_content(chapter['content'])
+                    word_count = chapter['word_count']
+
+                    xml_lines.append(f'        <ScID>{scene_id}</ScID>')
+
+                    scene_xml.append(f'    <SCENE>')
+                    scene_xml.append(f'      <ID>{scene_id}</ID>')
+                    scene_xml.append(f'      <Title>{escape_xml(chapter_title)}</Title>')
+                    scene_xml.append(f'      <Status>2</Status>')
+                    scene_xml.append(f'      <SceneContent><![CDATA[{content}]]></SceneContent>')
+                    scene_xml.append(f'      <WordCount>{word_count}</WordCount>')
+                    scene_xml.append(f'      <LetterCount>{len(content)}</LetterCount>')
+                    scene_xml.append(f'    </SCENE>')
+
+                    scene_id += 1
+
+                xml_lines.append(f'      </Scenes>')
+                xml_lines.append(f'    </CHAPTER>')
+
+        xml_lines.append('  </CHAPTERS>')
+        xml_lines.append('  <SCENES>')
+        xml_lines.extend(scene_xml)
+        xml_lines.append('  </SCENES>')
+
+        # Characters
+        xml_lines.append('  <CHARACTERS>')
+        if world_result and world_result.outputs.get('characters'):
+            for i, char in enumerate(world_result.outputs['characters'], 1):
+                name = escape_xml(char.get('name', f'Character {i}'))
+                desc = escape_xml(clean_content(char.get('profile', ''))[:5000])
+                role = escape_xml(char.get('role', 'Unknown'))
+                major = "1" if char.get('type') == 'main' else "0"
+
+                xml_lines.append(f'    <CHARACTER>')
+                xml_lines.append(f'      <ID>{i}</ID>')
+                xml_lines.append(f'      <Title>{name}</Title>')
+                xml_lines.append(f'      <Desc><![CDATA[{desc}]]></Desc>')
+                xml_lines.append(f'      <Notes>Role: {role}</Notes>')
+                xml_lines.append(f'      <Major>{major}</Major>')
+                xml_lines.append(f'    </CHARACTER>')
+        xml_lines.append('  </CHARACTERS>')
+
+        # Locations
+        xml_lines.append('  <LOCATIONS>')
+        if world_result and world_result.outputs.get('locations'):
+            for i, loc in enumerate(world_result.outputs['locations'], 1):
+                name = escape_xml(loc.get('name', f'Location {i}'))
+                desc = escape_xml(clean_content(loc.get('profile', ''))[:5000])
+                loc_type = escape_xml(loc.get('type', 'Unknown'))
+
+                xml_lines.append(f'    <LOCATION>')
+                xml_lines.append(f'      <ID>{i}</ID>')
+                xml_lines.append(f'      <Title>{name}</Title>')
+                xml_lines.append(f'      <Desc><![CDATA[{desc}]]></Desc>')
+                xml_lines.append(f'      <Notes>Type: {loc_type}</Notes>')
+                xml_lines.append(f'    </LOCATION>')
+        xml_lines.append('  </LOCATIONS>')
+
+        # Items
+        xml_lines.append('  <ITEMS>')
+        if world_result and world_result.outputs.get('items'):
+            for i, item in enumerate(world_result.outputs['items'], 1):
+                name = escape_xml(item.get('name', f'Item {i}'))
+                desc = escape_xml(clean_content(item.get('profile', ''))[:3000])
+                cat = escape_xml(item.get('category', 'Unknown'))
+                owner = escape_xml(item.get('owner', 'Unknown'))
+
+                xml_lines.append(f'    <ITEM>')
+                xml_lines.append(f'      <ID>{i}</ID>')
+                xml_lines.append(f'      <Title>{name}</Title>')
+                xml_lines.append(f'      <Desc><![CDATA[{desc}]]></Desc>')
+                xml_lines.append(f'      <Notes>Category: {cat}, Owner: {owner}</Notes>')
+                xml_lines.append(f'    </ITEM>')
+        xml_lines.append('  </ITEMS>')
+
+        xml_lines.append('</YWRITER7>')
+
+        return '\n'.join(xml_lines)
+
+    def export_full_manuscript(self) -> str:
+        """
+        Export complete manuscript including plan and chapters.
+
+        Returns:
+            Complete markdown document
+        """
+        lines = [
+            f"# Complete Manuscript",
+            "",
+            f"*Genre: {self.genre.replace('_', ' ').title()}*",
+            f"*Project Type: {self.project_type}*",
+            f"*Planned Chapters: {self.num_chapters}*",
+            "",
+            "---",
+            "",
+        ]
+
+        # Add Story Architecture
+        foundation = self.phase_results.get(WorkflowPhase.FOUNDATION)
+        if foundation and foundation.outputs.get('story_architecture'):
+            lines.append("# Part I: Story Architecture")
+            lines.append("")
+            lines.append(foundation.outputs['story_architecture'])
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+        # Add World Building Summary
+        world = self.phase_results.get(WorkflowPhase.WORLD_BUILDING)
+        if world and world.outputs:
+            lines.append("# Part II: World Building")
+            lines.append("")
+
+            # Characters
+            characters = world.outputs.get('characters', [])
+            if characters:
+                lines.append("## Characters")
+                lines.append("")
+                for char in characters:
+                    lines.append(f"### {char.get('name', 'Unknown')} ({char.get('role', '')})")
+                    lines.append(char.get('profile', '')[:2000] + "...")
+                    lines.append("")
+
+            # Locations
+            locations = world.outputs.get('locations', [])
+            if locations:
+                lines.append("## Locations")
+                lines.append("")
+                for loc in locations:
+                    lines.append(f"### {loc.get('name', 'Unknown')} ({loc.get('type', '')})")
+                    lines.append(loc.get('profile', '')[:1500] + "...")
+                    lines.append("")
+
+            lines.append("---")
+            lines.append("")
+
+        # Add Plot Structure
+        structure = self.phase_results.get(WorkflowPhase.STRUCTURE)
+        if structure and structure.outputs.get('plot_structure'):
+            lines.append("# Part III: Plot Structure")
+            lines.append("")
+            lines.append(structure.outputs['plot_structure'])
+            lines.append("")
+            lines.append("---")
+            lines.append("")
+
+        # Add Chapters
+        writing = self.phase_results.get(WorkflowPhase.WRITING)
+        if writing and writing.outputs.get('chapters'):
+            lines.append("# Part IV: The Novel")
+            lines.append("")
+
+            chapters = writing.outputs['chapters']
+            total_words = writing.outputs.get('total_word_count', 0)
+
+            for chapter in chapters:
+                lines.append(chapter['content'])
+                lines.append("")
+                lines.append("---")
+                lines.append("")
+
+            lines.append(f"*Total: {total_words:,} words across {len(chapters)} chapters*")
+
+        return "\n".join(lines)
 
     # =========================================================================
     # UTILITY METHODS

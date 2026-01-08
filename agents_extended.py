@@ -223,7 +223,8 @@ def create_scene_writer(
         appropriate hooks to the next scene.""",
         llm=llm,
         verbose=True,
-        allow_delegation=False
+        allow_delegation=False,
+        use_system_prompt=False  # Helps produce longer-form content with smaller models
     )
 
 

@@ -12,12 +12,65 @@ DESIGN PHILOSOPHY:
 from crewai import Task, Agent
 from typing import Optional, List, Dict, Any
 
-# Context window reminder to include in prompts
+# Default context reminder (for backward compatibility)
 CONTEXT_REMINDER = """
 ## IMPORTANT: USE YOUR FULL CONTEXT CAPACITY
-You have a 30,000+ token context window. Use it! Do not abbreviate or summarize.
+You have a large context window. Use it! Do not abbreviate or summarize.
 Write DETAILED, EXTENSIVE content. More detail is always better.
 If you find yourself writing short responses, EXPAND them.
+"""
+
+
+def get_context_reminder(context_window: int = 40000) -> str:
+    """
+    Generate a context-aware reminder for prompts.
+
+    This helps the LLM understand how much detail it can provide based on
+    the actual context window available.
+
+    Args:
+        context_window: The context window size in tokens
+
+    Returns:
+        A formatted context reminder string
+    """
+    if context_window >= 100000:
+        return f"""
+## CONTEXT CAPACITY: VERY LARGE ({context_window:,} tokens)
+You have access to an extremely large context window. This means:
+- Write EXTENSIVELY detailed content with comprehensive coverage
+- Include thorough background, history, and nuanced explanations
+- Explore edge cases, exceptions, and subtle variations
+- Provide rich examples and detailed descriptions
+- Don't hold back - use the full capacity for maximum quality
+- For chapters: Write 3000-5000 words of detailed prose
+"""
+    elif context_window >= 32000:
+        return f"""
+## CONTEXT CAPACITY: LARGE ({context_window:,} tokens)
+You have access to a large context window. This means:
+- Write detailed, comprehensive content
+- Include good background information and examples
+- Develop ideas thoroughly before moving on
+- For chapters: Write 2500-4000 words of detailed prose
+"""
+    elif context_window >= 8000:
+        return f"""
+## CONTEXT CAPACITY: MODERATE ({context_window:,} tokens)
+You have a moderate context window. This means:
+- Write clear, focused content with key details
+- Include essential examples but be efficient
+- Prioritize the most important information
+- For chapters: Write 2000-3000 words
+"""
+    else:
+        return f"""
+## CONTEXT CAPACITY: LIMITED ({context_window:,} tokens)
+You have a limited context window. This means:
+- Be concise but complete
+- Focus on essential information
+- Use brief but effective examples
+- For chapters: Write 1500-2500 words
 """
 
 
@@ -71,40 +124,47 @@ For a standard novel, plan for:
         description=f"""# Entity Extraction - Identify What To Create
 
 ## Your Task
-Based on the story architecture, create a COMPLETE LIST of all characters,
-locations, and items that need to be designed for this story.
+Based on the story architecture you created, make a COMPLETE LIST of all characters,
+locations, and items needed for this story. YOU MUST INVENT SPECIFIC NAMES for each.
 
-This is the PLANNING phase. You are identifying WHAT needs to be created.
-Each entity you list will then be developed in full detail separately.
+This is the PLANNING phase - list WHAT needs to be created with REAL names.
 
 {scale_guidance}
 
-## OUTPUT FORMAT (Follow Exactly!)
+## CRITICAL INSTRUCTIONS
 
-You MUST output in this exact format for parsing:
+1. INVENT ACTUAL NAMES - Do not write "[NAME]" or "[TYPE]" or any brackets
+2. Names must fit the story's setting and genre
+3. Each entry needs a real name, not a placeholder
 
-```
+## OUTPUT FORMAT
+
+Write your list EXACTLY like this example (but with YOUR story's characters):
+
 ===== MAIN CHARACTERS =====
-1. [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
-2. [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
-3. [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
-...
+1. Kira Shadowmend | Protagonist | A young thief who discovers she has magical abilities
+2. Lord Varen Ashford | Antagonist | The corrupt noble hunting Kira for her powers
+3. Master Eldric | Mentor | An elderly wizard living in exile who trains Kira
 
 ===== SUPPORTING CHARACTERS =====
-1. [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
-2. [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
-...
+1. Tomás Brightwater | Ally | Kira's loyal friend from the thieves guild
+2. Sister Moira | Healer | A kind priestess who shelters refugees
+3. Captain Blackwood | Authority | The relentless guard captain pursuing Kira
 
 ===== KEY LOCATIONS =====
-1. [NAME] | [TYPE] | [ONE-LINE DESCRIPTION]
-2. [NAME] | [TYPE] | [ONE-LINE DESCRIPTION]
-...
+1. Dusthaven Slums | District | The poverty-stricken area where Kira grew up
+2. The Gilded Palace | Building | Lord Ashford's opulent fortress
+3. Whisperwood Forest | Wilderness | An enchanted forest where Eldric hides
 
 ===== SIGNIFICANT ITEMS =====
-1. [NAME] | [CATEGORY] | [OWNER/ASSOCIATED CHARACTER] | [ONE-LINE DESCRIPTION]
-2. [NAME] | [CATEGORY] | [OWNER/ASSOCIATED CHARACTER] | [ONE-LINE DESCRIPTION]
-...
-```
+1. The Soulstone Ring | Artifact | Kira Shadowmend | Amplifies magical abilities but corrupts the user
+2. Ashford's Seal | Symbol | Lord Varen Ashford | Grants authority over the city guard
+3. Eldric's Grimoire | Book | Master Eldric | Contains forbidden spells
+
+## ABSOLUTE RULES
+- NEVER write [NAME], [TYPE], [ROLE], or any bracketed placeholders
+- Every single entry must have a REAL invented name
+- Names should sound like they belong in your story's world
 
 ## REQUIREMENTS
 
@@ -148,21 +208,23 @@ You MUST output in this exact format for parsing:
 - OWNER should name the character who possesses it, or "Unknown/Lost/Contested"
 
 Do NOT create detailed profiles here - just identify and list what needs to be created.""",
-        expected_output="""A structured list in the exact format specified containing:
+        expected_output="""A structured list with ACTUAL invented names (not placeholders) containing:
 
 1. MAIN CHARACTERS section with 3-12 entries, each formatted as:
-   [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
+   Actual Name | Role | One-line description
+   Example: "Elena Blackwood | Protagonist | A determined young woman searching for her missing brother"
 
-2. SUPPORTING CHARACTERS section with 6-30 entries, each formatted as:
-   [NAME] | [ROLE] | [ONE-LINE DESCRIPTION]
+2. SUPPORTING CHARACTERS section with 6-30 entries in the same format
 
 3. KEY LOCATIONS section with 4-20 entries, each formatted as:
-   [NAME] | [TYPE] | [ONE-LINE DESCRIPTION]
+   Location Name | Type | Description
+   Example: "The Obsidian Tower | Building | An ancient fortress hiding terrible secrets"
 
 4. SIGNIFICANT ITEMS section with 8-30 entries, each formatted as:
-   [NAME] | [CATEGORY] | [OWNER] | [ONE-LINE DESCRIPTION]
+   Item Name | Category | Owner | Description
+   Example: "The Moonstone Pendant | Artifact | Elena Blackwood | A family heirloom that glows"
 
-The output must be parseable to extract entity lists for individual generation.""",
+All names must be ACTUAL invented names appropriate to the story setting, NOT placeholders.""",
         agent=agent,
         context=[story_task]
     )
@@ -2467,13 +2529,36 @@ The arc must feel complete on its own while advancing the overall story.""",
 def create_plot_structure_task(
     agent: Agent,
     story_task: Task,
-    character_task: Task,
-    location_task: Task,
+    character_task,  # Can be Task or str
+    location_task,   # Can be Task or str
     num_chapters: int
 ) -> Task:
-    """Create the plot structure task with scene-level detail."""
+    """Create the plot structure task with scene-level detail.
+
+    Args:
+        agent: The plot architect agent
+        story_task: The story architecture task
+        character_task: Either a Task object or a string summary of characters
+        location_task: Either a Task object or a string summary of locations
+        num_chapters: Number of chapters to plan
+    """
+    # Build context list - include strings directly in description if not Task objects
+    context = [story_task]
+    extra_context = ""
+
+    if isinstance(character_task, Task):
+        context.append(character_task)
+    elif isinstance(character_task, str) and character_task:
+        extra_context += f"\n\n## CHARACTER INFORMATION\n{character_task[:8000]}"
+
+    if isinstance(location_task, Task):
+        context.append(location_task)
+    elif isinstance(location_task, str) and location_task:
+        extra_context += f"\n\n## LOCATION INFORMATION\n{location_task[:6000]}"
+
     return Task(
         description=f"""# Plot Structure Document
+{extra_context}
 
 ## Your Task
 Create the detailed plot structure for all {num_chapters} chapters.
@@ -2566,7 +2651,7 @@ Thread 1: [Name]
 
 The structure must be detailed enough to guide actual chapter writing.""",
         agent=agent,
-        context=[story_task, character_task, location_task]
+        context=context  # Uses dynamically built context list
     )
 
 
@@ -2654,6 +2739,385 @@ The report must prevent any character from being forgotten.""",
         agent=agent,
         context=[character_task]
     )
+
+
+# =============================================================================
+# CHAPTER WRITING TASKS
+# =============================================================================
+
+def create_chapter_writing_task(
+    agent: Agent,
+    story_task: Task,
+    plot_task: Task,
+    chapter_number: int,
+    chapter_outline: str,
+    character_context: str = "",
+    location_context: str = "",
+    previous_chapter_summary: str = "",
+    genre_config: Optional[Dict[str, Any]] = None,
+    context_window: int = 40000
+) -> Task:
+    """
+    Create a task for writing a complete chapter.
+
+    This task produces actual prose - a full chapter of the novel.
+    """
+    genre_guidance = ""
+    if genre_config:
+        genre_guidance = f"""
+## Genre Style: {genre_config.get('name', 'Literary Fiction')}
+- Tone: {genre_config.get('tone', 'engaging')}
+- Pacing: {genre_config.get('pacing', 'moderate')}
+- Style Notes: {genre_config.get('style_notes', 'Clear, evocative prose')}
+"""
+
+    prev_chapter_context = ""
+    if previous_chapter_summary:
+        prev_chapter_context = f"""
+## Previous Chapter Summary (for continuity)
+{previous_chapter_summary}
+
+IMPORTANT: Ensure continuity with the previous chapter. Characters should be where they were left off.
+"""
+
+    # Get dynamic context guidance
+    context_guidance = get_context_reminder(context_window)
+
+    # Determine word count requirements based on context window
+    if context_window >= 100000:
+        min_words = 3000
+        target_words = "3000-5000"
+        min_paragraphs = 60
+    elif context_window >= 32000:
+        min_words = 2500
+        target_words = "2500-4000"
+        min_paragraphs = 50
+    else:
+        min_words = 2000
+        target_words = "2000-3000"
+        min_paragraphs = 40
+
+    return Task(
+        description=f"""Write Chapter {chapter_number} as complete novel prose.
+
+{context_guidance}
+
+{genre_guidance}
+
+CHAPTER OUTLINE:
+{chapter_outline}
+
+{prev_chapter_context}
+
+CHARACTER REFERENCE:
+{character_context[:4000] if character_context else "Use characters from the story context."}
+
+LOCATION REFERENCE:
+{location_context[:3000] if location_context else "Use locations from the story context."}
+
+CRITICAL REQUIREMENTS:
+
+1. MINIMUM {min_words} WORDS - This is mandatory. Target {target_words} words.
+   Write at least {min_paragraphs} paragraphs of actual prose.
+
+2. WRITE PROSE ONLY - No outlines, no scene labels, no "Scene 1:", no "ACT 1:", no meta-commentary.
+   Just write the story as a reader would read it in a published novel.
+
+3. NO REPETITION - Every paragraph must advance the story. Never repeat the same phrase or
+   sentence. If you find yourself writing similar content, move forward in the plot.
+
+4. SHOW DON'T TELL - Use sensory details, dialogue, and action. Avoid summary statements
+   like "He felt sad" - instead show through behavior and physical reactions.
+
+5. DIALOGUE - Include substantial dialogue between characters. Each character should sound
+   different. Use "said" for most tags. Include action beats between dialogue lines.
+
+6. STRUCTURE - Start with an engaging hook. Build tension through the middle. End with a
+   hook that makes readers want to continue.
+
+YOUR OUTPUT FORMAT:
+Start with: Chapter {chapter_number}: [Your Title Here]
+
+Then write continuous prose paragraphs. Use proper paragraph breaks. Include dialogue
+formatted correctly with quotation marks. Do not use markdown headers within the chapter
+except for the title. Do not include code blocks, scene numbers, or structural labels.
+
+Write the chapter now. Remember: MINIMUM 2500 WORDS of actual story prose.""",
+        expected_output=f"""Chapter {chapter_number} as complete prose containing:
+- A title line
+- At least 2500 words (approximately 50+ paragraphs)
+- Multiple scenes with dialogue and action
+- Sensory descriptions and atmosphere
+- Character development through behavior
+- An ending that hooks into the next chapter
+
+The output must be pure prose suitable for publication, not an outline or summary.""",
+        agent=agent,
+        context=[story_task, plot_task]
+    )
+
+
+def create_scene_writing_task(
+    agent: Agent,
+    story_task: Task,
+    scene_outline: str,
+    scene_number: int,
+    chapter_number: int,
+    pov_character: str,
+    location: str,
+    characters_present: List[str],
+    scene_goal: str,
+    previous_scene_ending: str = ""
+) -> Task:
+    """
+    Create a task for writing a single scene (for more granular control).
+    """
+    return Task(
+        description=f"""# Write Scene {scene_number} of Chapter {chapter_number}
+
+{CONTEXT_REMINDER}
+
+## Scene Details
+- POV Character: {pov_character}
+- Location: {location}
+- Characters Present: {', '.join(characters_present)}
+- Scene Goal: {scene_goal}
+
+## Scene Outline
+{scene_outline}
+
+{f"## Previous Scene Ended With: {previous_scene_ending}" if previous_scene_ending else ""}
+
+## WRITING REQUIREMENTS
+
+### Word Count: 800-1500 words
+
+### Scene-Sequel Structure
+SCENE (Goal → Conflict → Disaster) OR SEQUEL (Reaction → Dilemma → Decision)
+- If this is a SCENE: Focus on action, dialogue, immediate conflict
+- If this is a SEQUEL: Focus on character processing, planning, emotional beats
+
+### POV Discipline
+- Stay STRICTLY in {pov_character}'s POV
+- Only describe what {pov_character} can see, hear, know
+- Filter everything through their perspective and voice
+- Show their internal reactions
+
+### Sensory Immersion
+For {location}, include:
+- Visual details specific to this place
+- Sounds (ambient and specific)
+- Smells if relevant
+- Physical sensations (temperature, texture)
+- Atmosphere/mood
+
+### Dialogue (if present)
+- Give each character their unique voice
+- Use subtext - what they DON'T say matters
+- Include action beats between dialogue
+- Dialogue should reveal character or advance plot
+
+### Pacing
+- Match pacing to scene type (action = fast, emotional = measured)
+- Vary sentence structure
+- Use white space effectively
+
+## OUTPUT FORMAT
+
+Write ONLY the scene prose. No meta-commentary, no notes.
+Start directly with the scene and end at the scene's conclusion.
+
+---
+
+[Scene prose begins here...]""",
+        expected_output=f"""A complete scene of 800-1500 words for Scene {scene_number} of Chapter {chapter_number} containing:
+1. Strict POV from {pov_character}'s perspective
+2. Immersive sensory details for {location}
+3. Clear scene structure (goal-conflict-outcome or reaction-dilemma-decision)
+4. Distinct dialogue voices for all characters
+5. Appropriate pacing for the scene type
+
+The scene should seamlessly connect to surrounding scenes.""",
+        agent=agent,
+        context=[story_task]
+    )
+
+
+def create_chapter_compilation_task(
+    agent: Agent,
+    scenes: List[str],
+    chapter_number: int,
+    chapter_title: str = ""
+) -> Task:
+    """
+    Create a task for compiling multiple scenes into a cohesive chapter.
+    """
+    scenes_text = "\n\n---\n\n".join([f"### Scene {i+1}\n{scene}" for i, scene in enumerate(scenes)])
+
+    return Task(
+        description=f"""# Compile Chapter {chapter_number}
+
+## Your Task
+Combine the following scenes into a cohesive, polished chapter.
+
+## Scenes to Compile
+{scenes_text}
+
+## COMPILATION REQUIREMENTS
+
+### Smooth Transitions
+- Ensure scene transitions flow naturally
+- Add brief transitional phrases where needed
+- Maintain consistent pacing across the chapter
+
+### Continuity Check
+- Verify character positions make sense
+- Check time flow is logical
+- Ensure no contradictions between scenes
+
+### Polish
+- Fix any awkward phrasings
+- Ensure consistent tense
+- Verify dialogue attribution is clear
+
+### Format
+```markdown
+# Chapter {chapter_number}{f': {chapter_title}' if chapter_title else ''}
+
+[Compiled chapter with smooth transitions...]
+
+---
+*End of Chapter {chapter_number}*
+```
+
+## OUTPUT
+Provide the complete, polished chapter ready for publication.""",
+        expected_output=f"""A polished, complete Chapter {chapter_number} containing:
+1. All provided scenes integrated smoothly
+2. Natural transitions between scenes
+3. Consistent continuity throughout
+4. Professional formatting
+5. Approximately {len(scenes) * 1000} words total""",
+        agent=agent
+    )
+
+
+def create_chapter_review_task(
+    agent: Agent,
+    chapter_content: str,
+    chapter_number: int,
+    story_task: Task,
+    character_context: str = ""
+) -> Task:
+    """
+    Create a task for reviewing and improving a written chapter.
+    """
+    return Task(
+        description=f"""# Review Chapter {chapter_number}
+
+## Your Task
+Review this chapter for quality and provide specific improvements.
+
+## Chapter Content
+{chapter_content}
+
+## CHARACTER REFERENCE
+{character_context[:3000] if character_context else "Refer to story context."}
+
+## REVIEW CHECKLIST
+
+### Plot & Structure
+- [ ] Does the chapter advance the plot?
+- [ ] Is there a clear beginning, middle, end?
+- [ ] Does it start with a hook?
+- [ ] Does it end with a hook?
+
+### Character
+- [ ] Are characters acting consistently?
+- [ ] Is dialogue distinct for each character?
+- [ ] Is there character development?
+- [ ] Are motivations clear?
+
+### Pacing
+- [ ] Does the pacing fit the content?
+- [ ] Are there any slow/draggy sections?
+- [ ] Are action scenes punchy enough?
+- [ ] Are emotional scenes given enough space?
+
+### Prose Quality
+- [ ] Is the writing clear?
+- [ ] Is there unnecessary repetition?
+- [ ] Are descriptions vivid without being purple?
+- [ ] Is the POV consistent?
+
+### Continuity
+- [ ] Any contradictions with previous events?
+- [ ] Character positions make sense?
+- [ ] Timeline is consistent?
+
+## OUTPUT FORMAT
+
+```
+## Review Summary
+[Overall assessment: STRONG / ACCEPTABLE / NEEDS WORK]
+
+## Strengths
+- [What works well]
+
+## Issues Found
+1. [Issue]: [Specific location/quote] - [Why it's a problem]
+2. [Issue]: [Specific location/quote] - [Why it's a problem]
+
+## Recommended Fixes
+1. [Fix for issue 1 - specific rewrite suggestion]
+2. [Fix for issue 2 - specific rewrite suggestion]
+
+## Revised Sections (if needed)
+[Provide rewritten versions of problematic sections]
+```""",
+        expected_output=f"""A thorough review of Chapter {chapter_number} containing:
+1. Overall quality assessment
+2. Specific strengths identified
+3. Specific issues with locations cited
+4. Concrete fix recommendations
+5. Rewritten versions of any problematic sections""",
+        agent=agent,
+        context=[story_task]
+    )
+
+
+def parse_chapter_outline(plot_structure: str, chapter_number: int) -> Optional[str]:
+    """
+    Parse the plot structure to extract outline for a specific chapter.
+
+    Args:
+        plot_structure: The full plot structure document
+        chapter_number: The chapter number to extract
+
+    Returns:
+        The chapter outline string, or None if not found
+    """
+    import re
+
+    # Try to find the chapter section
+    patterns = [
+        rf'CHAPTER\s*{chapter_number}[:\s].*?(?=CHAPTER\s*{chapter_number + 1}|$)',
+        rf'Chapter\s*{chapter_number}[:\s].*?(?=Chapter\s*{chapter_number + 1}|$)',
+        rf'#{1,3}\s*Chapter\s*{chapter_number}.*?(?=#{1,3}\s*Chapter\s*{chapter_number + 1}|$)',
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, plot_structure, re.DOTALL | re.IGNORECASE)
+        if match:
+            return match.group(0).strip()
+
+    # If no specific chapter found, return a generic structure
+    return f"""Chapter {chapter_number}:
+- Follow the story structure from the plot document
+- Maintain continuity with previous chapters
+- Advance the main plot
+- Include character development
+- End with a hook for the next chapter"""
 
 
 def create_power_tracking_task(
@@ -2746,4 +3210,409 @@ Rules Bent/Broken: ⚠️
 The report must catch any power inconsistencies or balance issues.""",
         agent=agent,
         context=[magic_task, character_task]
+    )
+
+
+# =============================================================================
+# SCENE PARSING AND BREAKDOWN
+# =============================================================================
+
+def parse_scenes_from_plot_structure(plot_structure: str) -> List[Dict[str, Any]]:
+    """
+    Parse scene breakdowns from plot structure output.
+
+    Returns a list of scene dictionaries with:
+    - chapter_number: int
+    - chapter_title: str
+    - scene_number: int
+    - setting: str
+    - characters: List[str]
+    - pov_character: str
+    - goal: str
+    - conflict: str
+    - outcome: str
+    - word_count_target: int
+    """
+    import re
+    scenes = []
+
+    # Find all chapter sections
+    chapter_pattern = r'CHAPTER\s+(\d+)[:\s]+([^\n═]+)'
+    scene_pattern = r'SCENE\s+(\d+):\s*\n([^S]+?)(?=SCENE\s+\d+:|CHAPTER\s+BEATS|$)'
+
+    # Track current chapter
+    current_chapter = None
+    current_title = ""
+
+    lines = plot_structure.split('\n')
+    i = 0
+
+    while i < len(lines):
+        line = lines[i]
+
+        # Check for chapter header
+        chapter_match = re.search(chapter_pattern, line)
+        if chapter_match:
+            current_chapter = int(chapter_match.group(1))
+            current_title = chapter_match.group(2).strip()
+
+        # Check for scene start
+        scene_match = re.search(r'SCENE\s+(\d+):', line)
+        if scene_match and current_chapter:
+            scene_num = int(scene_match.group(1))
+
+            # Parse scene details from following lines
+            scene_data = {
+                'chapter_number': current_chapter,
+                'chapter_title': current_title,
+                'scene_number': scene_num,
+                'setting': '',
+                'characters': [],
+                'pov_character': '',
+                'goal': '',
+                'conflict': '',
+                'outcome': '',
+                'word_count_target': 1000,
+                'key_dialogue': ''
+            }
+
+            # Look ahead for scene details
+            j = i + 1
+            while j < len(lines) and j < i + 15:
+                detail_line = lines[j].strip()
+
+                if 'Setting:' in detail_line:
+                    scene_data['setting'] = detail_line.split('Setting:')[-1].strip()
+                elif 'Characters:' in detail_line:
+                    chars = detail_line.split('Characters:')[-1].strip()
+                    scene_data['characters'] = [c.strip() for c in chars.split(',')]
+                elif 'POV:' in detail_line or 'POV Character:' in detail_line:
+                    scene_data['pov_character'] = re.split(r'POV[^:]*:', detail_line)[-1].strip()
+                elif 'Goal:' in detail_line:
+                    scene_data['goal'] = detail_line.split('Goal:')[-1].strip()
+                elif 'Conflict:' in detail_line:
+                    scene_data['conflict'] = detail_line.split('Conflict:')[-1].strip()
+                elif 'Outcome:' in detail_line:
+                    scene_data['outcome'] = detail_line.split('Outcome:')[-1].strip()
+                elif 'Word Count' in detail_line:
+                    wc_match = re.search(r'(\d+)', detail_line)
+                    if wc_match:
+                        scene_data['word_count_target'] = int(wc_match.group(1))
+                elif 'Key Dialogue:' in detail_line:
+                    scene_data['key_dialogue'] = detail_line.split('Key Dialogue:')[-1].strip()
+
+                # Stop if we hit another scene or chapter
+                if re.search(r'SCENE\s+\d+:|CHAPTER\s+\d+', detail_line):
+                    break
+
+                j += 1
+
+            # Use first character as POV if not specified
+            if not scene_data['pov_character'] and scene_data['characters']:
+                scene_data['pov_character'] = scene_data['characters'][0]
+
+            scenes.append(scene_data)
+
+        i += 1
+
+    return scenes
+
+
+def get_chapter_scenes(all_scenes: List[Dict], chapter_number: int) -> List[Dict]:
+    """Get all scenes for a specific chapter."""
+    return [s for s in all_scenes if s['chapter_number'] == chapter_number]
+
+
+def create_scene_breakdown_task(
+    agent: Agent,
+    story_task: Task,
+    chapter_outline: str,
+    chapter_number: int,
+    character_context: str = "",
+    location_context: str = "",
+    context_window: int = 40000
+) -> Task:
+    """
+    Create a task to break a chapter into detailed scenes.
+
+    This task takes a chapter outline and creates a detailed scene-by-scene
+    breakdown that can be used for individual scene generation.
+    """
+    context_reminder = get_context_reminder(context_window)
+
+    return Task(
+        description=f"""# Scene Breakdown for Chapter {chapter_number}
+
+{context_reminder}
+
+## Chapter Outline
+{chapter_outline}
+
+{f"## Available Characters\n{character_context[:3000]}" if character_context else ""}
+
+{f"## Available Locations\n{location_context[:2000]}" if location_context else ""}
+
+## Your Task
+
+Break this chapter into 3-7 individual scenes. Each scene should be a self-contained
+unit that can be written independently while connecting to the overall chapter flow.
+
+## Scene Structure Requirements
+
+For EACH scene, provide:
+
+```
+═══════════════════════════════════════════════════════════════════
+SCENE [NUMBER]: [Brief Title]
+═══════════════════════════════════════════════════════════════════
+
+SCENE TYPE: [SCENE or SEQUEL]
+- SCENE = Goal → Conflict → Disaster/Success
+- SEQUEL = Reaction → Dilemma → Decision
+
+POV CHARACTER: [Name]
+- Why this POV: [Brief reason]
+
+SETTING:
+- Location: [Specific place]
+- Time: [Time of day, how much time passes]
+- Atmosphere: [Mood, lighting, weather if relevant]
+
+CHARACTERS PRESENT:
+1. [Character Name] - [Their role in this scene]
+2. [Character Name] - [Their role in this scene]
+...
+
+SCENE GOAL: [What the POV character wants to achieve]
+
+CONFLICT/TENSION: [What opposes them or creates tension]
+
+OUTCOME: [How the scene ends - success/failure/twist/complication]
+
+EMOTIONAL BEAT: [The key emotional moment or shift]
+
+KEY DIALOGUE POINTS:
+- [Topic 1 that must be discussed]
+- [Topic 2 that must be discussed]
+...
+
+PLOT ADVANCEMENT:
+- [What moves forward in this scene]
+- [Information revealed or withheld]
+
+TRANSITION TO NEXT SCENE:
+- [Hook or bridge to the next scene]
+
+WORD COUNT TARGET: [800-1500 words]
+═══════════════════════════════════════════════════════════════════
+```
+
+## Important Guidelines
+
+1. **Scene vs Sequel**: Alternate between action scenes (external conflict) and sequel scenes (internal processing)
+
+2. **POV Consistency**: Each scene should have ONE clear POV character
+
+3. **Location Changes**: New location = new scene (usually)
+
+4. **Pacing Variety**: Mix short punchy scenes with longer developing scenes
+
+5. **Scene Flow**: Each scene should have a clear beginning, middle, and end
+
+6. **Chapter Arc**: Together, scenes should form a complete chapter arc with:
+   - Opening hook
+   - Rising tension
+   - Chapter climax
+   - Closing hook (page-turner)
+
+## Output Format
+
+Provide detailed breakdowns for ALL scenes in this chapter.
+Be thorough - these breakdowns will guide the actual writing.""",
+        expected_output=f"""A complete scene breakdown for Chapter {chapter_number} containing:
+
+1. 3-7 fully detailed scene breakdowns
+2. Clear scene types (SCENE vs SEQUEL)
+3. Specific POV characters for each scene
+4. Detailed setting and atmosphere
+5. Character roles and dialogue points
+6. Clear goals, conflicts, and outcomes
+7. Word count targets per scene
+8. Smooth transitions between scenes
+
+The breakdown should be detailed enough to write each scene independently.""",
+        agent=agent,
+        context=[story_task]
+    )
+
+
+def create_enhanced_scene_writing_task(
+    agent: Agent,
+    story_task: Task,
+    scene_data: Dict[str, Any],
+    chapter_context: str,
+    previous_scene_content: str = "",
+    next_scene_preview: str = "",
+    character_profiles: str = "",
+    location_details: str = "",
+    context_window: int = 40000
+) -> Task:
+    """
+    Create an enhanced task for writing a single scene with full context.
+
+    This task provides maximum context to the scene writer including:
+    - Previous scene content for continuity
+    - Next scene preview for setup
+    - Full character profiles for voice consistency
+    - Location details for immersion
+    """
+    context_reminder = get_context_reminder(context_window)
+
+    chapter_num = scene_data.get('chapter_number', 1)
+    scene_num = scene_data.get('scene_number', 1)
+    pov_char = scene_data.get('pov_character', 'protagonist')
+    setting = scene_data.get('setting', 'unspecified location')
+    characters = scene_data.get('characters', [])
+    goal = scene_data.get('goal', '')
+    conflict = scene_data.get('conflict', '')
+    outcome = scene_data.get('outcome', '')
+    word_target = scene_data.get('word_count_target', 1000)
+    key_dialogue = scene_data.get('key_dialogue', '')
+
+    # Build continuity section
+    continuity = ""
+    if previous_scene_content:
+        # Get last 500 words of previous scene
+        prev_words = previous_scene_content.split()
+        if len(prev_words) > 150:
+            prev_excerpt = ' '.join(prev_words[-150:])
+            continuity += f"""
+## PREVIOUS SCENE ENDING
+(Continue seamlessly from this...)
+
+...{prev_excerpt}
+
+---
+"""
+        else:
+            continuity += f"""
+## PREVIOUS SCENE
+{previous_scene_content}
+
+---
+"""
+
+    if next_scene_preview:
+        continuity += f"""
+## NEXT SCENE PREVIEW
+(This scene must set up...)
+{next_scene_preview}
+
+---
+"""
+
+    # Build character context
+    char_section = ""
+    if character_profiles:
+        char_section = f"""
+## CHARACTER PROFILES
+(Use these for voice and behavior consistency)
+
+{character_profiles[:4000]}
+"""
+
+    # Build location context
+    loc_section = ""
+    if location_details:
+        loc_section = f"""
+## LOCATION DETAILS
+{location_details[:2000]}
+"""
+
+    return Task(
+        description=f"""# Write Scene {scene_num} of Chapter {chapter_num}
+
+{context_reminder}
+
+{continuity}
+
+## SCENE DETAILS
+- **POV Character**: {pov_char}
+- **Setting**: {setting}
+- **Characters Present**: {', '.join(characters) if characters else pov_char}
+- **Scene Goal**: {goal}
+- **Conflict/Tension**: {conflict}
+- **Scene Outcome**: {outcome}
+{f"- **Key Dialogue Points**: {key_dialogue}" if key_dialogue else ""}
+
+## CHAPTER CONTEXT
+{chapter_context[:2000]}
+
+{char_section}
+
+{loc_section}
+
+## WRITING REQUIREMENTS
+
+### Word Count: {word_target} words (aim for {word_target - 200} to {word_target + 300})
+
+### Strict POV Discipline
+- Stay EXCLUSIVELY in {pov_char}'s point of view
+- Only describe what {pov_char} can directly perceive
+- Filter all observations through {pov_char}'s personality and knowledge
+- Show {pov_char}'s internal thoughts and reactions
+- Never reveal what other characters are thinking
+
+### Scene Structure
+Use SCENE-SEQUEL structure:
+- **If action scene**: Goal → Conflict → Disaster/Success
+- **If reaction scene**: Reaction → Dilemma → Decision
+
+### Sensory Immersion
+For this scene in {setting}, include:
+- Visual details (lighting, colors, movement)
+- Sounds (ambient and specific)
+- Physical sensations
+- Smells if relevant
+- Atmosphere/mood
+
+### Dialogue Excellence
+- Each character speaks with their unique voice
+- Use subtext - what's NOT said matters
+- Include action beats between dialogue
+- Dialogue reveals character or advances plot
+- Avoid "said bookisms" - use action instead
+
+### Pacing
+- Match pacing to scene type (action = short sentences, emotional = longer)
+- Vary sentence structure for rhythm
+- Use paragraph breaks strategically
+
+### Continuity
+{"- Start seamlessly from where the previous scene ended" if previous_scene_content else "- Start with a hook that draws readers in"}
+{"- Set up elements that will pay off in the next scene" if next_scene_preview else "- End with a hook that makes readers want to continue"}
+
+## OUTPUT FORMAT
+
+Write ONLY the scene prose. No headers, no notes, no meta-commentary.
+Start directly with the scene and end at the natural scene conclusion.
+
+Remember: You are writing {word_target} words of polished, publishable fiction.
+
+---
+
+[Begin scene...]""",
+        expected_output=f"""A complete scene of approximately {word_target} words containing:
+
+1. Strict {pov_char} POV throughout
+2. Rich sensory details for {setting}
+3. Clear scene structure (goal-conflict-outcome)
+4. Distinct character voices in dialogue
+5. Appropriate pacing for the scene type
+6. {"Seamless continuation from previous scene" if previous_scene_content else "Strong opening hook"}
+7. {"Setup for the following scene" if next_scene_preview else "Compelling scene ending"}
+
+The scene should read as polished, publishable prose.""",
+        agent=agent,
+        context=[story_task]
     )

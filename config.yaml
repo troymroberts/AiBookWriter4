@@ -5,7 +5,7 @@
 # Ollama LLM Configuration
 # =============================================================================
 ollama:
-  base_url: "http://10.1.1.40:11434"
+  base_url: "http://10.1.1.39:11434"
 
   # Default model for all agents (can be overridden per-agent)
   # Available: qwen3-0.6b-40k:latest (fast), qwen3:8b, qwen3:4b, llama3.2:latest
@@ -52,6 +52,22 @@ ollama:
     theme_weaver: "qwen3-0.6b-40k:latest"
     prose_stylist: "qwen3-0.6b-40k:latest"
     psychological_depth: "qwen3-0.6b-40k:latest"
+
+# =============================================================================
+# OpenRouter Configuration (Cloud Alternative)
+# =============================================================================
+# Set OPENROUTER_API_KEY environment variable to use OpenRouter
+# OpenRouter provides access to many models including free tiers
+openrouter:
+  # Default model (see https://openrouter.ai/models for full list)
+  # Free tier models:
+  #   - xiaomi/mimo-v2-flash:free (262K context, 65K output - recommended for long-form)
+  #   - google/gemma-2-9b-it:free (8K context)
+  #   - meta-llama/llama-3.2-3b-instruct:free (128K context)
+  default_model: "xiaomi/mimo-v2-flash:free"
+
+  # Note: OpenRouter models use format "openrouter/<provider>/<model>"
+  # Example: "openrouter/xiaomi/mimo-v2-flash:free"
 
 # =============================================================================
 # LLM Parameters

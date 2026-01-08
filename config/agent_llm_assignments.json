@@ -1,0 +1,5 @@
+{
+  "default_provider": "Network Ollama",
+  "default_model": "qwen3-0.6b-40k:latest",
+  "assignments": {}
+}
